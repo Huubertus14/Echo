@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PhotonView))]
-public class SonarObject : MonoBehaviourPun
+public class SonarObject : MonoBehaviourPun, ISonarable
 {
     public bool isHit;
    private int iterator = 0;
@@ -64,23 +64,19 @@ public class SonarObject : MonoBehaviourPun
 
     IEnumerator FadeInOut()
     {
-        Debug.Log("Fade");
         isHit = true;
         rend.material.EnableKeyword("VISIBLE");
         for (int i = 0; i < durationTo; i++)
         {
             rend.material.SetFloat("_SonarStep", (float)i / durationTo);
-            Debug.Log("Now fading in " + i + " " + durationTo);
             yield return new WaitForSeconds(1f / 50f);
         }
-        Debug.Log("Now fading out");
         yield return null;
 
         rend.material.DisableKeyword("VISIBLE");
         while (iterator < durationFrom)
         {
             rend.material.SetFloat("_SonarStep", (float)iterator / durationFrom);
-            Debug.Log("Now fading in " + iterator + " " + durationTo);
             iterator++;
             yield return new WaitForSeconds(1f / 25f);
         }

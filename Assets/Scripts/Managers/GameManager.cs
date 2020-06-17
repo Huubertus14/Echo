@@ -16,7 +16,6 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     public void PlayGame()
     {
         StartCoroutine(NetworkManager.SP.JoinGame());
-
     }
 
 }
