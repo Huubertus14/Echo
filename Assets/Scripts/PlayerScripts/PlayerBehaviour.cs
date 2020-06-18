@@ -1,20 +1,32 @@
 ﻿using Photon.Pun;
+using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 {
-    PlayerMovement pm;
+    private PlayerMovement pm;
     private ParticleBehaviour pb;
-    Quaternion orginRot;
+    private Quaternion orginRot;
+    private SubSettings settings;
 
-    [SerializeField] Color playerColor;
+    [SerializeField] private Color playerColor;
+    private Renderer[] meshRenderers;
 
-    Renderer[] meshRenderers;
+    [Header("Game values")]
+    [SerializeField]private float playerScore;
+    [SerializeField]private float matchXP;
+
+    private float currentHealth;
+
+    public SubType subType;
 
     private void Start()
     {
+        //Get values and set them
+        settings = SubValues.GetValues(subType);
+
         pm = GetComponent<PlayerMovement>();
         pb = GetComponentInChildren<ParticleBehaviour>();
         meshRenderers = GetComponentsInChildren<Renderer>();
@@ -34,6 +46,18 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         //Give particle system the color
         pb.SetColor(playerColor);
         SetMeshColor(Color.black); //Set self to black
+
+        //Set local values
+        pm.movementSpeed = settings.movementSpeed;
+        pm.waterResistence = settings.resistence;
+        //Set values of cannon shooter
+    }
+
+    
+    [PunRPC]
+    private void RPC_ResetPlayerValues()
+    {
+        currentHealth = settings.health;
     }
 
     private void FixedUpdate()
@@ -46,7 +70,9 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         if (photonView.IsMine)
         {
             photonView.RPC(nameof(RPC_Ping), RpcTarget.AllBuffered);
+            RPC_HitBySonar(playerColor, transform.position);
         }
+
     }
 
     [PunRPC]
@@ -61,9 +87,9 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         pb.PlayParticle();
     }
 
-    public void HitBySonar(Color col, Vector3 firstParticlePosition)
+    public void RPC_HitBySonar(Color col, Vector3 firstParticlePosition)
     {
-        StartCoroutine(ColorFade(col));
+        StartCoroutine(ColorFade(playerColor));
     }
 
     private IEnumerator ColorFade(Color col)
@@ -75,7 +101,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
         while (Time.time < fadeTime)
         {
-            col = Color.Lerp(col,Color.black, 0.1f/ 7.5f);
+            col = Color.Lerp(col, Color.black, 0.1f / 7.5f);
             SetMeshColor(col);
             yield return 0;
         }
@@ -88,6 +114,11 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         {
             item.material.color = col;
         }
+    }
+
+    public void HitBySonar(Color col, Vector3 firstParticlePosition)
+    {
+      
     }
 
     public PlayerMovement GetPlayerMovement => pm;

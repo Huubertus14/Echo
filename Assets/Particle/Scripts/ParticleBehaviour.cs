@@ -32,7 +32,7 @@ public class ParticleBehaviour : MonoBehaviour
         {
             Debug.Log("Hit sonar");
             Vector3 hitPos = collisionEvents[0].intersection;
-            obj.HitBySonar(particleSystemColor, hitPos);
+            obj.RPC_HitBySonar(particleSystemColor, hitPos);
         }
 
     }

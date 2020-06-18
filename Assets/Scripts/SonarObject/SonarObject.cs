@@ -42,7 +42,9 @@ public class SonarObject : MonoBehaviourPun, ISonarable
         set { value = isHit; }
     }
 
-    public void HitBySonar(Color col, Vector3 firstParticlePosition)
+
+    [PunRPC]
+    public void RPC_HitBySonar(Color col, Vector3 firstParticlePosition)
     {
             iterator = 0;
 
@@ -84,5 +86,10 @@ public class SonarObject : MonoBehaviourPun, ISonarable
         isHit = false;
 
         yield return null;
+    }
+
+    public void HitBySonar(Color col, Vector3 firstParticlePosition)
+    {
+        throw new System.NotImplementedException();
     }
 }

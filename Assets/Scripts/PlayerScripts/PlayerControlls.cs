@@ -34,4 +34,9 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
     {
 
     }
+
+    public void PlayerPressedPause()
+    {
+        GameManager.SP.LeaveGame();
+    }
 }

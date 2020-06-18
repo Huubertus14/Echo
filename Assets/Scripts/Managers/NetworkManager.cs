@@ -158,7 +158,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
 
     public override void OnLeftRoom()
     {
-        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
+        SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
     }
     #endregion
 }

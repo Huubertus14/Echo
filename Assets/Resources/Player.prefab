@@ -236,6 +236,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerColor: {r: 0, g: 0, b: 0, a: 0}
+  playerScore: 0
+  matchXP: 0
+  subType: 0
 --- !u!114 &3244404969635947827
 MonoBehaviour:
   m_ObjectHideFlags: 0
