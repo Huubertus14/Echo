@@ -37,5 +37,9 @@ MonoBehaviour:
   - Ping
   - RPC_Ping
   - RPC_FixParticle
+  - ResetPlayerValues
+  - RPC_ResetPlayerValues
+  - HitBySonar
+  - RPC_HitBySonar
   DisableAutoOpenWizard: 1
   ShowSettings: 1
