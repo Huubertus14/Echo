@@ -16,6 +16,16 @@ public class ParticleBehaviour : MonoBehaviour
         collisionEvents = new List<ParticleCollisionEvent>();
     }
 
+    public void SetLifeTime(float _value)
+    {
+        pMain.startLifetime = _value;
+    }
+
+    public void SetStartSpeed(float _value)
+    {
+        pMain.startSpeed = _value;
+    }
+
     public void SetColor(Color col)
     {
         pMain.startColor = col;

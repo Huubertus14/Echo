@@ -12,6 +12,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     private Quaternion orginRot;
     private SubSettings settings;
     private SubType subType;
+    private SonarPool sp;
 
     [SerializeField] private Color playerColor;
     private Renderer[] meshRenderers;
@@ -27,6 +28,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         //Get values and set them
         settings = SubValues.GetValues(subType);
 
+        sp = GetComponent<SonarPool>();
         pm = GetComponent<PlayerMovement>();
         pb = GetComponentInChildren<ParticleBehaviour>();
         pc = GetComponent<PlayerCannon>();
@@ -47,6 +49,10 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
         //Give particle system the color
         pb.SetColor(playerColor);
+
+        sp.CreatePool();
+        sp.SetPoolColor(playerColor);
+
         SetMeshColor(Color.black); //Set self to black
 
         //Set local values
@@ -77,12 +83,10 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
     }
 
-
     public void Shoot()
     {
         photonView.RPC(nameof(pc.RPC_Shoot), RpcTarget.AllBufferedViaServer);
     }
-
 
     [PunRPC]
     private void RPC_FixParticle()
@@ -128,6 +132,12 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     public void HitBySonar(Color col, Vector3 firstParticlePosition)
     {
 
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        ContactPoint cp = collision.contacts[0];
+        sp.CreateSonar(cp.point, 0.9f, 20);
     }
 
     public PlayerMovement GetPlayerMovement => pm;
