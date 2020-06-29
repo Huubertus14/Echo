@@ -8,19 +8,19 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 {
     private PlayerMovement pm;
     private ParticleBehaviour pb;
+    private PlayerCannon pc;
     private Quaternion orginRot;
     private SubSettings settings;
+    private SubType subType;
 
     [SerializeField] private Color playerColor;
     private Renderer[] meshRenderers;
 
     [Header("Game values")]
-    [SerializeField]private float playerScore;
-    [SerializeField]private float matchXP;
+    [SerializeField] private float playerScore;
+    [SerializeField] private float matchXP;
 
     private float currentHealth;
-
-    public SubType subType;
 
     private void Start()
     {
@@ -29,6 +29,8 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
         pm = GetComponent<PlayerMovement>();
         pb = GetComponentInChildren<ParticleBehaviour>();
+        pc = GetComponent<PlayerCannon>();
+
         meshRenderers = GetComponentsInChildren<Renderer>();
 
         orginRot = pb.gameObject.transform.rotation;
@@ -53,7 +55,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         //Set values of cannon shooter
     }
 
-    
+
     [PunRPC]
     private void RPC_ResetPlayerValues()
     {
@@ -74,6 +76,13 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         }
 
     }
+
+
+    public void Shoot()
+    {
+        photonView.RPC(nameof(pc.RPC_Shoot), RpcTarget.AllBufferedViaServer);
+    }
+
 
     [PunRPC]
     private void RPC_FixParticle()
@@ -118,7 +127,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
     public void HitBySonar(Color col, Vector3 firstParticlePosition)
     {
-      
+
     }
 
     public PlayerMovement GetPlayerMovement => pm;

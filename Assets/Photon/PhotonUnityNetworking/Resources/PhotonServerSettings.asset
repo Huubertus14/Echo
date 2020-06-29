@@ -41,5 +41,7 @@ MonoBehaviour:
   - RPC_ResetPlayerValues
   - HitBySonar
   - RPC_HitBySonar
+  - RPC_Shoot
+  - RPC_CreateBulletPool
   DisableAutoOpenWizard: 1
   ShowSettings: 1

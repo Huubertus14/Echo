@@ -9,7 +9,6 @@ using UnityEngine;
 [Serializable]
 public class SubSettings
 {
-  
     public SubSettings(int _hp, float _pingInterval, float _move, float shootInt, float _resistence)
     {
         health = _hp;
@@ -24,4 +23,5 @@ public class SubSettings
     public float movementSpeed;
     public float shootInterval;
     public float resistence;
+    
 }

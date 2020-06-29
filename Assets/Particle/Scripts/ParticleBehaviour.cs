@@ -9,12 +9,15 @@ public class ParticleBehaviour : MonoBehaviour
     List<ParticleCollisionEvent> collisionEvents;
     Color particleSystemColor;
 
-    public void SetColor(Color col)
+    private void Awake()
     {
         pMain = GetComponent<ParticleSystem>().main;
         pSystem = GetComponent<ParticleSystem>();
         collisionEvents = new List<ParticleCollisionEvent>();
+    }
 
+    public void SetColor(Color col)
+    {
         pMain.startColor = col;
         particleSystemColor = col;
     }

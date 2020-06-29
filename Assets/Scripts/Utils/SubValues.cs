@@ -9,6 +9,12 @@ public enum SubType
     MachineGunSub
 }
 
+public enum bulletTypes
+{
+    Torpedo,
+    SmallBullet,
+    HeavyBullet
+}
 
 public static class SubValues
 {

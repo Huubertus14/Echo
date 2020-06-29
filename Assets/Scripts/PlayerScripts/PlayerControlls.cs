@@ -32,7 +32,7 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
 
     public void PlayerShoot()
     {
-
+        pb.Shoot();
     }
 
     public void PlayerPressedPause()
