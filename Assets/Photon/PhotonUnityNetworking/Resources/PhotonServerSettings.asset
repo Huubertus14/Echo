@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: PhotonServerSettings
   m_EditorClassIdentifier: 
   AppSettings:
-    AppIdRealtime: e4b45e73-0439-47a4-bd94-afeb2f913f78
+    AppIdRealtime: 
     AppIdChat: 
     AppIdVoice: 
     AppVersion: 
@@ -34,14 +34,10 @@ MonoBehaviour:
   - DestroySpaceship
   - Fire
   - RespawnSpaceship
-  - Ping
-  - RPC_Ping
   - RPC_FixParticle
-  - ResetPlayerValues
-  - RPC_ResetPlayerValues
-  - HitBySonar
   - RPC_HitBySonar
+  - RPC_Ping
+  - RPC_ResetPlayerValues
   - RPC_Shoot
-  - RPC_CreateBulletPool
   DisableAutoOpenWizard: 1
-  ShowSettings: 1
+  ShowSettings: 0
