@@ -43,7 +43,6 @@ public class ParticleBehaviour : MonoBehaviour
         ISonarable obj = other.GetComponent<ISonarable>();
         if (obj != null)
         {
-            Debug.Log("Hit sonar");
             Vector3 hitPos = collisionEvents[0].intersection;
             obj.RPC_HitBySonar(particleSystemColor, hitPos);
         }
