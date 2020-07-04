@@ -161,6 +161,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
         SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
 
         Debug.LogWarning("ToDo: remove own pooled items");
+        Debug.LogWarning("ToDo: remove from player list (RPC)");
     }
     #endregion
 }

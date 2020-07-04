@@ -6,6 +6,7 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
 {
     PlayerBehaviour pb;
     DynamicJoystick dj;
+    bool hasPlayeyBehaviour = false;
 
     private void Start()
     {
@@ -19,21 +20,31 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
     public void GivePlayerBehaviour(PlayerBehaviour player)
     {
         pb = player;
+        hasPlayeyBehaviour = true;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        pb.GetPlayerMovement.JoyStickControlls(dj);
+        if (hasPlayeyBehaviour)
+        {
+            pb.GetPlayerMovement.JoyStickControlls(dj);
+        }
     }
 
     public void PlayerPing()
     {
-        pb.Ping();
+        if (hasPlayeyBehaviour)
+        {
+            pb.Ping();
+        }
     }
 
     public void PlayerShoot()
     {
-        pb.Shoot();
+        if (hasPlayeyBehaviour)
+        {
+            pb.Shoot();
+        }
     }
 
     public void PlayerPressedPause()

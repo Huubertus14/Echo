@@ -48,8 +48,6 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         gameMeshes = SubObject.gameObject.GetComponentsInChildren<Renderer>();
     }
 
-  
-
     private void Start()
     {
         //Get values and set them
@@ -239,19 +237,33 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         ph.SetInitValues(settings.health);
     }
 
+    [PunRPC]
+    public void RPC_Spawn()
+    {
+        Debug.Log("Spawning PLayer");
+        SubObject.SetActive(true);
+        isAlive = true;
+    }
+
     /// <summary>
     /// needs to be an RPC
     /// </summary>
     /// <returns></returns>
-    private IEnumerator Respawn()
+    public IEnumerator Respawn()
     {
-        //Deactivate player
+        Debug.Log("Respapwn");
 
+        foreach (var item in SpawnPointManager.SP.GetAllSpawnPoints)
+        {
+            item.CheckSpawnPoint(MatchManager.SP.GetAllPlayers);
+            yield return 0;
+        }
+
+        //Deactivate player
         PlayerScoreBoardController.SP.SetDeathText(matchDeaths);
         yield return new WaitForSeconds(0.5f);
         transform.position = SpawnPointManager.SP.GetEmptySpawn.position;
-        SubObject.SetActive(true);
-        isAlive = true;
+        photonView.RPC(nameof(RPC_Spawn), RpcTarget.AllBufferedViaServer);
     }
 
     public void KilledPlayer(PlayerBehaviour victim)

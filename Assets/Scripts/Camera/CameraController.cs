@@ -31,6 +31,14 @@ public class CameraController : SingetonMonobehaviour<CameraController>
         {
             transform.position = target.position + offSet;
         }
+        else
+        {
+            //Should only be checked when joining a game
+            if (target != null)
+            {
+                hasTarget = true;
+            }
+        }
     }
 
     public void SetTarget(Transform _target)

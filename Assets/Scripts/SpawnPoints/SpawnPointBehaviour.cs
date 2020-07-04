@@ -1,39 +1,43 @@
-﻿using System.Collections;
+﻿using GooglePlayGames.BasicApi.Multiplayer;
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class SpawnPointBehaviour : MonoBehaviour
 {
+
    [SerializeField] private List<PlayerBehaviour> playersInRange;
+    private bool isSpawnAble = false;
 
     private void Awake()
     {
         playersInRange = new List<PlayerBehaviour>();
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void Start()
     {
-        PlayerBehaviour play = other.gameObject.GetComponent<PlayerBehaviour>();
-        if (play)
-        {
-            playersInRange.Add(play);
-        }
+        CheckSpawnPoint(MatchManager.SP.GetAllPlayers);
     }
 
-    private void OnTriggerExit(Collider other)
+    public void CheckSpawnPoint(PlayerBehaviour[] players)
     {
-        PlayerBehaviour play = other.gameObject.GetComponent<PlayerBehaviour>();
-        if (play)
+        Debug.Log("Checking spawns...");
+        if (players.Length > 0)
         {
-            if (playersInRange.Contains(play))
+            playersInRange.Clear();
+            for (int i = 0; i < players.Length; i++)
             {
-                playersInRange.Remove(play);
+                if (Vector3.Distance(transform.position, players[i].transform.position) > SpawnPointManager.SP.spawnDistance)
+                {
+                    playersInRange.Add(players[i]);
+                }
             }
         }
     }
 
     public bool CanSpawn()
     {
-        return playersInRange.Count < 1;
+       return playersInRange.Count < 1;
     }
 }

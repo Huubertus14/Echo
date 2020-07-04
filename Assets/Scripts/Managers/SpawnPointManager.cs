@@ -3,35 +3,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnPointManager : SingetonMonobehaviour<SpawnPointManager>, IPunObservable
+public class SpawnPointManager : SingetonMonobehaviour<SpawnPointManager>
 {
+    [Header("Spawn settings:")]
+    public float spawnDistance = 4f;
+
     [SerializeField] private SpawnPointBehaviour[] spawnPoints;
-
     PhotonView photonView;
+    public bool allSpawnsChecked = false;
 
-    private void Awake()
+    public override void Awake()
     {
+        base.Awake();
         spawnPoints = GetComponentsInChildren<SpawnPointBehaviour>();
         photonView = GetComponent<PhotonView>();
     }
 
-    private void Start()
+    public IEnumerator CheckAllSpawns()
     {
-        photonView.RPC(nameof(CheckAllSpawns), RpcTarget.AllBuffered);
-    }
+        Debug.Log("Check all spawns");
+        if (spawnPoints.Length < 1)
+        {
+            Debug.LogError("Spawn points are empty");
+        }
+        Debug.Log("Checking all spawns");
+        allSpawnsChecked = false;
 
-    [PunRPC]
-    private void CheckAllSpawns()
-    {
         foreach (var item in spawnPoints)
         {
-            item.CanSpawn();
+            item.CheckSpawnPoint(MatchManager.SP.GetAllPlayers);
+            yield return 0;
         }
-    }
-
-    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
-    {
-        CheckAllSpawns();
+        Debug.Log("Done Checking all spawns");
+        allSpawnsChecked = true;
+        yield return 0;
     }
 
     public Transform GetEmptySpawn
@@ -45,6 +50,7 @@ public class SpawnPointManager : SingetonMonobehaviour<SpawnPointManager>, IPunO
 
             for (int i = 0; i < spawnPoints.Length; i++)
             {
+                spawnPoints[i].CheckSpawnPoint(MatchManager.SP.GetAllPlayers);
                 if (spawnPoints[i].CanSpawn())
                 {
                     return spawnPoints[i].transform;
@@ -55,7 +61,7 @@ public class SpawnPointManager : SingetonMonobehaviour<SpawnPointManager>, IPunO
             int x = (int)Random.Range(1, spawnPoints.Length);
             return spawnPoints[x].transform;
         }
-        }
+    }
 
     public Transform GetRandomSpawn
     {
@@ -77,4 +83,8 @@ public class SpawnPointManager : SingetonMonobehaviour<SpawnPointManager>, IPunO
             }
         }
     }
+
+    public bool AllChecked => allSpawnsChecked;
+
+    public SpawnPointBehaviour[] GetAllSpawnPoints => spawnPoints;
 }

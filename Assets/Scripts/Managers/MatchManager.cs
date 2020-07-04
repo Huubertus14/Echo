@@ -6,7 +6,13 @@ using UnityEngine;
 
 public class MatchManager : SingetonMonobehaviour<MatchManager>
 {
+    private List<PlayerBehaviour> players;
     private PlayerBehaviour localPlayer;
+
+    private void Start()
+    {
+        players = new List<PlayerBehaviour>();
+    }
 
     public void CreateAndAssignNewPlayer(GameObject _spawnObject)
     {
@@ -14,9 +20,18 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
         {
             if (_spawnObject != null)
             {
-                GameObject newPlayer = PhotonNetwork.Instantiate(_spawnObject.name, SpawnPointManager.SP.GetEmptySpawn.position, Quaternion.identity);
+                GameObject newPlayer = PhotonNetwork.Instantiate(_spawnObject.name, Vector3.zero, Quaternion.identity);
 
                 PlayerBehaviour pl = newPlayer.GetComponent<PlayerBehaviour>();
+
+                if (pl == null)
+                {
+                    Debug.LogError("Local player is null - ", gameObject);
+                    return;
+                }
+
+                players.Add(pl);
+
                 if (pl.photonView.IsMine)
                 {
                     localPlayer = pl;
@@ -26,10 +41,8 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
                     PlayerControlls.SP.GivePlayerBehaviour(pl);
                 }
 
-                if (pl == null)
-                {
-                    Debug.LogError("Local player is null - ", gameObject);
-                }
+                //TODO spawn on right point
+                StartCoroutine(localPlayer.Respawn());
             }
             else
             {
@@ -54,16 +67,15 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
         }
     }
 
+
+
     #region Property's
 
     public PlayerBehaviour LocalPlayerBehaviour => localPlayer;
 
-    public PlayerBehaviour GetAllPlayers
+    public PlayerBehaviour[] GetAllPlayers
     {
-        get
-        {
-            return null;
-        }
+        get { return players.ToArray(); }
     }
 
     #endregion

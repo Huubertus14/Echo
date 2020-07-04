@@ -41,5 +41,6 @@ MonoBehaviour:
   - RPC_Shoot
   - RPC_PlayerDie
   - CheckAllSpawns
+  - RPC_CheckAllSpawns
   DisableAutoOpenWizard: 1
   ShowSettings: 1
