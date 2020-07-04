@@ -10,7 +10,7 @@ public class CameraController : SingetonMonobehaviour<CameraController>
     [SerializeField]
     private Transform target;
 
-    bool hasTarget = false;
+    private bool hasTarget = false;
 
     private void Start()
     {
@@ -20,7 +20,7 @@ public class CameraController : SingetonMonobehaviour<CameraController>
         }
         else
         {
-           // Debug.LogError("No target specified", gameObject);
+            // Debug.LogError("No target specified", gameObject);
         }
     }
 

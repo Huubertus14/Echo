@@ -9,58 +9,130 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     private PlayerMovement pm;
     private ParticleBehaviour pb;
     private PlayerCannon pc;
+    private PlayerHealth ph;
     private Quaternion orginRot;
     private SubSettings settings;
     private SubType subType;
     private SonarPool sp;
 
     [SerializeField] private Color playerColor;
-    private Renderer[] meshRenderers;
+    private Renderer[] gameMeshes;
+
+    [Header("Editor cached")]
+    [SerializeField] private GameObject SubObject;
 
     [Header("Game values")]
     [SerializeField] private float playerScore;
     [SerializeField] private float matchXP;
+    private bool isAlive;
+
+    [Header("Score values")]
+    [SerializeField] private int matchKills;
+    [SerializeField] private int matchDeaths;
+    [SerializeField] private int damageDealth;
+    [SerializeField] private int matchAssists;
 
     private float currentHealth;
+    private int outlineSizeID = 0;
+    private int outlineColorID = 0;
+    private float outlineSize = 0;
+
+    private void Awake()
+    {
+        sp = GetComponent<SonarPool>();
+        pm = GetComponent<PlayerMovement>();
+        pb = GetComponentInChildren<ParticleBehaviour>();
+        pc = GetComponent<PlayerCannon>();
+        ph = GetComponent<PlayerHealth>();
+
+        gameMeshes = SubObject.gameObject.GetComponentsInChildren<Renderer>();
+    }
+
+  
 
     private void Start()
     {
         //Get values and set them
         settings = SubValues.GetValues(subType);
-
-        sp = GetComponent<SonarPool>();
-        pm = GetComponent<PlayerMovement>();
-        pb = GetComponentInChildren<ParticleBehaviour>();
-        pc = GetComponent<PlayerCannon>();
-
-        meshRenderers = GetComponentsInChildren<Renderer>();
-
         orginRot = pb.gameObject.transform.rotation;
+
+        outlineSizeID = Shader.PropertyToID("_Outline");
+        outlineColorID = Shader.PropertyToID("_OutlineColor");
+
 
         if (photonView.IsMine)
         {
             playerColor = Color.blue; //For now self is blue, enemy are red
+            ChangeLocalMaterial();
+
+            outlineSize = 0.15f;
+            
         }
         else
         {
             playerColor = Color.red;
             pm.enabled = false;
+            outlineSize = 0;
+
         }
+
+        //Set outline Values && color
+        foreach (var item in gameMeshes)
+        {
+            item.material.SetFloat(outlineSizeID, outlineSize);
+            item.material.SetColor(outlineColorID, playerColor);
+        }
+
+        ResetMatchValues();
 
         //Give particle system the color
         pb.SetColor(playerColor);
 
-        sp.CreatePool();
+        sp.CreatePool("Player Name01");
         sp.SetPoolColor(playerColor);
 
-        SetMeshColor(Color.black); //Set self to black
+        SetMeshColor(Color.black, gameMeshes); //Set self to black
 
         //Set local values
         pm.movementSpeed = settings.movementSpeed;
         pm.waterResistence = settings.resistence;
         //Set values of cannon shooter
+
+        ph.SetInitValues(settings.health);
+        isAlive = true;
     }
 
+
+    private void ResetMatchValues()
+    {
+        matchAssists = 0;
+        matchDeaths = 0;
+        matchKills = 0;
+        matchXP = 0;
+
+        PlayerScoreBoardController.SP.SetAssistText(matchAssists);
+        PlayerScoreBoardController.SP.SetDamageText(0);
+        PlayerScoreBoardController.SP.SetDeathText(matchDeaths);
+        PlayerScoreBoardController.SP.SetKillText(matchKills);
+    }
+
+    /// <summary>
+    /// Delay in spawning in the game.
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator SpawnInGame()
+    {
+        yield return 0;
+    }
+
+    /// <summary>
+    /// Change local player mat. 
+    /// so the player can see itself all the time
+    /// </summary>
+    private void ChangeLocalMaterial()
+    {
+
+    }
 
     [PunRPC]
     private void RPC_ResetPlayerValues()
@@ -68,16 +140,16 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         currentHealth = settings.health;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        photonView.RPC(nameof(RPC_FixParticle), RpcTarget.All);
+        FixParticleRotation();
     }
 
-    public void Ping()
+    public void Ping(float beginSpeed = 0, float lifeTime = 0)
     {
         if (photonView.IsMine)
         {
-            photonView.RPC(nameof(RPC_Ping), RpcTarget.AllBuffered);
+            photonView.RPC(nameof(RPC_Ping), RpcTarget.AllBuffered, beginSpeed, lifeTime);
             RPC_HitBySonar(playerColor, transform.position);
         }
 
@@ -88,15 +160,26 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         photonView.RPC(nameof(pc.RPC_Shoot), RpcTarget.AllBufferedViaServer);
     }
 
-    [PunRPC]
-    private void RPC_FixParticle()
+    private void FixParticleRotation()
     {
         pb.transform.rotation = orginRot;
     }
 
     [PunRPC]
-    private void RPC_Ping()
+    private void RPC_Ping(float beginSpeed = 0, float lifeTime = 0)
     {
+        if (beginSpeed == 0)
+        {
+            beginSpeed = settings.basePingBeginSpeed;
+        }
+        if (lifeTime ==0)
+        {
+            lifeTime = settings.basePingLifeTime;
+        }
+
+        pb.SetStartSpeed(beginSpeed);
+        pb.SetLifeTime(lifeTime);
+
         pb.PlayParticle();
     }
 
@@ -107,7 +190,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
     private IEnumerator ColorFade(Color col)
     {
-        SetMeshColor(col);
+        SetMeshColor(col, gameMeshes);
         yield return 0;
 
         float fadeTime = Time.time + 7.5f;
@@ -115,15 +198,15 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         while (Time.time < fadeTime)
         {
             col = Color.Lerp(col, Color.black, 0.1f / 7.5f);
-            SetMeshColor(col);
+            SetMeshColor(col, gameMeshes);
             yield return 0;
         }
-        SetMeshColor(Color.black);
+        SetMeshColor(Color.black, gameMeshes);
     }
 
-    private void SetMeshColor(Color col)
+    private void SetMeshColor(Color col, Renderer[] meshes)
     {
-        foreach (var item in meshRenderers)
+        foreach (var item in meshes)
         {
             item.material.color = col;
         }
@@ -134,6 +217,58 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
     }
 
+    public void PlayerDie()
+    {
+        if (IsAlive)
+        {
+            isAlive = false;
+            photonView.RPC(nameof(RPC_PlayerDie), RpcTarget.AllBuffered);
+        }
+    }
+
+    [PunRPC]
+    private void RPC_PlayerDie()
+    {
+        isAlive = false;
+        SubObject.SetActive(false);
+        if (photonView.IsMine)
+        {
+            matchDeaths += 1;
+        }
+        StartCoroutine(Respawn());
+        ph.SetInitValues(settings.health);
+    }
+
+    /// <summary>
+    /// needs to be an RPC
+    /// </summary>
+    /// <returns></returns>
+    private IEnumerator Respawn()
+    {
+        //Deactivate player
+
+        PlayerScoreBoardController.SP.SetDeathText(matchDeaths);
+        yield return new WaitForSeconds(0.5f);
+        transform.position = SpawnPointManager.SP.GetEmptySpawn.position;
+        SubObject.SetActive(true);
+        isAlive = true;
+    }
+
+    public void KilledPlayer(PlayerBehaviour victim)
+    {
+        if (photonView.IsMine && victim.isAlive)
+        {
+            matchKills += 1;
+            PlayerScoreBoardController.SP.SetKillText(matchKills);
+        }
+    }
+
+    public void AssistOnPlayer(PlayerBehaviour victim)
+    {
+        matchAssists += 1;
+        PlayerScoreBoardController.SP.SetAssistText(matchAssists);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
         ContactPoint cp = collision.contacts[0];
@@ -141,4 +276,10 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     }
 
     public PlayerMovement GetPlayerMovement => pm;
+
+    public Color GetPlayerColor => playerColor;
+
+    public GameObject SubMesh => SubObject;
+
+    public bool IsAlive => isAlive;
 }

@@ -9,28 +9,37 @@ public class SonarPool : MonoBehaviour
 {
     [Header("Pool values")]
     public int poolSize;
-    public GameObject poolParent;
+    private GameObject poolParent;
     [Space]
     [SerializeField] private ParticleBehaviour poolObjectPrefab;
     private Queue<ParticleBehaviour> pool;
 
+    bool poolExist = false;
 
-
-  
-
-    public void CreatePool()
+    private void Awake()
     {
         pool = new Queue<ParticleBehaviour>();
+    }
+
+    public void CreatePool(string objectName)
+    {
+        poolParent = new GameObject();
+        poolParent.name = "SonarPool (" + objectName +")";
+        poolParent.transform.SetParent(PoolHolder.SP.GetPingPool());
+        poolParent.transform.position = Vector3.zero;
+
 
         for (int i = 0; i < poolSize; i++)
         {
             CreatePoolObject();
         }
+
+        poolExist = true;
     }
 
     private void CreatePoolObject()
     {
-        ParticleBehaviour _part = Instantiate(poolObjectPrefab.gameObject, transform.position, poolObjectPrefab.transform.rotation).GetComponent<ParticleBehaviour>();
+        ParticleBehaviour _part = Instantiate(poolObjectPrefab.gameObject, transform.position, poolObjectPrefab.transform.rotation, poolParent.transform).GetComponent<ParticleBehaviour>();
         _part.gameObject.SetActive(false);
         pool.Enqueue(_part);
     }
@@ -48,6 +57,8 @@ public class SonarPool : MonoBehaviour
 
     public void CreateSonar(Vector3 _pos, float lifeTime = 0, float startSpeed = 0)
     {
+        if (!poolExist) return;
+        
         ParticleBehaviour _part = pool.Dequeue();
         _part.gameObject.SetActive(true);
         _part.gameObject.transform.position = _pos;
@@ -70,10 +81,6 @@ public class SonarPool : MonoBehaviour
     private void OnDestroy()
     {
         //Set all pool object as child objects, so it will be destroyed with the player
-        for (int i = 0; i < pool.Count; i++)
-        {
-            ParticleBehaviour p = pool.Dequeue();
-            p.gameObject.transform.SetParent(transform);
-        }
+        Destroy(poolParent.gameObject);
     }
 }

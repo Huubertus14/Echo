@@ -7,14 +7,15 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
     PlayerBehaviour pb;
     DynamicJoystick dj;
 
-
     private void Start()
     {
         dj = GetComponentInChildren<DynamicJoystick>();
-
-        
     }
 
+    /// <summary>
+    /// Uuh lelijke code?
+    /// </summary>
+    /// <param name="player"></param>
     public void GivePlayerBehaviour(PlayerBehaviour player)
     {
         pb = player;

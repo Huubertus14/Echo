@@ -159,6 +159,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
     public override void OnLeftRoom()
     {
         SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
+
+        Debug.LogWarning("ToDo: remove own pooled items");
     }
     #endregion
 }

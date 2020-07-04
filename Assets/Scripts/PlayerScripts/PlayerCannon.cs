@@ -12,12 +12,15 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
     [Header("Cannon values")]
     [SerializeField] private BulletBehaviour bullet;
     [SerializeField] private int maxBulletCount;
-    [SerializeField] private GameObject bulletsParent;
     [SerializeField] private GameObject ShootPoint;
+
+    private GameObject bulletsParent;
 
     private Queue<BulletBehaviour> bulletPool;
 
     private PlayerBehaviour pb;
+
+    private bool bulletExist = false;
 
     private void Start()
     {
@@ -28,8 +31,13 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
         }
 
         pb = GetComponent<PlayerBehaviour>();
-
         bulletPool = new Queue<BulletBehaviour>();
+
+        //Create bullet parent
+        bulletsParent = new GameObject();
+        bulletsParent.name = "bulletPool (PlayerName)";
+        bulletsParent.transform.SetParent(PoolHolder.SP.GetBulletPool());
+        bulletsParent.transform.position = Vector3.zero;
 
         //Create the pool of bullets
         for (int i = 0; i < maxBulletCount; i++)
@@ -37,6 +45,8 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
             //photonView.RPC(nameof(RPC_CreateBulletPool), RpcTarget.AllBufferedViaServer);
             CreateBulletPool();
         }
+
+        bulletExist = true;
     }
 
     private void CreateBulletPool()
@@ -44,16 +54,20 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
         GameObject _bul = Instantiate(bullet.gameObject, transform.position, Quaternion.identity, bulletsParent.transform);
         _bul.SetActive(false);
         BulletBehaviour _behav = _bul.GetComponent<BulletBehaviour>();
+        _behav.CreatePool("PlayerName", pb.GetPlayerColor);
         bulletPool.Enqueue(_behav);
     }
 
     [PunRPC]
-    public void RPC_Shoot()
+    public void RPC_Shoot(PhotonMessageInfo info)
     {
+        if (!bulletExist) return;
+
+        float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
         BulletBehaviour _shot = bulletPool.Dequeue();
         _shot.gameObject.SetActive(true);
 
-        _shot.FireTorpedo(pb, ShootPoint.transform.position, Quaternion.LookRotation(transform.right, transform.up));
+        _shot.FireTorpedo(pb, ShootPoint.transform.position, Quaternion.LookRotation(pb.SubMesh.transform.right, pb.SubMesh.transform.up), lag);
 
         bulletPool.Enqueue(_shot);
     }

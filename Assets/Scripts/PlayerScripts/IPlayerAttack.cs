@@ -5,5 +5,5 @@ using UnityEngine;
 
 public interface IPlayerAttack 
 {
-    void RPC_Shoot();
+    void RPC_Shoot(PhotonMessageInfo info);
 }
