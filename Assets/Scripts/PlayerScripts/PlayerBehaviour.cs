@@ -10,7 +10,8 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     private ParticleBehaviour pb;
     private PlayerCannon pc;
     private PlayerHealth ph;
-    private Quaternion orginRot;
+    private Quaternion orginRotationParticleSystem;
+    private Quaternion orginRotationPlayerUI;
     private SubSettings settings;
     private SubType subType;
     private SonarPool sp;
@@ -20,6 +21,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
     [Header("Editor cached")]
     [SerializeField] private GameObject SubObject;
+    [SerializeField] private GameObject playerCanvas;
 
     [Header("Game values")]
     [SerializeField] private float playerScore;
@@ -52,7 +54,9 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     {
         //Get values and set them
         settings = SubValues.GetValues(subType);
-        orginRot = pb.gameObject.transform.rotation;
+        orginRotationParticleSystem = pb.gameObject.transform.rotation;
+        orginRotationPlayerUI = playerCanvas.transform.localRotation;
+
 
         outlineSizeID = Shader.PropertyToID("_Outline");
         outlineColorID = Shader.PropertyToID("_OutlineColor");
@@ -140,7 +144,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
     private void Update()
     {
-        FixParticleRotation();
+        FixObjectRotation();
     }
 
     public void Ping(float beginSpeed = 0, float lifeTime = 0)
@@ -158,9 +162,10 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         photonView.RPC(nameof(pc.RPC_Shoot), RpcTarget.AllBufferedViaServer);
     }
 
-    private void FixParticleRotation()
+    private void FixObjectRotation()
     {
-        pb.transform.rotation = orginRot;
+        pb.transform.rotation = orginRotationParticleSystem;
+       // playerCanvas.transform.localRotation = orginRotationPlayerUI;
     }
 
     [PunRPC]

@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [SerializeField] private GameObject subMesh;
+    [Space]
     public float rotationSpeed = 0.2f;
     public float movementSpeed = 10.0f;
     public float waterResistence = 0.91f;
@@ -58,8 +60,8 @@ public class PlayerMovement : MonoBehaviour
         if (dir != Vector3.zero)
         {
             dir.Normalize();
-           transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
-            rb.AddForce(transform.right * movementSpeed);
+            subMesh.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+             rb.AddForce(subMesh.transform.right * movementSpeed);
         }
         else
         {
