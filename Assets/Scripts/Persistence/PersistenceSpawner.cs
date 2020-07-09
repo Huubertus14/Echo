@@ -7,24 +7,34 @@ using UnityEngine.SocialPlatforms;
 
 public class PersistenceSpawner : MonoBehaviour
 {
+    
+
     [SerializeField] private GameObject persistencePrefab;
+    private GameObject persistence;
+
+    private bool triedToAuthenticate = false;
+
     private void Awake()
     {
-       GameObject per = Instantiate(persistencePrefab, transform.position, Quaternion.identity);
-        per.name = "Persistence";
+        persistence = Instantiate(persistencePrefab, transform.position, Quaternion.identity);
+        persistence.name = "Persistence";
     }
 
     private IEnumerator Start()
     {
-        SignInGooglePlay();
+        //Ask for read permission
+
         yield return 0;
 
-        while (!LoadPlayerData())
+        SignInGooglePlay();
+        yield return new WaitUntil(()=> triedToAuthenticate == true);
+
+        while (!LoadPlayerData(SaveData.LoadData()))
         {
             yield return 0;
         }
 
-        //Go to next scene
+        //Go to next scene/Remove loading panel
     }
 
     private void SignInGooglePlay()
@@ -40,12 +50,32 @@ public class PersistenceSpawner : MonoBehaviour
             {
                 Debug.LogWarning("Failed to GP sign in: " + result);
             }
+            else
+            {
+                ((GooglePlayGames.PlayGamesPlatform)Social.Active).SetGravityForPopups(Gravity.TOP);
+            }
+            triedToAuthenticate = true;
         });
     }
 
-    private bool LoadPlayerData()
+    /// <summary>
+    /// Sets all values to the right thing in the game
+    /// </summary>
+    /// <param name="savedata"></param>
+    /// <returns></returns>
+    private bool LoadPlayerData(PlayerData savedata)
     {
-        return true;
+        GameManager man = persistence.GetComponent<GameManager>();
+        if (man != null)
+        {
+            man.LoadGame(savedata);
+            return true;
+        }
+        else
+        {
+            Debug.LogError("Could not load data");
+            return false;
+        }
     }
 
 }

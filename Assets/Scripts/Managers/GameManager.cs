@@ -9,6 +9,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : SingetonMonobehaviour<GameManager>
 {
     public GameObject basePlayer;
+    public PlayerData playerData;
+
 
     private void Awake()
     {
@@ -25,6 +27,12 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     public void PlayGame()
     {
         StartCoroutine(NetworkManager.SP.JoinGame());
+    }
+
+    public void LoadGame(PlayerData data)
+    {
+        playerData = data;
+        MainMenu.SP.SetMenuText();
     }
 
 }
