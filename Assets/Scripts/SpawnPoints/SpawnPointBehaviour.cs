@@ -1,4 +1,5 @@
 ﻿using GooglePlayGames.BasicApi.Multiplayer;
+using Photon.Pun;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -25,12 +26,16 @@ public class SpawnPointBehaviour : MonoBehaviour
         Debug.Log("Checking spawns...");
         if (players.Length > 0)
         {
+           
             playersInRange.Clear();
             for (int i = 0; i < players.Length; i++)
             {
-                if (Vector3.Distance(transform.position, players[i].transform.position) > SpawnPointManager.SP.spawnDistance)
+                if (!players[i].photonView.IsMine)
                 {
-                    playersInRange.Add(players[i]);
+                    if (Vector3.Distance(transform.position, players[i].transform.position) < SpawnPointManager.SP.spawnDistance)
+                    {
+                        playersInRange.Add(players[i]);
+                    }
                 }
             }
         }
@@ -39,5 +44,10 @@ public class SpawnPointBehaviour : MonoBehaviour
     public bool CanSpawn()
     {
        return playersInRange.Count < 1;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.DrawWireSphere(transform.position, SpawnPointManager.SP.spawnDistance/2);
     }
 }

@@ -26,18 +26,21 @@ public class SpawnPointManager : SingetonMonobehaviour<SpawnPointManager>
         {
             Debug.LogError("Spawn points are empty");
         }
-        Debug.Log("Checking all spawns");
+        Debug.Log("Checking all spawns ; " + MatchManager.SP.GetAllPlayers.Length);
         allSpawnsChecked = false;
 
-        foreach (var item in spawnPoints)
+        for (int i = 0; i < spawnPoints.Length; i++)
         {
-            item.CheckSpawnPoint(MatchManager.SP.GetAllPlayers);
+            spawnPoints[i].CheckSpawnPoint(MatchManager.SP.GetAllPlayers);
             yield return 0;
         }
-        Debug.Log("Done Checking all spawns");
+        yield return 0;
+       
         allSpawnsChecked = true;
+        Debug.Log("Done Checking all spawns");
         yield return 0;
     }
+
 
     public Transform GetEmptySpawn
     {

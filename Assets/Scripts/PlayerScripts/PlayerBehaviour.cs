@@ -16,6 +16,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     private SubType subType;
     private SonarPool sp;
 
+
     [SerializeField] private Color playerColor;
     private Renderer[] gameMeshes;
 
@@ -27,6 +28,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     [SerializeField] private float playerScore;
     [SerializeField] private float matchXP;
     private bool isAlive;
+    private bool isInitialized = false;
 
     [Header("Score values")]
     [SerializeField] private int matchKills;
@@ -61,14 +63,12 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         outlineSizeID = Shader.PropertyToID("_Outline");
         outlineColorID = Shader.PropertyToID("_OutlineColor");
 
-
         if (photonView.IsMine)
         {
             playerColor = Color.blue; //For now self is blue, enemy are red
             ChangeLocalMaterial();
 
-            outlineSize = 0.15f;
-            
+            outlineSize = 0.15f; //size of the outline shader
         }
         else
         {
@@ -95,13 +95,19 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
         SetMeshColor(Color.black, gameMeshes); //Set self to black
 
+
+
         //Set local values
         pm.movementSpeed = settings.movementSpeed;
         pm.waterResistence = settings.resistence;
         //Set values of cannon shooter
 
         ph.SetInitValues(settings.health);
-        isAlive = true;
+        isAlive = false;
+
+        SubObject.SetActive(false);
+        StartCoroutine(Respawn());
+        isInitialized = true;
     }
 
 
@@ -116,15 +122,6 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         PlayerScoreBoardController.SP.SetDamageText(0);
         PlayerScoreBoardController.SP.SetDeathText(matchDeaths);
         PlayerScoreBoardController.SP.SetKillText(matchKills);
-    }
-
-    /// <summary>
-    /// Delay in spawning in the game.
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator SpawnInGame()
-    {
-        yield return 0;
     }
 
     /// <summary>
@@ -165,17 +162,19 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     private void FixObjectRotation()
     {
         pb.transform.rotation = orginRotationParticleSystem;
-       // playerCanvas.transform.localRotation = orginRotationPlayerUI;
+        // playerCanvas.transform.localRotation = orginRotationPlayerUI;
     }
 
     [PunRPC]
     private void RPC_Ping(float beginSpeed = 0, float lifeTime = 0)
     {
+        if (!isInitialized) return;
+
         if (beginSpeed == 0)
         {
             beginSpeed = settings.basePingBeginSpeed;
         }
-        if (lifeTime ==0)
+        if (lifeTime == 0)
         {
             lifeTime = settings.basePingLifeTime;
         }
@@ -256,19 +255,33 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     /// <returns></returns>
     public IEnumerator Respawn()
     {
+        Vector3 spawnPos = new Vector3(0, 0, 0);
         Debug.Log("Respapwn");
-
-        foreach (var item in SpawnPointManager.SP.GetAllSpawnPoints)
+        if (photonView.IsMine)
         {
-            item.CheckSpawnPoint(MatchManager.SP.GetAllPlayers);
-            yield return 0;
-        }
+            StartCoroutine(SpawnPointManager.SP.CheckAllSpawns());
 
-        //Deactivate player
-        PlayerScoreBoardController.SP.SetDeathText(matchDeaths);
-        yield return new WaitForSeconds(0.5f);
-        transform.position = SpawnPointManager.SP.GetEmptySpawn.position;
+            yield return new WaitUntil(() => SpawnPointManager.SP.allSpawnsChecked == true);
+
+            /*
+
+                    foreach (var item in SpawnPointManager.SP.GetAllSpawnPoints)
+                    {
+                        item.CheckSpawnPoint(MatchManager.SP.GetAllPlayers);
+                        yield return 0;
+                   }*/
+            yield return 0;
+            spawnPos = SpawnPointManager.SP.GetEmptySpawn.position;
+            //Deactivate player
+            PlayerScoreBoardController.SP.SetDeathText(matchDeaths);
+
+            photonView.transform.position = spawnPos;
+        }
+        yield return new WaitForSeconds(0.8f);
+
         photonView.RPC(nameof(RPC_Spawn), RpcTarget.AllBufferedViaServer);
+
+
     }
 
     public void KilledPlayer(PlayerBehaviour victim)
@@ -299,4 +312,5 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     public GameObject SubMesh => SubObject;
 
     public bool IsAlive => isAlive;
+
 }

@@ -2,11 +2,12 @@
 using Photon.Realtime;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class MatchManager : SingetonMonobehaviour<MatchManager>
 {
-    private List<PlayerBehaviour> players;
+    [SerializeField] private List<PlayerBehaviour> players;
     private PlayerBehaviour localPlayer;
 
     private void Start()
@@ -20,7 +21,7 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
         {
             if (_spawnObject != null)
             {
-                GameObject newPlayer = PhotonNetwork.Instantiate(_spawnObject.name, Vector3.zero, Quaternion.identity);
+                GameObject newPlayer = PhotonNetwork.Instantiate(_spawnObject.name, new Vector3(1500,1500,1500), Quaternion.identity);
 
                 PlayerBehaviour pl = newPlayer.GetComponent<PlayerBehaviour>();
 
@@ -29,8 +30,6 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
                     Debug.LogError("Local player is null - ", gameObject);
                     return;
                 }
-
-                players.Add(pl);
 
                 if (pl.photonView.IsMine)
                 {
@@ -41,8 +40,7 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
                     PlayerControlls.SP.GivePlayerBehaviour(pl);
                 }
 
-                //TODO spawn on right point
-                StartCoroutine(localPlayer.Respawn());
+                UpdatePlayerList();
             }
             else
             {
@@ -67,15 +65,36 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
         }
     }
 
-
-
+    private void UpdatePlayerList()
+    {
+        players.Clear();
+        PlayerBehaviour[] tempPlay = GameObject.FindObjectsOfType<PlayerBehaviour>();
+        foreach (var item in tempPlay)
+        {
+            players.Add(item);
+        }
+    }
+   
     #region Property's
 
     public PlayerBehaviour LocalPlayerBehaviour => localPlayer;
 
     public PlayerBehaviour[] GetAllPlayers
     {
-        get { return players.ToArray(); }
+        get
+        {
+            if (players.Count < PhotonNetwork.PlayerList.Length)
+            {
+                //List is not up to date. Update the list now
+                UpdatePlayerList();
+            }
+            else if (players.Count > PhotonNetwork.PlayerList.Length)
+            {
+                UpdatePlayerList();
+            }
+
+            return players.ToArray();
+        }
     }
 
     #endregion

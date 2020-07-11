@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Photon;
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour, IPunObservable
 {
     [SerializeField] private GameObject subMesh;
     [Space]
@@ -14,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody rb;
     private PlayerBehaviour pb;
 
+    private Quaternion networkRotation;
+    private float angle = 0;
+    private bool firstTake = false;
 
     private void Awake()
     {
@@ -21,9 +25,15 @@ public class PlayerMovement : MonoBehaviour
         pb = GetComponent<PlayerBehaviour>();
     }
 
-    private void FixedUpdate()
+    private void OnEnable()
+    {
+        firstTake = true;
+    }
+
+    private void Update()
     {
         ComputerControlls();
+        SubMeshRotation();
     }
 
     private void ComputerControlls()
@@ -52,6 +62,15 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    private void SubMeshRotation()
+    {
+        if (!pb.photonView.IsMine)
+        {
+            subMesh.transform.rotation = Quaternion.RotateTowards(subMesh.transform.rotation, networkRotation, angle * 1.0f/PhotonNetwork.SerializationRate);
+        }
+    }
+
+
     public void JoyStickControlls(Joystick joy)
     {
         //Rotation in direction of joystick
@@ -61,7 +80,7 @@ public class PlayerMovement : MonoBehaviour
         {
             dir.Normalize();
             subMesh.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
-             rb.AddForce(subMesh.transform.right * movementSpeed);
+            rb.AddForce(subMesh.transform.right * movementSpeed);
         }
         else
         {
@@ -69,4 +88,27 @@ public class PlayerMovement : MonoBehaviour
         }
 
     }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (stream.IsWriting)
+        {
+            stream.SendNext(subMesh.transform.rotation);
+        }
+        else
+        {
+            networkRotation = (Quaternion)stream.ReceiveNext();
+            if (firstTake)
+            {
+                angle = 0;
+                subMesh.transform.rotation = networkRotation;
+            }
+            else
+            {
+                angle = Quaternion.Angle(subMesh.transform.rotation, networkRotation);
+            }
+        }
+    }
+
+
 }
