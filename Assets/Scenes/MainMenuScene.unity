@@ -1954,6 +1954,7 @@ MonoBehaviour:
   playerNameText: {fileID: 53364513}
   xpText: {fileID: 1088576257}
   goldText: {fileID: 1659232873}
+  testImage: {fileID: 0}
 --- !u!1 &1779900718
 GameObject:
   m_ObjectHideFlags: 0

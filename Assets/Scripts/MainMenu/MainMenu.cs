@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class MainMenu : SingetonMonobehaviour<MainMenu>
 {
@@ -10,6 +11,7 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     [SerializeField] private TextMeshProUGUI playerNameText;
     [SerializeField] private TextMeshProUGUI xpText;
     [SerializeField] private TextMeshProUGUI goldText;
+
 
     public void OnPlayClicked()
     {

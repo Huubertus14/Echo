@@ -7,13 +7,17 @@ using UnityEngine.UI;
 public class PlayerHealth : MonoBehaviour
 {
     private PlayerBehaviour pb;
-    Slider sl;
-    float maxValue;
-    float sliderValue;
-    float goalSliderValue;
-    [SerializeField] private float health;
-
+    private Slider sl;
+    private float maxValue;
+    private float sliderValue;
+    private float goalSliderValue;
     private List<PlayerBehaviour> playersDoneDamage;
+
+    [SerializeField] private float health;
+    [Space]
+    [SerializeField] [Tooltip("The image of the hp bar slider filler")]private ImageFade healthBarFiller;
+    [SerializeField] [Tooltip("The image of the hp bar slider")] private ImageFade healthBarImage;
+
 
     private void Awake()
     {
@@ -50,6 +54,9 @@ public class PlayerHealth : MonoBehaviour
         health -= _damage;
         goalSliderValue = health;
         UpdatePlayerHealthBar(health);
+
+        healthBarFiller.StartFade(0.1f, 0.5f, 0.8f);
+        healthBarImage.StartFade(0.1f, 0.5f, 0.8f);
 
         pb.Ping(40, 0.2f);
 
