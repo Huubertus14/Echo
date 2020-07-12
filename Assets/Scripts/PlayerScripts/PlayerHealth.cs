@@ -55,8 +55,8 @@ public class PlayerHealth : MonoBehaviour
         goalSliderValue = health;
         UpdatePlayerHealthBar(health);
 
-        healthBarFiller.StartFade(0.1f, 0.5f, 0.8f);
-        healthBarImage.StartFade(0.1f, 0.5f, 0.8f);
+        healthBarFiller.StartFade(0.9f);
+        healthBarImage.StartFade(0.9f);
 
         pb.Ping(40, 0.2f);
 

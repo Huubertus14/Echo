@@ -35,7 +35,19 @@ public class ImageFade : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("No image set " +gameObject);
+            Debug.LogWarning("No image set " + gameObject);
+        }
+    }
+
+    public void StartFade(float duration)
+    {
+        if (hasSetImage)
+        {
+            StartCoroutine(Fade(0.15f, 0.1f, duration));
+        }
+        else
+        {
+            Debug.LogWarning("No image set " + gameObject);
         }
     }
 
