@@ -12,7 +12,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     private PlayerHealth ph;
     private Quaternion orginRotationParticleSystem;
     private Quaternion orginRotationPlayerUI;
-    private SubSettings settings;
+    [SerializeField]private SubSettings settings;
     private SubType subType;
     private SonarPool sp;
 
@@ -313,4 +313,5 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
     public bool IsAlive => isAlive;
 
+    public SubSettings Settings => settings;
 }

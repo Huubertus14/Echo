@@ -1,0 +1,12 @@
+fileFormatVersion: 2
+guid: 27189381a9af152449d10e261d8d4881
+timeCreated: 1497738870
+licenseType: Store
+ShaderImporter:
+  defaultTextures:
+  - _FloorTex: {fileID: 2800000, guid: f2559600c6306954891e8d0c5c5426ff, type: 3}
+  - _zTex: {fileID: 2800000, guid: f2559600c6306954891e8d0c5c5426ff, type: 3}
+  - _xTex: {fileID: 2800000, guid: f2559600c6306954891e8d0c5c5426ff, type: 3}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

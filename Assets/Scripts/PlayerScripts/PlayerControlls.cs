@@ -1,12 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 
 public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
 {
     PlayerBehaviour pb;
     DynamicJoystick dj;
-    bool hasPlayeyBehaviour = false;
+    private bool hasPlayerBehaviour = false;
+    private bool gasToggle = false;
 
     private void Start()
     {
@@ -20,20 +22,35 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
     public void GivePlayerBehaviour(PlayerBehaviour player)
     {
         pb = player;
-        hasPlayeyBehaviour = true;
+        hasPlayerBehaviour = true;
     }
 
     private void Update()
     {
-        if (hasPlayeyBehaviour)
+        if (hasPlayerBehaviour)
         {
             pb.GetPlayerMovement.JoyStickControlls(dj);
+            if (gasToggle)
+            {
+                pb.GetPlayerMovement.Accelerate();
+            }
+            else
+            {
+                pb.GetPlayerMovement.WaterResistance();
+            }
         }
+    }
+
+    
+
+    public void Gas(bool gas)
+    {
+        gasToggle = gas;
     }
 
     public void PlayerPing()
     {
-        if (hasPlayeyBehaviour)
+        if (hasPlayerBehaviour)
         {
             pb.Ping();
         }
@@ -41,7 +58,7 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
 
     public void PlayerShoot()
     {
-        if (hasPlayeyBehaviour)
+        if (hasPlayerBehaviour)
         {
             pb.Shoot();
         }

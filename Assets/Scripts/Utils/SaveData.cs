@@ -200,7 +200,7 @@ public class PlayerData
     public int xp;
     public int gold;
 
-    public string ToString()
+    public override string ToString()
     {
         return playerName + ", " + xp + ", " + gold;
     }

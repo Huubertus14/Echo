@@ -23,18 +23,25 @@ public class PersistenceSpawner : MonoBehaviour
     private IEnumerator Start()
     {
         //Ask for read permission
+        yield return new WaitUntil(()=> SharedCanvasBehaviour.SP != null);
 
+        SharedCanvasBehaviour.SP.SetLoadingMessage("Initializing game");
         yield return 0;
 
         SignInGooglePlay();
+        SharedCanvasBehaviour.SP.SetLoadingMessage("Authenticating to Services");
         yield return new WaitUntil(()=> triedToAuthenticate == true);
 
         while (!LoadPlayerData(SaveData.LoadData()))
         {
+            SharedCanvasBehaviour.SP.SetLoadingMessage("Loading Game Data");
             yield return 0;
         }
 
+
+        yield return new WaitForSeconds(5f);
         //Go to next scene/Remove loading panel
+        SharedCanvasBehaviour.SP.SetLoadingScreen(false);
     }
 
     private void SignInGooglePlay()

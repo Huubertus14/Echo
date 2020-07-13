@@ -36,6 +36,11 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         SubMeshRotation();
     }
 
+    public void WaterResistance()
+    {
+        rb.velocity = rb.velocity * waterResistence;
+    }
+
     private void ComputerControlls()
     {
         //transform.Rotate(new Vector3(0, Input.GetAxis("Horizontal") * rotationSpeed, 0));
@@ -70,6 +75,14 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         }
     }
 
+    public void Accelerate()
+    {
+        if (rb.velocity.x < pb.Settings.maxVelocity && rb.velocity.z < pb.Settings.maxVelocity)
+        {
+            Debug.Log(rb.velocity);
+            rb.AddForce(subMesh.transform.right * movementSpeed);
+        }
+    }
 
     public void JoyStickControlls(Joystick joy)
     {
@@ -80,12 +93,10 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         {
             dir.Normalize();
             subMesh.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
-            rb.AddForce(subMesh.transform.right * movementSpeed);
         }
-        else
-        {
-            rb.velocity = rb.velocity * waterResistence;
-        }
+        
+            
+        
 
     }
 

@@ -3,8 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(PhotonView))]
-public class SonarObject : MonoBehaviourPun, ISonarable
+public class SonarObject : MonoBehaviour, ISonarable
 {
     public bool isHit;
    private int iterator = 0;
