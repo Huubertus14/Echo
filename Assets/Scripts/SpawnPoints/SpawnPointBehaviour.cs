@@ -23,7 +23,7 @@ public class SpawnPointBehaviour : MonoBehaviour
 
     public void CheckSpawnPoint(PlayerBehaviour[] players)
     {
-        Debug.Log("Checking spawns...");
+        //Debug.Log("Checking spawns...");
         if (players.Length > 0)
         {
            

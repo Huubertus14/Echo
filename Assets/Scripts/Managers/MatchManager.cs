@@ -75,6 +75,16 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
         }
     }
    
+    public void RemoveSelfFromList()
+    {
+        players.Remove(localPlayer);
+    }
+
+    public void DestroyOwnObject()
+    {
+        PhotonNetwork.Destroy(localPlayer.photonView);
+    }
+
     #region Property's
 
     public PlayerBehaviour LocalPlayerBehaviour => localPlayer;

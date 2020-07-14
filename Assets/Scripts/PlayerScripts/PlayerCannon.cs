@@ -71,4 +71,22 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
 
         bulletPool.Enqueue(_shot);
     }
+
+    public void DestroyPool()
+    {
+        photonView.RPC(nameof(RPC_DestroyPool), RpcTarget.All); 
+    }
+
+    [PunRPC]
+    private void RPC_DestroyPool()
+    {
+        BulletBehaviour[] temp = bulletPool.ToArray();
+        for (int i = 0; i < bulletPool.Count; i++)
+        {
+            temp[i].DestroySonarPool();
+           Destroy(temp[i].gameObject);
+        }
+        Destroy(bulletsParent);
+    }
+   
 }

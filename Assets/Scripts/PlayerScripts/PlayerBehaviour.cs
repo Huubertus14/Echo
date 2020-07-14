@@ -25,6 +25,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     [SerializeField] private GameObject playerCanvas;
 
     [Header("Game values")]
+    [SerializeField] private string playerName = "Submarine Commander";
     [SerializeField] private float playerScore;
     [SerializeField] private float matchXP;
     private bool isAlive;
@@ -54,6 +55,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
     private void Start()
     {
+        playerName = "Commander";
         //Get values and set them
         settings = SubValues.GetValues(subType);
         orginRotationParticleSystem = pb.gameObject.transform.rotation;
@@ -237,6 +239,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         {
             matchDeaths += 1;
         }
+        PlayerScoreBoardController.SP.UpdateScoreBoard();
         StartCoroutine(Respawn());
         ph.SetInitValues(settings.health);
     }
@@ -244,9 +247,10 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     [PunRPC]
     public void RPC_Spawn()
     {
-        Debug.Log("Spawning PLayer");
+       // Debug.Log("Spawning PLayer");
         SubObject.SetActive(true);
         isAlive = true;
+        PlayerScoreBoardController.SP.UpdateScoreBoard();
     }
 
     /// <summary>
@@ -256,7 +260,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     public IEnumerator Respawn()
     {
         Vector3 spawnPos = new Vector3(0, 0, 0);
-        Debug.Log("Respapwn");
+        //Debug.Log("Respapwn");
         if (photonView.IsMine)
         {
             StartCoroutine(SpawnPointManager.SP.CheckAllSpawns());
@@ -290,7 +294,19 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         {
             matchKills += 1;
             PlayerScoreBoardController.SP.SetKillText(matchKills);
+
+            if (matchKills >= 15) //TODO move to an active gamemde
+            {
+                Debug.Log("END Game");
+            }
         }
+    }
+
+    public void DestroyLinkedItems()
+    {
+        //All bullets and sonars
+        pc.DestroyPool();
+        sp.DestroyPool();
     }
 
     public void AssistOnPlayer(PlayerBehaviour victim)
@@ -314,4 +330,19 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     public bool IsAlive => isAlive;
 
     public SubSettings Settings => settings;
+
+    public int GetMatchKills => matchKills;
+
+    public string PlayerName
+    {
+        get
+        {
+            return playerName;
+        }
+        set
+        {
+            playerName = value;
+            //TODO UPDATE playername in photon
+        }
+    }
 }

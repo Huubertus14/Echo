@@ -199,6 +199,13 @@ public class PlayerData
     public string playerName;
     public int xp;
     public int gold;
+    public int wins;
+    public int loses;
+    public int damageDone;
+    public int totalKills;
+    public int totalDeaths;
+    public float timePlayed;
+
 
     public override string ToString()
     {

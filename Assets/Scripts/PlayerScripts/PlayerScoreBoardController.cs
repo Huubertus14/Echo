@@ -6,10 +6,14 @@ using UnityEngine.UI;
 
 public class PlayerScoreBoardController : SingetonMonobehaviour<PlayerScoreBoardController>
 {
+    [Header("Player Values")]
     [SerializeField] private TextMeshProUGUI killText;
     [SerializeField] private TextMeshProUGUI assistText;
     [SerializeField] private TextMeshProUGUI deathText;
     [SerializeField] private TextMeshProUGUI damageText;
+
+    [Header("leaderboard:")]
+    [SerializeField] private GameLeaderboardBehaviour leaderboard;
 
     public void SetKillText(int kills)
     {
@@ -29,5 +33,10 @@ public class PlayerScoreBoardController : SingetonMonobehaviour<PlayerScoreBoard
     public void SetDamageText(int kills)
     {
         damageText.text = "Damage: " + kills;
+    }
+
+    public void UpdateScoreBoard()
+    {
+        leaderboard.CreateAndUpdateLeaderboard();
     }
 }

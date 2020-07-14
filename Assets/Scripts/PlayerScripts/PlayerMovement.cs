@@ -79,7 +79,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     {
         if (rb.velocity.x < pb.Settings.maxVelocity && rb.velocity.z < pb.Settings.maxVelocity)
         {
-            Debug.Log(rb.velocity);
+            //Debug.Log(rb.velocity);
             rb.AddForce(subMesh.transform.right * movementSpeed);
         }
     }

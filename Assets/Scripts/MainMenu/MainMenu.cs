@@ -12,6 +12,13 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     [SerializeField] private TextMeshProUGUI xpText;
     [SerializeField] private TextMeshProUGUI goldText;
 
+    [Header("Settings Refs:")]
+    [SerializeField] private GameObject settingsPanel;
+
+    private void Start()
+    {
+        ToggleSettingsPanel(false);
+    }
 
     public void OnPlayClicked()
     {
@@ -33,11 +40,8 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     }
 
 
-    public void TempAddGold()
+    public void ToggleSettingsPanel(bool toggle)
     {
-        GameManager.SP.playerData.gold++;
-        SetMenuText();
-
-        SaveData.Save(GameManager.SP.playerData);
+        settingsPanel.SetActive(toggle);
     }
 }

@@ -12,6 +12,7 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     public PlayerData playerData;
 
 
+
     private void Awake()
     {
         DontDestroyOnLoad(this);
@@ -20,8 +21,15 @@ public class GameManager : SingetonMonobehaviour<GameManager>
 
     public void LeaveGame()
     {
-        PhotonNetwork.LeaveRoom();
+        StartCoroutine(LeavingGame());
         //Unassign camera
+    }
+
+    private IEnumerator LeavingGame()
+    {
+        MatchManager.SP.LocalPlayerBehaviour.DestroyLinkedItems();
+        yield return 0;
+        PhotonNetwork.LeaveRoom();
     }
 
     public void PlayGame()
@@ -34,6 +42,7 @@ public class GameManager : SingetonMonobehaviour<GameManager>
         playerData = data;
         MainMenu.SP.SetMenuText();
     }
+
 
 }
 

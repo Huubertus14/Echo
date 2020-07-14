@@ -15,8 +15,7 @@ public class PlayerHealth : MonoBehaviour
 
     [SerializeField] private float health;
     [Space]
-    [SerializeField] [Tooltip("The image of the hp bar slider filler")]private ImageFade healthBarFiller;
-    [SerializeField] [Tooltip("The image of the hp bar slider")] private ImageFade healthBarImage;
+    [SerializeField] [Tooltip("The image of the hp bar slider")] private ImageFade healthBarFade;
 
 
     private void Awake()
@@ -55,8 +54,7 @@ public class PlayerHealth : MonoBehaviour
         goalSliderValue = health;
         UpdatePlayerHealthBar(health);
 
-        healthBarFiller.StartFade(0.9f);
-        healthBarImage.StartFade(0.9f);
+        healthBarFade.StartFade(0.9f);
 
         pb.Ping(40, 0.2f);
 
@@ -73,6 +71,7 @@ public class PlayerHealth : MonoBehaviour
                     }
                 }
 
+                healthBarFade.StopFade();
                 _damageDealer.KilledPlayer(pb);
                 if (pb.photonView.IsMine)
                 {

@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletBehaviour : MonoBehaviour
+public class BulletBehaviour : MonoBehaviourPun
 {
     private Rigidbody rb;
     private PlayerBehaviour owner;
@@ -63,5 +64,10 @@ public class BulletBehaviour : MonoBehaviour
         }
     }
 
+    public void DestroySonarPool()
+    {
+        sonarPool.DestroyPool();
+    }
+      
 
 }

@@ -41,7 +41,6 @@ GameObject:
   - component: {fileID: 885815277663015377}
   - component: {fileID: 4353429254695027476}
   - component: {fileID: 3177642623483458602}
-  - component: {fileID: 1158930648658479036}
   m_Layer: 0
   m_Name: Background
   m_TagString: Untagged
@@ -89,14 +88,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10907, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: b40397465748f0344be0843f9012282a, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -105,18 +104,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &1158930648658479036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1462875709618340460}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 795454442d5047a41aa7047de29963df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2544624146128464494
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,6 +431,7 @@ MonoBehaviour:
   playerColor: {r: 0, g: 0, b: 0, a: 0}
   SubObject: {fileID: 4830988355086734681}
   playerCanvas: {fileID: 2544624146128464494}
+  playerName: 
   playerScore: 0
   matchXP: 0
   matchKills: 0
@@ -548,8 +536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  healthBarFiller: {fileID: 4943952029371424835}
-  healthBarImage: {fileID: 1158930648658479036}
+  healthBarFade: {fileID: 2914456904747934689}
 --- !u!54 &7696125466596087245
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -592,6 +579,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7708149279056194467}
   - component: {fileID: 5271875909284969960}
+  - component: {fileID: 2914456904747934689}
   m_Layer: 0
   m_Name: PlayerHpSlider
   m_TagString: Untagged
@@ -666,10 +654,56 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.839
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2914456904747934689
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6404851522755083565}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 795454442d5047a41aa7047de29963df, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeImage: []
+  curve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.0015716553
+      value: 0
+      inSlope: 4.648199
+      outSlope: 4.648199
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.023945536
+    - serializedVersion: 3
+      time: 0.17576596
+      value: 0.8686565
+      inSlope: -0.26783764
+      outSlope: -0.26783764
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.45222262
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -1.0549666
+      outSlope: -1.0549666
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 1
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &6600396735344850212
 GameObject:
   m_ObjectHideFlags: 0
@@ -775,7 +809,6 @@ GameObject:
   - component: {fileID: 2550828452071300913}
   - component: {fileID: 8613853681674848807}
   - component: {fileID: 1908372100946292985}
-  - component: {fileID: 4943952029371424835}
   m_Layer: 0
   m_Name: Fill
   m_TagString: Untagged
@@ -829,8 +862,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: c406edae1e6bdbb4cb17b64c05792bc9, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -839,18 +872,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &4943952029371424835
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8641031892313167624}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 795454442d5047a41aa7047de29963df, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &8591878245398755691
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -20,7 +20,7 @@ public static class SubValues
 {
     private static Dictionary<SubType, SubSettings> submarines = new Dictionary<SubType, SubSettings>
    {
-       {SubType.BasicSub, new SubSettings(100, 0.8f,25, 1.2f, 0.91f, 15f, 1.85f, 10f) },
+       {SubType.BasicSub, new SubSettings(100, 0.8f,10, 1.2f, 0.91f, 15f, 1.85f, 8f) },
        {SubType.HeavySub, new SubSettings(250, 1.2f,5.5f, 3.6f, 0.99f, 15f, 1.85f, 6f) },
        {SubType.MachineGunSub, new SubSettings(75, 0.5f,13, 0.4f, 0.85f, 15f, 1.85f, 16f) }
    };

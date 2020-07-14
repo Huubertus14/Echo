@@ -122,6 +122,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
         }
 
         MatchManager.SP.CreateAndAssignNewPlayer(GameManager.SP.basePlayer);
+        SharedCanvasBehaviour.SP.SetLoadingScreen(true);
+        SharedCanvasBehaviour.SP.SetLoadingMessage("Joining a room");
     }
 
     public override void OnJoinedLobby()
@@ -158,10 +160,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
 
     public override void OnLeftRoom()
     {
+
+      
+
+        MatchManager.SP.RemoveSelfFromList();
+        MatchManager.SP.DestroyOwnObject();
+        Debug.LogWarning("ToDo: remove own pooled items");
         SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
 
-        Debug.LogWarning("ToDo: remove own pooled items");
-        Debug.LogWarning("ToDo: remove from player list (RPC)");
+
+        //Destroy
+
     }
     #endregion
 }

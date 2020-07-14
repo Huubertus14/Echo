@@ -1,11 +1,13 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 /// <summary>
 /// Class created to make it easy to make a lot of pings at once
 /// </summary>
-public class SonarPool : MonoBehaviour
+public class SonarPool : MonoBehaviourPun
 {
     [Header("Pool values")]
     public int poolSize;
@@ -76,6 +78,28 @@ public class SonarPool : MonoBehaviour
         _part.PlayParticle();
 
         pool.Enqueue(_part);
+    }
+
+    public void DestroyPool()
+    {
+        if (photonView != null)
+        {
+            photonView.RPC(nameof(RPC_DestroyPool), RpcTarget.All);
+        }
+        else
+        {
+            RPC_DestroyPool();
+        }
+    }
+
+    private void RPC_DestroyPool()
+    {
+        ParticleBehaviour[] parts = pool.ToArray();
+        for (int i = 0; i < parts.Length; i++)
+        {
+            Destroy(parts[i].gameObject);
+        }
+        Destroy(poolParent);
     }
 
     private void OnDestroy()
