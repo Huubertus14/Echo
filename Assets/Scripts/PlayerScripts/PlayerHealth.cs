@@ -1,10 +1,11 @@
-﻿using System.Collections;
+﻿using Photon.Pun;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour
+public class PlayerHealth : MonoBehaviour, IPunObservable
 {
     private PlayerBehaviour pb;
     private Slider sl;
@@ -17,14 +18,12 @@ public class PlayerHealth : MonoBehaviour
     [Space]
     [SerializeField] [Tooltip("The image of the hp bar slider")] private ImageFade healthBarFade;
 
-
     private void Awake()
     {
         sl = GetComponentInChildren<Slider>();
         pb = GetComponent<PlayerBehaviour>();
         playersDoneDamage = new List<PlayerBehaviour>();
     }
-
 
     public void SetInitValues(float maxPlayerHealth)
     {
@@ -50,6 +49,12 @@ public class PlayerHealth : MonoBehaviour
             playersDoneDamage.Add(_damageDealer);
         }
 
+        if (health <= 0)
+        {
+            //Player allready dead
+            return;
+        }
+
         health -= _damage;
         goalSliderValue = health;
         UpdatePlayerHealthBar(health);
@@ -60,24 +65,23 @@ public class PlayerHealth : MonoBehaviour
 
         if (health <= 0)
         {
-            if (pb.IsAlive)
+            if (pb.photonView.IsMine)
             {
-                foreach (PlayerBehaviour play in playersDoneDamage)
+                pb.PlayerDie();
+            }
+            //Player dies
+            foreach (PlayerBehaviour play in playersDoneDamage)
+            {
+                if (play != _damageDealer)
                 {
-                    if (play != _damageDealer)
-                    {
-                        //Give the damagedealer a kill
-                        play.AssistOnPlayer(pb);
-                    }
-                }
-
-                healthBarFade.StopFade();
-                _damageDealer.KilledPlayer(pb);
-                if (pb.photonView.IsMine)
-                {
-                    pb.PlayerDie();
+                    //Give the damagedealer a kill
+                    play.AssistOnPlayer(pb);
                 }
             }
+            healthBarFade.StopFade();
+            _damageDealer.KilledPlayer(pb);
+            
+
         }
     }
 
@@ -85,6 +89,21 @@ public class PlayerHealth : MonoBehaviour
     {
         sliderValue = Mathf.Lerp(sliderValue, goalSliderValue, Time.deltaTime * 5);
         sl.value = sliderValue;
+    }
+
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        if (pb.photonView.IsMine)
+        {
+            if (stream.IsWriting)
+            {
+                stream.SendNext(health);
+            }
+        }
+        if (stream.IsReading)
+        {
+            health = (float)stream.ReceiveNext();
+        }
     }
 
     public PlayerBehaviour GetPlayer => pb;

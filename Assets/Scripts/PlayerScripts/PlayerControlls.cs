@@ -41,7 +41,10 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
         }
     }
 
-    
+    private void OnDestroy()
+    {
+        hasPlayerBehaviour = false;
+    }
 
     public void Gas(bool gas)
     {

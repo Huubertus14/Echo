@@ -19,10 +19,13 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     private float angle = 0;
     private bool firstTake = false;
 
+    private bool hasRigidbody = false;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         pb = GetComponent<PlayerBehaviour>();
+        hasRigidbody = true;
     }
 
     private void OnEnable()
@@ -32,8 +35,11 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     private void Update()
     {
-        ComputerControlls();
-        SubMeshRotation();
+        if (hasRigidbody)
+        {
+            ComputerControlls();
+            SubMeshRotation();
+        }
     }
 
     public void WaterResistance()
@@ -94,10 +100,6 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
             dir.Normalize();
             subMesh.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
         }
-        
-            
-        
-
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
@@ -121,5 +123,9 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         }
     }
 
+    private void OnDestroy()
+    {
+        hasRigidbody = false;
+    }
 
 }

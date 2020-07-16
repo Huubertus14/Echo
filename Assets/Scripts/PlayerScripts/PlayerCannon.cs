@@ -74,7 +74,7 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
 
     public void DestroyPool()
     {
-        photonView.RPC(nameof(RPC_DestroyPool), RpcTarget.All); 
+        photonView.RPC(nameof(RPC_DestroyPool), RpcTarget.All);
     }
 
     [PunRPC]

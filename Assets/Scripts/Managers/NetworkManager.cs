@@ -93,17 +93,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
         // DebugManager.Instance.DebugText("Max players = " + roomOptions.MaxPlayers.ToString());
     }
 
-    
+
 
     #region CallBacks
 
     public override void OnJoinedRoom()
     {
-        
+
         //StopCoroutine(JoinRandomRoom());
         // DebugManager.Instance.DebugText(PhotonNetwork.NickName + " Joined to " + PhotonNetwork.CurrentRoom.Name);
         PhotonNetwork.LoadLevel("GameScene");
-        
+
         Debug.Log("[PUN] Joined room");
 
         SceneManager.sceneLoaded += OnLoadedScene;
@@ -114,21 +114,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
         StopCoroutine(JoinGame());
     }
 
-    private void OnLoadedScene(Scene arg0, LoadSceneMode arg1)
+    private void OnLoadedScene(Scene _scene, LoadSceneMode arg1)
     {
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             PhotonNetwork.AutomaticallySyncScene = true;
         }
 
+
         MatchManager.SP.CreateAndAssignNewPlayer(GameManager.SP.basePlayer);
         SharedCanvasBehaviour.SP.SetLoadingScreen(true);
         SharedCanvasBehaviour.SP.SetLoadingMessage("Joining a room");
+
+        SceneManager.sceneLoaded -= OnLoadedScene;
     }
 
     public override void OnJoinedLobby()
     {
-        
+
         MatchManager.SP.CreateNewPlayer(GameManager.SP.basePlayer);
         if (PhotonNetwork.InLobby)
         {
@@ -160,13 +163,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
 
     public override void OnLeftRoom()
     {
-
-      
-
-        MatchManager.SP.RemoveSelfFromList();
-        MatchManager.SP.DestroyOwnObject();
         Debug.LogWarning("ToDo: remove own pooled items");
-        SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
 
 
         //Destroy

@@ -321,6 +321,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   loadingScreenObject: {fileID: 4806214249233412691}
+  EndGameOverview: {fileID: 0}
 --- !u!1 &3064641024594560726
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,6 +408,7 @@ GameObject:
   - component: {fileID: 4963196003645230608}
   - component: {fileID: 3305109470180510589}
   - component: {fileID: -3173180884675803263}
+  - component: {fileID: -3422946729117868282}
   m_Layer: 0
   m_Name: Persistence
   m_TagString: Untagged
@@ -478,3 +480,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   players: []
+--- !u!114 &-3422946729117868282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6135114416263317202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 100bc0140561ea5449cd67b85713c41c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

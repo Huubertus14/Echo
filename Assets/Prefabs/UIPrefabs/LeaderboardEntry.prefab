@@ -180,7 +180,7 @@ MonoBehaviour:
   m_firstVisibleCharacter: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -323.54626, w: 0}
+  m_margin: {x: 0, y: 0, z: -1385.6987, w: 0}
   m_textInfo:
     textComponent: {fileID: 8908164573505225574}
     characterCount: 4

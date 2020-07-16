@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 
 public class MainMenu : SingetonMonobehaviour<MainMenu>
 {
@@ -14,10 +15,14 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
 
     [Header("Settings Refs:")]
     [SerializeField] private GameObject settingsPanel;
+    [SerializeField] private NameChangePanelBehaviour playerNameInputField;
 
-    private void Start()
+    private void OnEnable()
     {
         ToggleSettingsPanel(false);
+        ToggleNameInputPanel(false);
+
+        SetMenuText();
     }
 
     public void OnPlayClicked()
@@ -31,17 +36,31 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     {
         NetworkManager.SP.CreateRoom();
     }
-    
+
     public void SetMenuText()
     {
+        Debug.Log(GameManager.SP.playerData.playerName);
+
+        if (String.IsNullOrEmpty(GameManager.SP.playerData.playerName))
+        {
+            ToggleNameInputPanel(true);
+        }
+        else
+        {
+            ToggleNameInputPanel(false);
+        }
+
         playerNameText.text = "Name: " + GameManager.SP.playerData.playerName;
         xpText.text = "XP: " + GameManager.SP.playerData.xp;
         goldText.text = "Gold: " + GameManager.SP.playerData.gold;
     }
 
-
     public void ToggleSettingsPanel(bool toggle)
     {
         settingsPanel.SetActive(toggle);
+    }
+    public void ToggleNameInputPanel(bool toggle)
+    {
+        playerNameInputField.gameObject.SetActive(toggle);
     }
 }

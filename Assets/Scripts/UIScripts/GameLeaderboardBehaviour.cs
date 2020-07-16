@@ -25,7 +25,7 @@ public class GameLeaderboardBehaviour : MonoBehaviour
             if (i < savedEntries.Count)
             {
                 //Update that entry
-                savedEntries[i].SetText(tempPlayers[i]);
+                savedEntries[i].SetInGameText(tempPlayers[i]);
             }
             else
             {
@@ -47,7 +47,7 @@ public class GameLeaderboardBehaviour : MonoBehaviour
     {
         LeaderboardsEntry entry = Instantiate(entryPrefab.gameObject, transform.position, Quaternion.Euler(0,0,0), transform).GetComponent<LeaderboardsEntry>();
         entry.gameObject.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
-        entry.SetText(pb);
+        entry.SetInGameText(pb);
         savedEntries.Add(entry);
     }
 }

@@ -41,5 +41,7 @@ MonoBehaviour:
   - RPC_Shoot
   - RPC_Spawn
   - RPC_StartGameOnAllClients
+  - RPC_DestroyPool
+  - RPC_EndGameOnAllClients
   DisableAutoOpenWizard: 1
   ShowSettings: 0

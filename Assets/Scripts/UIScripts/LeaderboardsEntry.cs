@@ -10,7 +10,7 @@ public class LeaderboardsEntry : MonoBehaviour
     private PlayerBehaviour playerOwner;
     bool hasOwner = false;
     
-    public void SetText(PlayerBehaviour pb)
+    public void SetInGameText(PlayerBehaviour pb)
     {
         if (pb.photonView.IsMine)
         {
@@ -19,6 +19,17 @@ public class LeaderboardsEntry : MonoBehaviour
         playerOwner = pb;
         hasOwner = true;
         entryText.text = pb.PlayerName + ": " + pb.GetMatchKills + " MC: " +PhotonNetwork.IsMasterClient;
+    }
+
+    public void SetEndScoreText(PlayerBehaviour pb)
+    {
+        if (pb.photonView.IsMine)
+        {
+            entryText.fontStyle = FontStyles.Bold;
+        }
+        playerOwner = pb;
+        hasOwner = true;
+        entryText.text = playerOwner.PlayerName + " -kills: " + playerOwner.GetMatchKills + " -assist: " + playerOwner.GetMatchAssist + " -Damage: " + playerOwner.GetMatchDamage + " -Deaths: " + playerOwner.GetMatchDeaths; 
     }
 
     public PlayerBehaviour GetPlayer

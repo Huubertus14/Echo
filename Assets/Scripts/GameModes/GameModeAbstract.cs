@@ -7,7 +7,7 @@ public abstract class GameModeAbstract : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private float timeLimit;
     [SerializeField] private bool gameStarted;
-    private int killLimit = 15;
+    private int killLimit = 7;
 
     protected virtual void Start()
     {
@@ -28,7 +28,7 @@ public abstract class GameModeAbstract : MonoBehaviourPun, IPunObservable
             //Wait unitil game started
             if (PhotonNetwork.IsMasterClient)
             {
-                if (MatchManager.SP.GetAllPlayers.Length > 1) //Or time limit
+                if (MatchManager.SP.GetAllPlayers.Length > 0) //Or time limit
                 {
                     StartGame();
                 }
@@ -57,9 +57,16 @@ public abstract class GameModeAbstract : MonoBehaviourPun, IPunObservable
         SharedCanvasBehaviour.SP.SetLoadingScreen(false);
     }
 
+    public void EndGame()
+    {
+        photonView.RPC(nameof(RPC_EndGameOnAllClients), RpcTarget.AllBufferedViaServer);
+    }
+
+    [PunRPC]
     protected void RPC_EndGameOnAllClients()
     {
-
+         PlayerScoreBoardController.SP.CreateEndScore();
+        //Disable Player Controlls
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

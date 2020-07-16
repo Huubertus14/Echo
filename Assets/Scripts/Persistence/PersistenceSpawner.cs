@@ -4,11 +4,12 @@ using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
 using UnityEngine.SocialPlatforms;
+using UnityEngine.SceneManagement;
+using System;
+using Photon.Pun;
 
 public class PersistenceSpawner : MonoBehaviour
 {
-    
-
     [SerializeField] private GameObject persistencePrefab;
     private GameObject persistence;
 
@@ -18,6 +19,8 @@ public class PersistenceSpawner : MonoBehaviour
     {
         persistence = Instantiate(persistencePrefab, transform.position, Quaternion.identity);
         persistence.name = "Persistence";
+
+
     }
 
     private IEnumerator Start()
@@ -38,10 +41,23 @@ public class PersistenceSpawner : MonoBehaviour
             yield return 0;
         }
 
+        PhotonNetwork.NickName = GameManager.SP.playerData.playerName;
+
+        SceneManager.LoadScene("MainMenuScene", LoadSceneMode.Single);
+        SceneManager.sceneLoaded += LoadedMainMenuSceneFirstTime;
 
         yield return new WaitForSeconds(5f);
         //Go to next scene/Remove loading panel
+        
+    }
+
+    private void LoadedMainMenuSceneFirstTime(Scene arg0, LoadSceneMode arg1)
+    {
+        //TODO set main menu values
+        //Debug.Log("LOADED SCENE: " + arg0);
+        MainMenu.SP.SetMenuText();
         SharedCanvasBehaviour.SP.SetLoadingScreen(false);
+        SceneManager.sceneLoaded -= LoadedMainMenuSceneFirstTime;
     }
 
     private void SignInGooglePlay()

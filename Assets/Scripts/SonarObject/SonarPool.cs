@@ -82,25 +82,15 @@ public class SonarPool : MonoBehaviourPun
 
     public void DestroyPool()
     {
-        if (photonView != null)
-        {
-            photonView.RPC(nameof(RPC_DestroyPool), RpcTarget.All);
-        }
-        else
-        {
-            RPC_DestroyPool();
-        }
-    }
-
-    private void RPC_DestroyPool()
-    {
         ParticleBehaviour[] parts = pool.ToArray();
         for (int i = 0; i < parts.Length; i++)
         {
+            parts[i].gameObject.SetActive(true);
             Destroy(parts[i].gameObject);
         }
         Destroy(poolParent);
     }
+
 
     private void OnDestroy()
     {

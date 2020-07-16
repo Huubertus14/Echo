@@ -93,6 +93,14 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
     {
         get
         {
+           // Debug.Log("Watchout! Expensive method");
+            for (int i = 0; i < players.Count; i++)
+            {
+                if (players[i] == null)
+                {
+                    players.RemoveAt(i);
+                }
+            }
             if (players.Count < PhotonNetwork.PlayerList.Length)
             {
                 //List is not up to date. Update the list now

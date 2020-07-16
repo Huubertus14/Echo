@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerBehaviour : MonoBehaviourPun, ISonarable
+public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 {
     private PlayerMovement pm;
     private ParticleBehaviour pb;
@@ -12,7 +12,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     private PlayerHealth ph;
     private Quaternion orginRotationParticleSystem;
     private Quaternion orginRotationPlayerUI;
-    [SerializeField]private SubSettings settings;
+    [SerializeField] private SubSettings settings;
     private SubType subType;
     private SonarPool sp;
 
@@ -55,7 +55,8 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
     private void Start()
     {
-        playerName = "Commander";
+        playerName = photonView.Owner.NickName;
+
         //Get values and set them
         settings = SubValues.GetValues(subType);
         orginRotationParticleSystem = pb.gameObject.transform.rotation;
@@ -247,7 +248,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     [PunRPC]
     public void RPC_Spawn()
     {
-       // Debug.Log("Spawning PLayer");
+        // Debug.Log("Spawning PLayer");
         SubObject.SetActive(true);
         isAlive = true;
         PlayerScoreBoardController.SP.UpdateScoreBoard();
@@ -290,14 +291,16 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
 
     public void KilledPlayer(PlayerBehaviour victim)
     {
-        if (photonView.IsMine && victim.isAlive)
+        if (photonView != victim.photonView && photonView.IsMine)
         {
+
+            Debug.Log(PlayerName + " killed " + victim.PlayerName);
             matchKills += 1;
             PlayerScoreBoardController.SP.SetKillText(matchKills);
 
-            if (matchKills >= 15) //TODO move to an active gamemde
+            if (matchKills >= GameManager.SP.GetGameMode().GetKillLimit) //TODO move to an active gamemde
             {
-                Debug.Log("END Game");
+                GameManager.SP.GetGameMode().EndGame();
             }
         }
     }
@@ -321,6 +324,21 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
         sp.CreateSonar(cp.point, 0.9f, 20);
     }
 
+    public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
+    {
+        //Replicate kills and deaths over server So that every one can see the right values
+        if (stream.IsWriting)
+        {
+            stream.SendNext(matchKills);
+            stream.SendNext(matchDeaths);
+        }
+        else
+        {
+            matchKills = (int)stream.ReceiveNext();
+            matchDeaths = (int)stream.ReceiveNext();
+        }
+    }
+
     public PlayerMovement GetPlayerMovement => pm;
 
     public Color GetPlayerColor => playerColor;
@@ -332,6 +350,10 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable
     public SubSettings Settings => settings;
 
     public int GetMatchKills => matchKills;
+    public int GetMatchAssist => matchAssists;
+    public int GetMatchDamage => 0;
+
+    public int GetMatchDeaths => matchDeaths;
 
     public string PlayerName
     {

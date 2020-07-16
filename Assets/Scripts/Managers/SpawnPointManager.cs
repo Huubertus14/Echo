@@ -12,7 +12,7 @@ public class SpawnPointManager : SingetonMonobehaviour<SpawnPointManager>
     PhotonView photonView;
     public bool allSpawnsChecked = false;
 
-    public override void Awake()
+    protected override void Awake()
     {
         base.Awake();
         spawnPoints = GetComponentsInChildren<SpawnPointBehaviour>();

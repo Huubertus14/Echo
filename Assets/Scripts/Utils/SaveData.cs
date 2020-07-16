@@ -8,6 +8,7 @@ using System.Data.SqlTypes;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using System;
+using Photon.Pun;
 
 public class SaveData : MonoBehaviour
 {
@@ -19,11 +20,11 @@ public class SaveData : MonoBehaviour
 
     public static PlayerData LoadData()
     {
-        Debug.Log("LoadData");
+        //Debug.Log("LoadData");
         saving = false;
         if (PlayGamesPlatform.Instance.IsAuthenticated())
         {
-            Debug.Log("Try to load from GP");
+          //  Debug.Log("Try to load from GP");
             ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
 
             savedGameClient.OpenWithAutomaticConflictResolution(saveName, DataSource.ReadCacheOrNetwork,
@@ -33,6 +34,13 @@ public class SaveData : MonoBehaviour
         {
             return LoadLocal();
         }
+        else
+        {
+            if (String.IsNullOrEmpty(loadedData.playerName))
+            {
+                PhotonNetwork.NickName = PlayGamesPlatform.Instance.GetUserId();
+            }
+        }
         return loadedData;
     }
 
@@ -41,7 +49,7 @@ public class SaveData : MonoBehaviour
 
     private static PlayerData LoadLocal()
     {
-        Debug.Log("Load local");
+       // Debug.Log("Load local");
         
         if (File.Exists(SaveGameName))
         {
@@ -50,7 +58,7 @@ public class SaveData : MonoBehaviour
                 FileStream file = new FileStream(SaveGameName, FileMode.Open);
                 if (file.Length > 0)
                 {
-                    Debug.Log("File exist");
+                   // Debug.Log("File exist");
                     BinaryFormatter bf = new BinaryFormatter();
                     PlayerData save = (PlayerData)bf.Deserialize(file);
                     file.Close();
@@ -75,7 +83,7 @@ public class SaveData : MonoBehaviour
 
     private static PlayerData CreateNewSaveFile()
     {
-        Debug.Log("File does not exist, creating a new one");
+       // Debug.Log("File does not exist, creating a new one");
         PlayerData save = new PlayerData();
         save.playerName = "new player";
         save.gold = 0;
@@ -96,7 +104,7 @@ public class SaveData : MonoBehaviour
     {
         if (save == null)
         {
-            Debug.LogWarning("Save is empty");
+            //Debug.LogWarning("Save is empty");
             return;
         }
         loadedData = save;
@@ -111,31 +119,31 @@ public class SaveData : MonoBehaviour
                 ConflictResolutionStrategy.UseLongestPlaytime, OnSavedGameOpened);
         }
         else{
-            Debug.Log("Not authenticated GP");
+            //Debug.Log("Not authenticated GP");
         }
     }
 
     public static void OnSavedGameOpened(SavedGameRequestStatus status, ISavedGameMetadata game)
     {
-        Debug.Log("SaveOpen");
+        //Debug.Log("SaveOpen");
         if (status == SavedGameRequestStatus.Success)
         {
             // handle reading or writing of saved game.
             if (saving) //Save the game
             {
-                Debug.Log("SaveGP");
+               // Debug.Log("SaveGP");
                 SaveGooglePlay(game, ObjectSerializationExtension.SerializeToByteArray(loadedData), TimeSpan.FromMinutes(0));
             }
             else //load the game
             {
-                Debug.Log("LoadGP");
+               // Debug.Log("LoadGP");
                 LoadFromGooglePlay(game);
             }
         }
         else
         {
             // handle error
-            Debug.LogWarning("Could not open save game");
+            //Debug.LogWarning("Could not open save game");
             //Always save local, so ony loaded needs to be done here
             if (!saving)
             {
@@ -146,7 +154,7 @@ public class SaveData : MonoBehaviour
 
     private static void SaveGooglePlay(ISavedGameMetadata game, byte[] savedData, TimeSpan totalPlaytime)
     {
-        Debug.Log("SavingGP");
+        //Debug.Log("SavingGP");
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
 
         SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
@@ -160,7 +168,7 @@ public class SaveData : MonoBehaviour
 
     private static void OnSavedGameWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
     {
-        Debug.Log("DoneSavingGP: " + status);
+       // Debug.Log("DoneSavingGP: " + status);
         if (status == SavedGameRequestStatus.Success)
         {
             // handle reading or writing of saved game.
@@ -173,14 +181,14 @@ public class SaveData : MonoBehaviour
 
     private static void LoadFromGooglePlay(ISavedGameMetadata game)
     {
-        Debug.Log("LoadfromGP");
+       // Debug.Log("LoadfromGP");
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.ReadBinaryData(game, OnSavedGameDataRead);
     }
 
     private static void OnSavedGameDataRead(SavedGameRequestStatus status, byte[] data)
     {
-        Debug.Log("DoneLoading GP: " +status);
+        //Debug.Log("DoneLoading GP: " +status);
         if (status == SavedGameRequestStatus.Success)
         {
             // handle processing the byte array data

@@ -14,6 +14,12 @@ public class PlayerScoreBoardController : SingetonMonobehaviour<PlayerScoreBoard
 
     [Header("leaderboard:")]
     [SerializeField] private GameLeaderboardBehaviour leaderboard;
+    [SerializeField] private EndGameListController endListController;
+
+    private void Start()
+    {
+        endListController.gameObject.SetActive(false);
+    }
 
     public void SetKillText(int kills)
     {
@@ -38,5 +44,11 @@ public class PlayerScoreBoardController : SingetonMonobehaviour<PlayerScoreBoard
     public void UpdateScoreBoard()
     {
         leaderboard.CreateAndUpdateLeaderboard();
+    }
+
+    public void CreateEndScore()
+    {
+        endListController.gameObject.SetActive(true);
+        endListController.CreateEndGameUI();
     }
 }
