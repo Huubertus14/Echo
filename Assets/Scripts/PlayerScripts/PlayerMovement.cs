@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Photon;
+using UnityEditor;
 
 public class PlayerMovement : MonoBehaviour, IPunObservable
 {
@@ -77,18 +78,24 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     {
         if (!pb.photonView.IsMine)
         {
-            subMesh.transform.rotation = Quaternion.RotateTowards(subMesh.transform.rotation, networkRotation, angle * 1.0f/PhotonNetwork.SerializationRate);
+            subMesh.transform.rotation = Quaternion.RotateTowards(subMesh.transform.rotation, networkRotation, angle * 1.0f / PhotonNetwork.SerializationRate);
         }
     }
 
     public void Accelerate()
     {
-        if (rb.velocity.x < pb.Settings.maxVelocity && rb.velocity.z < pb.Settings.maxVelocity)
+        if (rb.velocity.magnitude < pb.Settings.maxVelocity)
         {
             //Debug.Log(rb.velocity);
             rb.AddForce(subMesh.transform.right * movementSpeed);
         }
+        else
+        {
+            //Slow down sub a little bit
+            WaterResistance();
+        }
     }
+
 
     public void JoyStickControlls(Joystick joy)
     {

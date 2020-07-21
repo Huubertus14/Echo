@@ -15,6 +15,8 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     GameObject wholeScene;
     private GameModeAbstract gameMode;
 
+    private SubType subType;
+
    protected override void Awake()
     {
         base.Awake();
@@ -65,6 +67,19 @@ public class GameManager : SingetonMonobehaviour<GameManager>
         SceneManager.sceneLoaded -= MainMenuLoaded;
     }
 
+    public void SetSubType(int subIndex)
+    {
+        if (subIndex >= Enum.GetNames(typeof(SubType)).Length)
+        {
+            Debug.LogError("Tries to set value to an incorrect sub. Changing it to 1");
+            subIndex = 1;
+        }
+
+        subType = (SubType)subIndex;
+        //Debug.Log("Sub Set: " + subType);
+        MainMenu.SP.SetSubSettingsText();
+    }
+
     public void PlayGame()
     {
         StartCoroutine(NetworkManager.SP.JoinGame());
@@ -90,6 +105,12 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     {
         SaveData.Save(playerData);
     }
+
+    #region Props
+
+    public SubType GetSelectedSub => subType;
+
+    #endregion
 
 }
 

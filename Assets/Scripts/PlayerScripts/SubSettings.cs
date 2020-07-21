@@ -9,7 +9,7 @@ using UnityEngine;
 [Serializable]
 public class SubSettings
 {
-    public SubSettings(int _hp, float _pingInterval, float _move, float shootInt, float _resistence, float basePingSpeed, float basePingLifeTime, float maxVelocity)
+    public SubSettings(string subName, int _hp, float _pingInterval, float _move, float shootInt, float _resistence, float basePingSpeed, float basePingLifeTime, float maxVelocity)
     {
         health = _hp;
         pingInterval = _pingInterval;
@@ -20,7 +20,10 @@ public class SubSettings
         this.basePingBeginSpeed = basePingSpeed;
         this.basePingLifeTime = basePingLifeTime;
         this.maxVelocity = maxVelocity;
+        this.subName = subName;
     }
+
+    public string subName;
 
     public float health;
     public float pingInterval;

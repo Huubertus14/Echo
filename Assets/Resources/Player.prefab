@@ -436,6 +436,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   settings:
+    subName: 
     health: 0
     pingInterval: 0
     movementSpeed: 0

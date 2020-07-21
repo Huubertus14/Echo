@@ -55,7 +55,21 @@ public class PersistenceSpawner : MonoBehaviour
     {
         //TODO set main menu values
         //Debug.Log("LOADED SCENE: " + arg0);
+
+        //Check if a sub is selected
+        if (GameManager.SP.playerData.subTypeSelected < 1)
+        {
+            GameManager.SP.SetSubType(0);
+            //TODO. Set tut
+        }
+        else
+        {
+            GameManager.SP.SetSubType(GameManager.SP.playerData.subTypeSelected);
+        }
+
         MainMenu.SP.SetMenuText();
+        MainMenu.SP.SetSubSettingsText();
+
         SharedCanvasBehaviour.SP.SetLoadingScreen(false);
         SceneManager.sceneLoaded -= LoadedMainMenuSceneFirstTime;
     }

@@ -13,7 +13,6 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     private Quaternion orginRotationParticleSystem;
     private Quaternion orginRotationPlayerUI;
     [SerializeField] private SubSettings settings;
-    private SubType subType;
     private SonarPool sp;
 
 
@@ -58,7 +57,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         playerName = photonView.Owner.NickName;
 
         //Get values and set them
-        settings = SubValues.GetValues(subType);
+        settings = SubValues.GetValues(GameManager.SP.GetSelectedSub);
         orginRotationParticleSystem = pb.gameObject.transform.rotation;
         orginRotationPlayerUI = playerCanvas.transform.localRotation;
 
