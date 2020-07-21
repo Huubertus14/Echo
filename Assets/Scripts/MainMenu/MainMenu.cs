@@ -12,10 +12,13 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     [SerializeField] private TextMeshProUGUI playerNameText;
     [SerializeField] private TextMeshProUGUI xpText;
     [SerializeField] private TextMeshProUGUI goldText;
+    [SerializeField] private TextMeshProUGUI winLoseText;
+    [SerializeField] private TextMeshProUGUI winText;
 
     [Header("Settings Refs:")]
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private NameChangePanelBehaviour playerNameInputField;
+    [SerializeField] private SubSelectorController subSelector;
 
     [Header("SubValues Refs:")]
     [SerializeField] private TextMeshProUGUI subNameText;
@@ -29,12 +32,40 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     [Space]
     [SerializeField] private GameObject[] subMeshes;
     [SerializeField]private GameObject meshSpawnPosition;
-    private GameObject selectedSubMesh;
+    private PlaceHolderSubBehaviour[] selectedSubMesh = new PlaceHolderSubBehaviour[3];
+    private bool meshesCreated = false;
+
+    private IEnumerator CreateSubMeshes()
+    {
+        if (!meshesCreated)
+        {
+            for (int i = 0; i < selectedSubMesh.Length; i++)
+            {
+                selectedSubMesh[i] = Instantiate(subMeshes[i], meshSpawnPosition.transform.position, Quaternion.identity).GetComponent<PlaceHolderSubBehaviour>();
+                selectedSubMesh[i].gameObject.transform.Rotate(90, 0, 0);
+                selectedSubMesh[i].gameObject.name = "placeHolder Object " + i;
+                selectedSubMesh[i].gameObject.gameObject.SetActive(false);
+            }
+            meshesCreated = true;
+        }
+        yield return 0;
+        for (int i = 0; i < selectedSubMesh.Length; i++)
+        {
+            selectedSubMesh[i].gameObject.SetActive(true);
+
+            selectedSubMesh[i].ChangeMeshColor(GameUtils.GetColorFromArray(GameManager.SP.playerData.GetColor()));
+            //Debug.Log("Selec: " + GameManager.SP.playerData.subTypeSelected) ;
+            selectedSubMesh[i].gameObject.SetActive(i == GameManager.SP.playerData.subTypeSelected);
+        }
+    }
 
     private void OnEnable()
     {
+        StartCoroutine(CreateSubMeshes());
+
         ToggleSettingsPanel(false);
         ToggleNameInputPanel(false);
+        ToggleSubSelectPanel(false);
 
         SetMenuText();
     }
@@ -68,12 +99,27 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
         playerNameText.text = "Name: " + GameManager.SP.playerData.playerName;
         xpText.text = "XP: " + GameManager.SP.playerData.playerXP;
         goldText.text = "Gold: " + GameManager.SP.playerData.gold;
+        winText.text = "Wins: " +GameManager.SP.playerData.wins;
+
+        float wl = 0;
+        if (GameManager.SP.playerData.loses > 0)
+        {
+            wl = GameManager.SP.playerData.wins / GameManager.SP.playerData.loses;
+        }
+        else
+        {
+            wl = GameManager.SP.playerData.wins;
+        }
+
+        winLoseText.text = "Win/Lose: " + wl;
     }
 
     public void SetSubSettingsText()
     {
         //LANGTODO:
         SubSettings set = SubValues.GetValues(GameManager.SP.GetSelectedSub);
+
+        //int selectedSubIndex = (int)GameManager.SP.GetSelectedSub;
 
         subNameText.text = set.subName;
         subLevelText.text = "Sub Level: ---";
@@ -86,25 +132,16 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
         subDamageText.text = "Attack Damage: ---";
         subPingIntervalText.text = "Ping Speed: " + set.pingInterval.ToString();
 
-        //Create PlaceHolder On place
-        if (selectedSubMesh == null || selectedSubMesh != subMeshes[(int)GameManager.SP.GetSelectedSub])
-        {
-            selectedSubMesh = subMeshes[(int)GameManager.SP.GetSelectedSub];
-            GameObject _tempGO = Instantiate(selectedSubMesh, meshSpawnPosition.transform.position, Quaternion.identity);
-            _tempGO.name = "PlaceHolderObject";
-            _tempGO.transform.Rotate(90,0,0);
-            PlaceHolderSubBehaviour _temp = _tempGO.GetComponent<PlaceHolderSubBehaviour>();
-            
-            
-            //_temp.ChangeMeshColor(GameManager.SP.playerData.GetColor()); //Set ouline color
 
-            //Replace mesh and color etc
-        }
-        else
+
+        /*for (int i = 0; i < selectedSubMesh.Length; i++)
         {
-            selectedSubMesh = subMeshes[(int)GameManager.SP.GetSelectedSub];
-           //ChangeMeshColor(GameManager.SP.playerData.playerColor);
-        }
+            selectedSubMesh[i].gameObject.SetActive(true);
+
+            selectedSubMesh[i].ChangeMeshColor(GameUtils.GetColorFromArray(GameManager.SP.playerData.GetColor()));
+
+            selectedSubMesh[i].gameObject.SetActive(selectedSubIndex == i);
+        }*/
     }
 
     public void ToggleSettingsPanel(bool toggle)
@@ -114,5 +151,23 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     public void ToggleNameInputPanel(bool toggle)
     {
         playerNameInputField.gameObject.SetActive(toggle);
+    }
+
+    public void ToggleSubSelectPanel(bool toggle)
+    {
+        subSelector.gameObject.SetActive(toggle);
+        for (int i = 0; i < selectedSubMesh.Length; i++)
+        {
+            if (toggle)
+            {
+                selectedSubMesh[i].gameObject.SetActive(false);
+            }
+            else
+            {
+                selectedSubMesh[i].ChangeMeshColor(GameUtils.GetColorFromArray(GameManager.SP.playerData.GetColor()));
+                selectedSubMesh[i].gameObject.SetActive((int)GameManager.SP.GetSelectedSub == i);
+            }
+            
+        }
     }
 }

@@ -87,10 +87,7 @@ public class SaveData : MonoBehaviour
     {
         // Debug.Log("File does not exist, creating a new one");
         PlayerData save = new PlayerData();
-        save.playerName = "new player";
-        save.gold = 0;
-        save.playerXP = 0;
-        // Save(save); //Save first boot values
+        save.ResetData();
         return save; //First boot ever
     }
 
@@ -267,7 +264,7 @@ public class PlayerData
         totalDeaths = 0;
         timePlayed = 0;
         subTypeSelected = 1;
-        //playerColor = Color.blue;
+        SetPlayerColor(0,0,1.0f);
     }
 
     public override string ToString()
