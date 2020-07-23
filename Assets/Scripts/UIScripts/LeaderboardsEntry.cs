@@ -12,13 +12,13 @@ public class LeaderboardsEntry : MonoBehaviour
     
     public void SetInGameText(PlayerBehaviour pb)
     {
-        if (pb.photonView.IsMine)
+        if (pb == GameManager.SP.GetPlayerB)
         {
             entryText.fontStyle = FontStyles.Bold;
         }
         playerOwner = pb;
         hasOwner = true;
-        entryText.text = pb.PlayerName + ": " + pb.GetMatchKills + " MC: " +PhotonNetwork.IsMasterClient;
+        entryText.text = pb.PlayerName + ": " + pb.GetMatchKills+ " "+ (PhotonNetwork.IsMasterClient ? "MC" : "");
     }
 
     public void SetEndScoreText(PlayerBehaviour pb)

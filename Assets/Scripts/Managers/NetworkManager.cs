@@ -60,7 +60,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
         {
             IsVisible = true,
             IsOpen = true,
-            MaxPlayers = 2
+            MaxPlayers = 8
         };
 
         PhotonNetwork.CreateRoom(_randomRoomName, roomOptions);

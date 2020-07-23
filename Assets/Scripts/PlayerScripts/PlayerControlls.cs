@@ -27,7 +27,6 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
 
     private void Update()
     {
-        gasToggle = Input.GetKey(KeyCode.Z);
 
         if (hasPlayerBehaviour)
         {

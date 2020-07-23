@@ -43,5 +43,6 @@ MonoBehaviour:
   - RPC_StartGameOnAllClients
   - RPC_DestroyPool
   - RPC_EndGameOnAllClients
+  - RPC_PlayerDied
   DisableAutoOpenWizard: 1
   ShowSettings: 0

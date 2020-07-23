@@ -14,10 +14,12 @@ public class GameManager : SingetonMonobehaviour<GameManager>
 
     GameObject wholeScene;
     private GameModeAbstract gameMode;
+    private PlayerBehaviour ownPlayerBehaviour;
+
 
     private SubType subType;
 
-   protected override void Awake()
+    protected override void Awake()
     {
         base.Awake();
         DontDestroyOnLoad(this);
@@ -49,8 +51,8 @@ public class GameManager : SingetonMonobehaviour<GameManager>
         //Destroy(wholeScene);
 
         yield return 0;
-      
 
+        GetPlayerB = null;
         PhotonNetwork.LeaveRoom();
         yield return 0;
         SceneManager.sceneLoaded += MainMenuLoaded;
@@ -60,7 +62,7 @@ public class GameManager : SingetonMonobehaviour<GameManager>
 
     private void MainMenuLoaded(Scene arg0, LoadSceneMode arg1)
     {
-        Debug.Log("Scene loaded: " +arg0.ToString());
+        Debug.Log("Scene loaded: " + arg0.ToString());
         SharedCanvasBehaviour.SP.SetLoadingScreen(false);
         //Reconnect using photon
 
@@ -88,7 +90,7 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     public void LoadGame(PlayerData data)
     {
         playerData = data;
-       //
+        //
     }
 
     public GameModeAbstract GetGameMode()
@@ -109,6 +111,18 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     #region Props
 
     public SubType GetSelectedSub => subType;
+
+    public PlayerBehaviour GetPlayerB
+    {
+        get
+        {
+            return ownPlayerBehaviour;
+        }
+        set
+        {
+            ownPlayerBehaviour = value;
+        }
+    }
 
     #endregion
 

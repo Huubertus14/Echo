@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.UI;
 
-public class PlayerHealth : MonoBehaviour, IPunObservable
+public class PlayerHealth : MonoBehaviourPun, IPunObservable
 {
     private PlayerBehaviour pb;
     private Slider sl;
@@ -13,6 +13,8 @@ public class PlayerHealth : MonoBehaviour, IPunObservable
     private float sliderValue;
     private float goalSliderValue;
     private List<PlayerBehaviour> playersDoneDamage;
+
+    private PlayerBehaviour lastPlayerTakenDamageFrom;
 
     [SerializeField] private float health;
     [Space]
@@ -44,16 +46,18 @@ public class PlayerHealth : MonoBehaviour, IPunObservable
 
     public void PlayerHit(PlayerBehaviour _damageDealer, float _damage)
     {
-        if (!playersDoneDamage.Contains(_damageDealer) && _damageDealer != pb)
-        {
-            playersDoneDamage.Add(_damageDealer);
-        }
-
         if (health <= 0)
         {
             //Player allready dead
             return;
         }
+
+        if (!playersDoneDamage.Contains(_damageDealer) && _damageDealer != pb)
+        {
+            playersDoneDamage.Add(_damageDealer);
+        }
+
+        lastPlayerTakenDamageFrom = _damageDealer;
 
         health -= _damage;
         goalSliderValue = health;
@@ -65,24 +69,31 @@ public class PlayerHealth : MonoBehaviour, IPunObservable
 
         if (health <= 0)
         {
+
+            healthBarFade.StopFade();
+            Debug.Log(_damageDealer.PlayerName + " Killed " + pb.PlayerName);
             if (pb.photonView.IsMine)
             {
+                photonView.RPC(nameof(RPC_PlayerDied), RpcTarget.AllBuffered);
                 pb.PlayerDie();
             }
-            //Player dies
-            foreach (PlayerBehaviour play in playersDoneDamage)
-            {
-                if (play != _damageDealer)
-                {
-                    //Give the damagedealer a kill
-                    play.AssistOnPlayer(pb);
-                }
-            }
-            healthBarFade.StopFade();
-            _damageDealer.KilledPlayer(pb);
-            
 
+            playersDoneDamage.Clear();
         }
+    }
+
+    [PunRPC]
+    private void RPC_PlayerDied()
+    {
+        foreach (PlayerBehaviour play in playersDoneDamage)
+        {
+            if (play != lastPlayerTakenDamageFrom)
+            {
+                play.AssistOnPlayer(pb);
+            }
+        }
+
+        lastPlayerTakenDamageFrom.KilledPlayer(pb);
     }
 
     private void FixedUpdate()

@@ -71,6 +71,8 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
             ChangeLocalMaterial();
 
             outlineSize = 0.15f; //size of the outline shader
+
+            GameManager.SP.GetPlayerB = this;
         }
         else
         {
@@ -293,7 +295,11 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         if (photonView != victim.photonView && photonView.IsMine)
         {
 
-            Debug.Log(PlayerName + " killed " + victim.PlayerName);
+            if (matchKills == GameManager.SP.GetGameMode().GetKillLimit - 1)
+            {
+                //Player is on last kill
+            }
+
             matchKills += 1;
             PlayerScoreBoardController.SP.SetKillText(matchKills);
 
