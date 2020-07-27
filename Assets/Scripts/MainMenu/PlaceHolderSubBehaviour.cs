@@ -5,9 +5,12 @@ using UnityEngine;
 
 public class PlaceHolderSubBehaviour : MonoBehaviour
 {
-    Renderer[] ren;
+    private Renderer[] ren;
     [SerializeField] private Material subMat;
-    int outlineColorID;
+    private int outlineColorID;
+
+    [SerializeField] private GameObject[] shootPoints;
+
     private void Awake()
     {
         ren = GetComponentsInChildren<Renderer>();

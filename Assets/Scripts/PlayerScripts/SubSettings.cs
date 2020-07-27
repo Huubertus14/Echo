@@ -9,21 +9,24 @@ using UnityEngine;
 [Serializable]
 public class SubSettings
 {
-    public SubSettings(string subName, int _hp, float _pingInterval, float _move, float shootInt, float _resistence, float basePingSpeed, float basePingLifeTime, float maxVelocity)
+    public SubSettings(string subName, int _hp, float _pingInterval, float _move, float _shootInt, float _resistence, float _basePingSpeed, float _basePingLifeTime, float _maxVelocity, Submarine _marine)
     {
         health = _hp;
         pingInterval = _pingInterval;
         movementSpeed = _move;
-        shootInterval = shootInt;
+        shootInterval = _shootInt;
         resistence = _resistence;
 
-        this.basePingBeginSpeed = basePingSpeed;
-        this.basePingLifeTime = basePingLifeTime;
-        this.maxVelocity = maxVelocity;
+        this.basePingBeginSpeed = _basePingSpeed;
+        this.basePingLifeTime = _basePingLifeTime;
+        this.maxVelocity = _maxVelocity;
         this.subName = subName;
+        subMarine = _marine;
     }
 
     public string subName;
+
+    public Submarine subMarine;
 
     public float health;
     public float pingInterval;
@@ -35,4 +38,11 @@ public class SubSettings
     public float basePingBeginSpeed;
     public float basePingLifeTime;
     
+}
+
+public enum Submarine
+{
+    basicSub,
+    HeavySub,
+    LightSub
 }

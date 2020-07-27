@@ -22,6 +22,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     [Header("Editor cached")]
     [SerializeField] private GameObject SubObject;
     [SerializeField] private GameObject playerCanvas;
+    [SerializeField] private PlaceHolderSubBehaviour placeHolderPrefabs;
 
     [Header("Game values")]
     [SerializeField] private string playerName = "Submarine Commander";
@@ -68,11 +69,11 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         if (photonView.IsMine)
         {
             playerColor = Color.blue; //For now self is blue, enemy are red
-            ChangeLocalMaterial();
 
             outlineSize = 0.15f; //size of the outline shader
 
             GameManager.SP.GetPlayerB = this;
+            photonView.RPC(nameof(RPC_CreateSubMesh), RpcTarget.AllBufferedViaServer, 0);
         }
         else
         {
@@ -128,13 +129,10 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         PlayerScoreBoardController.SP.SetKillText(matchKills);
     }
 
-    /// <summary>
-    /// Change local player mat. 
-    /// so the player can see itself all the time
-    /// </summary>
-    private void ChangeLocalMaterial()
+ 
+    private void RPC_CreateSubMesh(int selectedSub)
     {
-
+        GameObject temp = null;
     }
 
     [PunRPC]
