@@ -49,6 +49,8 @@ public class PlayerScoreBoardController : SingetonMonobehaviour<PlayerScoreBoard
     public void CreateEndScore()
     {
         StartCoroutine(EndScoreCoroutine());
+
+        //TODO Calculate of player has won
     }
 
     private IEnumerator EndScoreCoroutine()//Do this for a fancy animation later
