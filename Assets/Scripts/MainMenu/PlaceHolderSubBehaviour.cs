@@ -28,4 +28,19 @@ public class PlaceHolderSubBehaviour : MonoBehaviour
             item.material.SetColor(outlineColorID, _colorToSet);
         }
     }
+
+    public GameObject[] GetAllShootPoints()
+    {
+        return shootPoints; 
+    }
+
+    public GameObject GetShootPointAt(int _index)
+    {
+        if (_index >= shootPoints.Length)
+        {
+            _index = shootPoints.Length - 1;
+            Debug.LogWarning("No index exist");
+        }
+        return shootPoints[_index];
+    }
 }

@@ -392,6 +392,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   subMat: {fileID: 2100000, guid: ec02d0a41954fae48bb49f8dcc55244b, type: 2}
+  shootPoints:
+  - {fileID: 558119249025354020}
+  - {fileID: 7638610759165704729}
 --- !u!1 &7638610759165704729
 GameObject:
   m_ObjectHideFlags: 0

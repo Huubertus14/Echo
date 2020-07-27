@@ -1,7 +1,5 @@
 ﻿using Photon.Pun;
-using Photon.Realtime;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
@@ -20,9 +18,9 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     private Renderer[] gameMeshes;
 
     [Header("Editor cached")]
-    [SerializeField] private GameObject SubObject;
+    [SerializeField] private GameObject subObject;
     [SerializeField] private GameObject playerCanvas;
-    [SerializeField] private PlaceHolderSubBehaviour placeHolderPrefabs;
+    [SerializeField] private PlaceHolderSubBehaviour[] placeHolderPrefabs;
 
     [Header("Game values")]
     [SerializeField] private string playerName = "Submarine Commander";
@@ -50,7 +48,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         pc = GetComponent<PlayerCannon>();
         ph = GetComponent<PlayerHealth>();
 
-        gameMeshes = SubObject.gameObject.GetComponentsInChildren<Renderer>();
+        gameMeshes = subObject.gameObject.GetComponentsInChildren<Renderer>();
     }
 
     private void Start()
@@ -73,7 +71,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
             outlineSize = 0.15f; //size of the outline shader
 
             GameManager.SP.GetPlayerB = this;
-            photonView.RPC(nameof(RPC_CreateSubMesh), RpcTarget.AllBufferedViaServer, 0);
+            photonView.RPC(nameof(RPC_CreateSubMesh), RpcTarget.AllBufferedViaServer, (int)settings.subMarine);
         }
         else
         {
@@ -110,7 +108,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         ph.SetInitValues(settings.health);
         isAlive = false;
 
-        SubObject.SetActive(false);
+        subObject.SetActive(false);
         StartCoroutine(Respawn());
         isInitialized = true;
     }
@@ -130,9 +128,14 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     }
 
  
+    [PunRPC]
     private void RPC_CreateSubMesh(int selectedSub)
     {
+        Submarine typ = (Submarine)selectedSub;
         GameObject temp = null;
+        temp = Instantiate(placeHolderPrefabs[selectedSub].gameObject, Vector3.zero, Quaternion.identity, subObject.transform);
+
+        temp.transform.localPosition = Vector3.zero;
     }
 
     [PunRPC]
@@ -234,7 +237,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     private void RPC_PlayerDie()
     {
         isAlive = false;
-        SubObject.SetActive(false);
+        subObject.SetActive(false);
         if (photonView.IsMine)
         {
             matchDeaths += 1;
@@ -248,7 +251,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     public void RPC_Spawn()
     {
         // Debug.Log("Spawning PLayer");
-        SubObject.SetActive(true);
+        subObject.SetActive(true);
         isAlive = true;
         PlayerScoreBoardController.SP.UpdateScoreBoard();
     }
@@ -346,7 +349,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
     public Color GetPlayerColor => playerColor;
 
-    public GameObject SubMesh => SubObject;
+    public GameObject SubMesh => subObject;
 
     public bool IsAlive => isAlive;
 

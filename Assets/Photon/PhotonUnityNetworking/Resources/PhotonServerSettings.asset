@@ -44,5 +44,6 @@ MonoBehaviour:
   - RPC_DestroyPool
   - RPC_EndGameOnAllClients
   - RPC_PlayerDied
+  - RPC_CreateSubMesh
   DisableAutoOpenWizard: 1
   ShowSettings: 0

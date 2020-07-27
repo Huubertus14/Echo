@@ -91,7 +91,7 @@ Transform:
   m_GameObject: {fileID: 5813026669425132239}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.487, y: -0.000000001536, z: 0.0000000016051}
-  m_LocalScale: {x: 0.19108002, y: 2.5599365, z: 0.5605892}
+  m_LocalScale: {x: 0.47078294, y: 2.5599365, z: 0.5605892}
   m_Children: []
   m_Father: {fileID: 1515226175081581995}
   m_RootOrder: 0
@@ -201,6 +201,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   subMat: {fileID: 2100000, guid: ec02d0a41954fae48bb49f8dcc55244b, type: 2}
+  shootPoints:
+  - {fileID: 558119249025354020}
 --- !u!1 &6600396735344850212
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,8 +230,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6600396735344850212}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.0000000016863, z: 0.0000000036011}
-  m_LocalScale: {x: 1, y: 1, z: 0.66867}
+  m_LocalPosition: {x: 0, y: 0.0000000016863, z: 0.000000014777}
+  m_LocalScale: {x: 1, y: 1, z: 1.3186172}
   m_Children: []
   m_Father: {fileID: 1515226175081581995}
   m_RootOrder: 1
