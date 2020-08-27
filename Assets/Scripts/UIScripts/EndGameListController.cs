@@ -17,7 +17,7 @@ public class EndGameListController : MonoBehaviour
         {
             CreateEntry(tempPlayers[i]);
         }
-
+         //LANGTODO:
         if (tempPlayers[0].photonView.IsMine)
         {
             //Player won

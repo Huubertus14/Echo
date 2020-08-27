@@ -409,6 +409,7 @@ GameObject:
   - component: {fileID: 3305109470180510589}
   - component: {fileID: -3173180884675803263}
   - component: {fileID: -3422946729117868282}
+  - component: {fileID: 6084279620994273571}
   m_Layer: 0
   m_Name: Persistence
   m_TagString: Untagged
@@ -447,7 +448,7 @@ MonoBehaviour:
     type: 3}
   playerData:
     playerName: 
-    xp: 0
+    playerXP: 0
     gold: 0
     wins: 0
     loses: 0
@@ -455,6 +456,8 @@ MonoBehaviour:
     totalKills: 0
     totalDeaths: 0
     timePlayed: 0
+    subTypeSelected: 0
+    baseSubXP: 0
 --- !u!114 &3305109470180510589
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -492,3 +495,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 100bc0140561ea5449cd67b85713c41c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6084279620994273571
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6135114416263317202}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c4b553967edc944e9aa173038e42abf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  subBases: []
+  subCannons: []
+  subRears: []
