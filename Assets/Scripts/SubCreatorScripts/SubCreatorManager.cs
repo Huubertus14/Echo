@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public enum SubBaseType
@@ -33,6 +34,15 @@ public enum SubSpecialType
 
 public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
 {
+    [Header("ManagedRefs")]
+    [SerializeField] private GameObject currentSub;
+    private SubBaseBehaviour currentSubBehaviour;
+
+    private SubBaseType baseType = SubBaseType.None;
+    private SubEngineType engineType = SubEngineType.None;
+    private SubCannonType cannonType = SubCannonType.None;
+    private SubSpecialType specialType = SubSpecialType.None;
+
     [Header("Base prefabs")]
     [SerializeField] private GameObject heavyBase;
     [SerializeField] private GameObject lightBase;
@@ -48,17 +58,22 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
     [SerializeField] private GameObject torpedoCannon;
     [SerializeField] private GameObject minigunCannon;
     [SerializeField] private GameObject ramCannon;
-/*
-    [Header("Special Prefabs:")]
-    public GameObject temp;*/
+    /*
+        [Header("Special Prefabs:")]
+        public GameObject temp;*/
 
     private void Start()
     {
-        CreateSub(SubBaseType.Light, SubEngineType.Medium, SubCannonType.Minigun, SubSpecialType.None);
+        currentSub = CreateSub(SubBaseType.Light, SubEngineType.Medium, SubCannonType.Minigun, SubSpecialType.None);
     }
 
     public GameObject CreateSub(SubBaseType _base, SubEngineType _engine, SubCannonType _cannon, SubSpecialType _special)
     {
+        baseType = _base;
+        engineType = _engine;
+        cannonType = _cannon;
+        specialType = _special;
+
         GameObject _tempBase = null;
         GameObject _tempEngine = null;
         GameObject _tempCannon = null;
@@ -81,21 +96,21 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
                 break;
         }
 
-        SubBaseBehaviour subBehaviour = _tempBase.GetComponent<SubBaseBehaviour>();
-        Debug.Log(subBehaviour);
+
+        currentSubBehaviour = _tempBase.GetComponent<SubBaseBehaviour>();
 
         switch (_engine)
         {
             case SubEngineType.None:
                 break;
             case SubEngineType.Light:
-                _tempEngine = Instantiate(lightEngine, subBehaviour.GetEnginePlace.transform.position, Quaternion.identity, _tempBase.transform);
+                _tempEngine = Instantiate(lightEngine, currentSubBehaviour.GetEnginePlace.transform.position, Quaternion.identity, _tempBase.transform);
                 break;
             case SubEngineType.Medium:
-                _tempEngine = Instantiate(mediumEngine, subBehaviour.GetEnginePlace.transform.position, Quaternion.identity, _tempBase.transform);
+                _tempEngine = Instantiate(mediumEngine, currentSubBehaviour.GetEnginePlace.transform.position, Quaternion.identity, _tempBase.transform);
                 break;
             case SubEngineType.Heavy:
-                _tempEngine = Instantiate(heavyEngine, subBehaviour.GetEnginePlace.transform.position, Quaternion.identity, _tempBase.transform);
+                _tempEngine = Instantiate(heavyEngine, currentSubBehaviour.GetEnginePlace.transform.position, Quaternion.identity, _tempBase.transform);
                 break;
             default:
                 break;
@@ -106,20 +121,89 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
             case SubCannonType.None:
                 break;
             case SubCannonType.Torpedo:
-                _tempCannon = Instantiate(torpedoCannon, subBehaviour.GetCannonPlace.transform.position, Quaternion.identity, _tempBase.transform);
+                _tempCannon = Instantiate(torpedoCannon, currentSubBehaviour.GetCannonPlace.transform.position, Quaternion.identity, _tempBase.transform);
                 break;
             case SubCannonType.Minigun:
-                _tempCannon = Instantiate(minigunCannon, subBehaviour.GetCannonPlace.transform.position, Quaternion.identity, _tempBase.transform);
+                _tempCannon = Instantiate(minigunCannon, currentSubBehaviour.GetCannonPlace.transform.position, Quaternion.identity, _tempBase.transform);
                 break;
             case SubCannonType.Ram:
-                _tempCannon = Instantiate(ramCannon, subBehaviour.GetCannonPlace.transform.position, Quaternion.identity, _tempBase.transform);
+                _tempCannon = Instantiate(ramCannon, currentSubBehaviour.GetCannonPlace.transform.position, Quaternion.identity, _tempBase.transform);
                 break;
             default:
                 break;
         }
-        subBehaviour.CannonObject = _tempCannon;
-        subBehaviour.EngineObject = _tempEngine;
+        currentSubBehaviour.CannonObject = _tempCannon;
+        currentSubBehaviour.EngineObject = _tempEngine;
 
-        return subBehaviour.gameObject;
+        _tempBase.transform.position = new Vector3(-4.55f,0.25f,-0.4f);
+
+        return currentSubBehaviour.gameObject;
+    }
+
+    public void ChangeComponent(SubBaseType _baseType)
+    {
+        //Destroy Sub
+        Destroy(currentSub.gameObject);
+
+        //Create new sub
+        currentSub = CreateSub(_baseType, engineType, cannonType, specialType);
+    }
+
+    public void ChangeComponent(SubEngineType _engineType)
+    {
+        GameObject _tempEngine = null;
+        Destroy(currentSubBehaviour.EngineObject.gameObject);
+        switch (_engineType)
+        {
+            case SubEngineType.None:
+                break;
+            case SubEngineType.Light:
+                _tempEngine = Instantiate(lightEngine, currentSubBehaviour.GetEnginePlace.transform.position, Quaternion.identity, currentSub.transform);
+                break;
+            case SubEngineType.Medium:
+                _tempEngine = Instantiate(mediumEngine, currentSubBehaviour.GetEnginePlace.transform.position, Quaternion.identity, currentSub.transform);
+                break;
+            case SubEngineType.Heavy:
+                _tempEngine = Instantiate(heavyEngine, currentSubBehaviour.GetEnginePlace.transform.position, Quaternion.identity, currentSub.transform);
+                break;
+            default:
+                break;
+        }
+        currentSubBehaviour.EngineObject = _tempEngine;
+
+    }
+
+    public void ChangeComponent(SubCannonType _cannonType)
+    {
+        GameObject _tempCannon = null;
+        Destroy(currentSubBehaviour.CannonObject.gameObject);
+        switch (_cannonType)
+        {
+            case SubCannonType.None:
+                break;
+            case SubCannonType.Torpedo:
+                _tempCannon = Instantiate(torpedoCannon, currentSubBehaviour.GetCannonPlace.transform.position, Quaternion.identity, currentSub.transform);
+                break;
+            case SubCannonType.Minigun:
+                _tempCannon = Instantiate(minigunCannon, currentSubBehaviour.GetCannonPlace.transform.position, Quaternion.identity, currentSub.transform);
+                break;
+            case SubCannonType.Ram:
+                _tempCannon = Instantiate(ramCannon, currentSubBehaviour.GetCannonPlace.transform.position, Quaternion.identity, currentSub.transform);
+                break;
+            default:
+                break;
+        }
+
+        currentSubBehaviour.CannonObject = _tempCannon;
+    }
+
+    public void ChangeComponent(SubSpecialType _specialType)
+    {
+
+    }
+
+    public void SetSubMesh(bool _value)
+    {
+        currentSub.gameObject.SetActive(_value);
     }
 }

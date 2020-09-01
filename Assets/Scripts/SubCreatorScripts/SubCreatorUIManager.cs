@@ -11,7 +11,7 @@ public class SubCreatorUIManager : MonoBehaviour
 
     [Header("prefabs:")]
     [SerializeField] private SubObjectData objectPrefab; //empty prefab
-  
+
 
 
     [Header("Selectable Objects:")]
@@ -36,9 +36,9 @@ public class SubCreatorUIManager : MonoBehaviour
     private SubObjectData[] GetSubBases()
     {
         SubObjectData[] temp = new SubObjectData[] {
-            CreateSubObject("Normal base", "The basic submarine base, can be used in many different situations", "1", null, SubBaseType.Medium, SubEngineType.None, SubCannonType.None, SubSpecialType.None),
-            CreateSubObject("Light base", "Light submarine base, fast in movement but lacks defences", "1", null, SubBaseType.Light, SubEngineType.None, SubCannonType.None, SubSpecialType.None),
-            CreateSubObject("Heavy base", "Heavy can to battle in, very strong at taking damage, but does not move fast at al", "1", null, SubBaseType.Heavy, SubEngineType.None, SubCannonType.None, SubSpecialType.None)
+            CreateSubObject("Normal base", "The basic submarine base, can be used in many different situations", "1", null, SubBaseType.Medium),
+            CreateSubObject("Light base", "Light submarine base, fast in movement but lacks defences", "1", null, SubBaseType.Light),
+            CreateSubObject("Heavy base", "Heavy can to battle in, very strong at taking damage, but does not move fast at al", "1", null, SubBaseType.Heavy)
         };
         return temp;
     }
@@ -46,9 +46,9 @@ public class SubCreatorUIManager : MonoBehaviour
     private SubObjectData[] GetSubEngines()
     {
         SubObjectData[] temp = new SubObjectData[] {
-            CreateSubObject("Heavy Engine", "", "1", null, SubBaseType.None, SubEngineType.Heavy, SubCannonType.None, SubSpecialType.None),
-            CreateSubObject("Normal Engine", "", "1", null, SubBaseType.None, SubEngineType.Medium, SubCannonType.None, SubSpecialType.None),
-            CreateSubObject("Light Engine", "", "1", null, SubBaseType.None, SubEngineType.Light, SubCannonType.None, SubSpecialType.None)
+            CreateSubObject("Heavy Engine", "", "1", null, SubEngineType.Heavy ),
+            CreateSubObject("Normal Engine", "", "1", null,  SubEngineType.Medium),
+            CreateSubObject("Light Engine", "", "1", null, SubEngineType.Light)
         };
         return temp;
     }
@@ -56,9 +56,9 @@ public class SubCreatorUIManager : MonoBehaviour
     private SubObjectData[] GetSubCannons()
     {
         SubObjectData[] temp = new SubObjectData[] {
-            CreateSubObject("Torpedo cannons", "", "1", null, SubBaseType.None, SubEngineType.None, SubCannonType.Torpedo, SubSpecialType.None),
-            CreateSubObject("Minigun", "", "1", null, SubBaseType.None, SubEngineType.None, SubCannonType.Minigun, SubSpecialType.None),
-            CreateSubObject("Charge Ram", "", "1", null, SubBaseType.None, SubEngineType.None, SubCannonType.Ram, SubSpecialType.None)
+            CreateSubObject("Torpedo cannons", "", "1", null,SubCannonType.Torpedo),
+            CreateSubObject("Minigun", "", "1", null, SubCannonType.Minigun),
+            CreateSubObject("Charge Ram", "", "1", null, SubCannonType.Ram)
         };
         return temp;
     }
@@ -66,8 +66,8 @@ public class SubCreatorUIManager : MonoBehaviour
     private SubObjectData[] GetSubSpecial()
     {
         SubObjectData[] temp = new SubObjectData[] {
-            CreateSubObject("todo1", "temp1", "1", null, SubBaseType.None, SubEngineType.None, SubCannonType.None, SubSpecialType.None),
-            CreateSubObject("todo2", "temp2", "1", null, SubBaseType.None, SubEngineType.None, SubCannonType.None, SubSpecialType.None)
+            CreateSubObject("todo1", "temp1", "1", null, SubSpecialType.None),
+            CreateSubObject("todo2", "temp2", "1", null, SubSpecialType.None)
         };
         return temp;
     }
@@ -92,17 +92,44 @@ public class SubCreatorUIManager : MonoBehaviour
         }
     }
 
-    private SubObjectData CreateSubObject(string title, string desc, string level, Sprite img, SubBaseType _base, SubEngineType _eninge, SubCannonType _cannon, SubSpecialType _special)
+    private SubObjectData CreateSubObject(string title, string desc, string level, Sprite img, SubBaseType _type)
     {
         GameObject temp = Instantiate(objectPrefab.gameObject, subObjectParent.transform.position, Quaternion.identity, subObjectParent.transform);//create ui object
         SubObjectData _data = temp.GetComponent<SubObjectData>();
-        _data.CreateObject(this,title, desc, level, img, _base, _eninge, _cannon, _special);
+        _data.CreateObject(this, title, desc, level, img, _type);
+        return _data;
+    }
+    private SubObjectData CreateSubObject(string title, string desc, string level, Sprite img, SubEngineType _type)
+    {
+        GameObject temp = Instantiate(objectPrefab.gameObject, subObjectParent.transform.position, Quaternion.identity, subObjectParent.transform);//create ui object
+        SubObjectData _data = temp.GetComponent<SubObjectData>();
+        _data.CreateObject(this, title, desc, level, img, _type);
+        return _data;
+    }
+    private SubObjectData CreateSubObject(string title, string desc, string level, Sprite img, SubCannonType _type)
+    {
+        GameObject temp = Instantiate(objectPrefab.gameObject, subObjectParent.transform.position, Quaternion.identity, subObjectParent.transform);//create ui object
+        SubObjectData _data = temp.GetComponent<SubObjectData>();
+        _data.CreateObject(this, title, desc, level, img, _type);
+        return _data;
+    }
+    private SubObjectData CreateSubObject(string title, string desc, string level, Sprite img, SubSpecialType _type)
+    {
+        GameObject temp = Instantiate(objectPrefab.gameObject, subObjectParent.transform.position, Quaternion.identity, subObjectParent.transform);//create ui object
+        SubObjectData _data = temp.GetComponent<SubObjectData>();
+        _data.CreateObject(this, title, desc, level, img, _type);
         return _data;
     }
 
     private void OnEnable()
     {
         SetselectedHeader(0);
+        SubCreatorManager.SP.SetSubMesh(true);
+    }
+
+    private void OnDisable()
+    {
+        SubCreatorManager.SP.SetSubMesh(false);
     }
 
     public void SetselectedHeader(int _index)
@@ -154,7 +181,7 @@ public class SubCreatorUIManager : MonoBehaviour
         selectedArray[currentSelected].gameObject.SetActive(true);
     }
 
-  
+
 }
 
 
