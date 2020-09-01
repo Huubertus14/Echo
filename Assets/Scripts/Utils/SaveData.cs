@@ -218,6 +218,8 @@ public class PlayerData
 
     //Sub values
     public int subTypeSelected;
+
+
     public int baseSubXP;
 
     private float playerR;

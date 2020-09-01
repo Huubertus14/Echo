@@ -18,7 +18,7 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     [Header("Settings Refs:")]
     [SerializeField] private GameObject settingsPanel;
     [SerializeField] private NameChangePanelBehaviour playerNameInputField;
-    [SerializeField] private SubSelectorController subSelector;
+    [SerializeField] private SubCreatorUIManager subSelector;
 
     [Header("SubValues Refs:")]
     [SerializeField] private TextMeshProUGUI subNameText;

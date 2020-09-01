@@ -42,6 +42,7 @@ GameObject:
   - component: {fileID: 5698250081670019214}
   - component: {fileID: 7792437774710185720}
   - component: {fileID: 6527068361039155587}
+  - component: {fileID: 4251665258873681010}
   m_Layer: 0
   m_Name: MediumBase
   m_TagString: Untagged
@@ -126,6 +127,20 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0.0000000037252903, y: 5.148414e-10, z: 7.3631795e-11}
+--- !u!114 &4251665258873681010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2863683994418650603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52719f6f40cb7f34fa9c297ab4d808b5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  enginePlace: {fileID: 8841965846114652974}
+  cannonPlace: {fileID: 2787068844889394044}
 --- !u!1 &8841965846114652974
 GameObject:
   m_ObjectHideFlags: 0

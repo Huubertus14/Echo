@@ -404,7 +404,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 2962692962714701083, guid: 101661bbc4f2e4d41ba6ba230f84bf29, type: 3}
   maxBulletCount: 30
-  ShootPoint: {fileID: 0}
 --- !u!114 &7096805309229015346
 MonoBehaviour:
   m_ObjectHideFlags: 0
