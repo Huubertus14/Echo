@@ -1,5 +1,67 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &534300008
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 534300009}
+  - component: {fileID: 534300010}
+  m_Layer: 0
+  m_Name: SubMeshCreator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &534300009
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534300008}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.0752237, y: 6.261914, z: -94.98505}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6135114416263317213}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &534300010
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 534300008}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f33807d24f23884eac2406c423b34fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentSub: {fileID: 0}
+  heavyBase: {fileID: 7127605604714632525, guid: 24b2608282fa5d745914b18de1c396ed,
+    type: 3}
+  lightBase: {fileID: 3759747116613218751, guid: 8bd00c09cd0b806438a45ac2b429c56e,
+    type: 3}
+  mediumBase: {fileID: 2863683994418650603, guid: 404b83ad76c05b94a85a01749630cd6d,
+    type: 3}
+  heavyEngine: {fileID: 7105492761067181202, guid: c5066eb83182beb48abcf1cc36e74425,
+    type: 3}
+  mediumEngine: {fileID: 7105492761067181202, guid: c877c6615e6de454084c76403e648ec3,
+    type: 3}
+  lightEngine: {fileID: 7105492761067181202, guid: e4108329a1c23d44f833465d3589f09d,
+    type: 3}
+  torpedoCannon: {fileID: 7273892132912723516, guid: 9373731589cc7a04f9e05a68e102c0ae,
+    type: 3}
+  minigunCannon: {fileID: 4953702090573215685, guid: f1cd56ae1912147419aac07efb1558bd,
+    type: 3}
+  ramCannon: {fileID: 2172041019400988189, guid: 81f724da75cd8fe468e0bebc8a40b6ae,
+    type: 3}
 --- !u!1 &387202894338574554
 GameObject:
   m_ObjectHideFlags: 0
@@ -429,6 +491,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7868785159538788054}
+  - {fileID: 534300009}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -456,7 +519,10 @@ MonoBehaviour:
     totalKills: 0
     totalDeaths: 0
     timePlayed: 0
-    subTypeSelected: 0
+    subBaseSelected: 0
+    subEngineSelected: 0
+    subCannonSelected: 0
+    subSpecialSelected: 0
     baseSubXP: 0
 --- !u!114 &3305109470180510589
 MonoBehaviour:
@@ -507,6 +573,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1c4b553967edc944e9aa173038e42abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  subBases: []
-  subCannons: []
-  subRears: []

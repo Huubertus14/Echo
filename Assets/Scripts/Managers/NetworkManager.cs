@@ -131,7 +131,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
 
     public override void OnJoinedLobby()
     {
-
         MatchManager.SP.CreateNewPlayer(GameManager.SP.basePlayer);
         if (PhotonNetwork.InLobby)
         {

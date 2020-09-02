@@ -69,19 +69,6 @@ public class GameManager : SingetonMonobehaviour<GameManager>
         SceneManager.sceneLoaded -= MainMenuLoaded;
     }
 
-    public void SetSubType(int subIndex)
-    {
-        if (subIndex >= Enum.GetNames(typeof(SubType)).Length)
-        {
-            Debug.LogError("Tries to set value to an incorrect sub. Changing it to 1");
-            subIndex = 1;
-        }
-
-        subType = (SubType)subIndex;
-        //Debug.Log("Sub Set: " + subType);
-        MainMenu.SP.SetSubSettingsText();
-    }
-
     public void PlayGame()
     {
         StartCoroutine(NetworkManager.SP.JoinGame());
@@ -90,7 +77,6 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     public void LoadGame(PlayerData data)
     {
         playerData = data;
-        //
     }
 
     public GameModeAbstract GetGameMode()

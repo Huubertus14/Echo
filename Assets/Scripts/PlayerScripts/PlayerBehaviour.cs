@@ -71,7 +71,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
             outlineSize = 0.15f; //size of the outline shader
 
             GameManager.SP.GetPlayerB = this;
-            photonView.RPC(nameof(RPC_CreateSubMesh), RpcTarget.AllBufferedViaServer, (int)settings.subMarine);
+            photonView.RPC(nameof(RPC_CreateSubMesh), RpcTarget.AllBufferedViaServer);
         }
         else
         {
@@ -129,12 +129,10 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
  
     [PunRPC]
-    private void RPC_CreateSubMesh(int selectedSub)
+    private void RPC_CreateSubMesh()
     {
-        Submarine typ = (Submarine)selectedSub;
         GameObject temp = null;
-        temp = Instantiate(placeHolderPrefabs[selectedSub].gameObject, Vector3.zero, Quaternion.identity, subObject.transform);
-
+        temp = Instantiate(SubCreatorManager.SP.GetCurrentSub, Vector3.zero, Quaternion.identity, subObject.transform);
         temp.transform.localPosition = Vector3.zero;
     }
 

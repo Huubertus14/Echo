@@ -124,12 +124,12 @@ public class SubCreatorUIManager : MonoBehaviour
     private void OnEnable()
     {
         SetselectedHeader(0);
-        SubCreatorManager.SP.SetSubMesh(true);
+        SubCreatorManager.SP.SetMeshPosition(new Vector3(-4.55f, 0.25f, -0.4f));
     }
 
     private void OnDisable()
     {
-        SubCreatorManager.SP.SetSubMesh(false);
+        SubCreatorManager.SP.SetMeshPosition(new Vector3(5.6f, 3.1f, 0));
     }
 
     public void SetselectedHeader(int _index)
@@ -142,25 +142,27 @@ public class SubCreatorUIManager : MonoBehaviour
         {
             //Set base
             selectedArray = subBases;
+            currentSelected = GameManager.SP.playerData.subBaseSelected;
+            Debug.Log("TODO find right thing/index");
         }
         if (_index == 1)
         {
             //set eng
             selectedArray = subEngines;
+            currentSelected = GameManager.SP.playerData.subEngineSelected;
         }
         if (_index == 2)
         {
             //set cann
             selectedArray = subCannons;
+            currentSelected = GameManager.SP.playerData.subCannonSelected;
         }
         if (_index == 3)
         {
             //set special
             selectedArray = subSpecial;
+            currentSelected = GameManager.SP.playerData.subSpecialSelected;
         }
-
-        //Get right one
-        currentSelected = 0;
 
         selectedArray[currentSelected].gameObject.SetActive(true);
     }

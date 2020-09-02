@@ -68,18 +68,24 @@ public class SubObjectData: MonoBehaviour
         if (baseType != SubBaseType.None)
         {
             SubCreatorManager.SP.ChangeComponent(baseType);
+            //change and update the saved data
+            GameManager.SP.playerData.subBaseSelected = (int)baseType;
         }
         if (engineType != SubEngineType.None)
         {
             SubCreatorManager.SP.ChangeComponent(engineType);
+            GameManager.SP.playerData.subEngineSelected = (int)engineType;
         }
         if (cannonType != SubCannonType.None)
         {
             SubCreatorManager.SP.ChangeComponent(cannonType);
+            GameManager.SP.playerData.subCannonSelected = (int)cannonType;
         }
         if (specialType != SubSpecialType.None)
         {
             SubCreatorManager.SP.ChangeComponent(specialType);
+            GameManager.SP.playerData.subSpecialSelected = (int)specialType;
         }
+        GameManager.SP.SaveGame();
     }
 }

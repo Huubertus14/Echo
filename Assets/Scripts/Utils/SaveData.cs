@@ -217,7 +217,10 @@ public class PlayerData
     public float timePlayed;
 
     //Sub values
-    public int subTypeSelected;
+    public int subBaseSelected;
+    public int subEngineSelected;
+    public int subCannonSelected;
+    public int subSpecialSelected;
 
 
     public int baseSubXP;
@@ -265,7 +268,11 @@ public class PlayerData
         totalKills = 0;
         totalDeaths = 0;
         timePlayed = 0;
-        subTypeSelected = 1;
+        subBaseSelected = 1;
+        subEngineSelected = 1;
+        subCannonSelected = 1;
+        subSpecialSelected = 0;
+         
         SetPlayerColor(0,0,1.0f);
     }
 

@@ -35,34 +35,8 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     private PlaceHolderSubBehaviour[] selectedSubMesh = new PlaceHolderSubBehaviour[3];
     private bool meshesCreated = false;
 
-    private IEnumerator CreateSubMeshes()
-    {
-        if (!meshesCreated)
-        {
-            for (int i = 0; i < selectedSubMesh.Length; i++)
-            {
-                selectedSubMesh[i] = Instantiate(subMeshes[i], meshSpawnPosition.transform.position, Quaternion.identity).GetComponent<PlaceHolderSubBehaviour>();
-                selectedSubMesh[i].gameObject.transform.Rotate(90, 0, 0);
-                selectedSubMesh[i].gameObject.name = "placeHolder Object " + i;
-                selectedSubMesh[i].gameObject.gameObject.SetActive(false);
-            }
-            meshesCreated = true;
-        }
-        yield return 0;
-        for (int i = 0; i < selectedSubMesh.Length; i++)
-        {
-            selectedSubMesh[i].gameObject.SetActive(true);
-
-            selectedSubMesh[i].ChangeMeshColor(GameUtils.GetColorFromArray(GameManager.SP.playerData.GetColor()));
-            //Debug.Log("Selec: " + GameManager.SP.playerData.subTypeSelected) ;
-            selectedSubMesh[i].gameObject.SetActive(i == GameManager.SP.playerData.subTypeSelected);
-        }
-    }
-
     private void OnEnable()
     {
-        StartCoroutine(CreateSubMeshes());
-
         ToggleSettingsPanel(false);
         ToggleNameInputPanel(false);
         ToggleSubSelectPanel(false);
@@ -156,18 +130,5 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     public void ToggleSubSelectPanel(bool toggle)
     {
         subSelector.gameObject.SetActive(toggle);
-        for (int i = 0; i < selectedSubMesh.Length; i++)
-        {
-            if (toggle)
-            {
-                selectedSubMesh[i].gameObject.SetActive(false);
-            }
-            else
-            {
-                selectedSubMesh[i].ChangeMeshColor(GameUtils.GetColorFromArray(GameManager.SP.playerData.GetColor()));
-                selectedSubMesh[i].gameObject.SetActive((int)GameManager.SP.GetSelectedSub == i);
-            }
-            
-        }
     }
 }

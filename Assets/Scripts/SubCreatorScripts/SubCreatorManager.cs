@@ -5,26 +5,28 @@ using UnityEngine;
 
 public enum SubBaseType
 {
-    None,
+
     Medium,
     Heavy,
-    Light
+    Light,
+    None
 }
 
 public enum SubEngineType
 {
-    None,
+
     Light,
     Medium,
-    Heavy
+    Heavy,
+    None,
 }
 
 public enum SubCannonType
 {
-    None,
     Torpedo,
     Minigun,
-    Ram
+    Ram,
+    None
 }
 
 public enum SubSpecialType
@@ -62,9 +64,18 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
         [Header("Special Prefabs:")]
         public GameObject temp;*/
 
-    private void Start()
+
+    public void CreateSubOnBoot()
     {
-        currentSub = CreateSub(SubBaseType.Light, SubEngineType.Medium, SubCannonType.Minigun, SubSpecialType.None);
+        baseType = (SubBaseType)GameManager.SP.playerData.subBaseSelected;
+        engineType = (SubEngineType)GameManager.SP.playerData.subEngineSelected;
+        cannonType = (SubCannonType)GameManager.SP.playerData.subCannonSelected;
+        specialType = (SubSpecialType)GameManager.SP.playerData.subSpecialSelected;
+
+        currentSub = CreateSub(baseType, engineType, cannonType, specialType);
+        SetMeshPosition(new Vector3(5.6f, 3.1f, 0));
+
+        DontDestroyOnLoad(currentSub);
     }
 
     public GameObject CreateSub(SubBaseType _base, SubEngineType _engine, SubCannonType _cannon, SubSpecialType _special)
@@ -82,6 +93,7 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
         {
             case SubBaseType.None:
                 Debug.LogError("No base selected");
+
                 break;
             case SubBaseType.Medium:
                 _tempBase = Instantiate(mediumBase, transform.position, Quaternion.identity);
@@ -95,7 +107,6 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
             default:
                 break;
         }
-
 
         currentSubBehaviour = _tempBase.GetComponent<SubBaseBehaviour>();
 
@@ -135,7 +146,7 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
         currentSubBehaviour.CannonObject = _tempCannon;
         currentSubBehaviour.EngineObject = _tempEngine;
 
-        _tempBase.transform.position = new Vector3(-4.55f,0.25f,-0.4f);
+        //_tempBase.transform.position = new Vector3(-4.55f,0.25f,-0.4f);
 
         return currentSubBehaviour.gameObject;
     }
@@ -147,6 +158,7 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
 
         //Create new sub
         currentSub = CreateSub(_baseType, engineType, cannonType, specialType);
+        SetMeshPosition(new Vector3(-4.55f, 0.25f, -0.4f));
     }
 
     public void ChangeComponent(SubEngineType _engineType)
@@ -206,4 +218,11 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
     {
         currentSub.gameObject.SetActive(_value);
     }
+
+    public void SetMeshPosition(Vector3 _newPos)
+    {
+        currentSub.transform.position = _newPos;
+    }
+
+    public GameObject GetCurrentSub => currentSub;
 }
