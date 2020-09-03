@@ -1,37 +1,90 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
-public enum SubType
+public enum SubBaseType
 {
-    BasicSub,
-    HeavySub,
-    MachineGunSub
+    Medium,
+    Heavy,
+    Light,
+    None
 }
 
-public enum bulletTypes
+public enum SubEngineType
+{
+
+    Light,
+    Medium,
+    Heavy,
+    None,
+}
+
+public enum SubCannonType
 {
     Torpedo,
-    SmallBullet,
-    HeavyBullet
+    Minigun,
+    Ram,
+    None
+}
+
+public enum SubSpecialType
+{
+    None
 }
 
 public static class SubValues
 {
-    private static Dictionary<SubType, SubSettings> submarines = new Dictionary<SubType, SubSettings>
-   {
-       {SubType.BasicSub, new SubSettings("Base Submarine",100, 0.8f,10, 1.2f, 0.91f, 15f, 1.85f, 8f, Submarine.basicSub) },
-       {SubType.HeavySub, new SubSettings("Heavy Tanker",250, 1.2f,5.5f, 3.6f, 0.99f, 15f, 1.85f, 6f, Submarine.HeavySub) },
-       {SubType.MachineGunSub, new SubSettings("Light weight bullet hell",75, 0.5f,13, 0.4f, 0.85f, 15f, 1.85f, 16f, Submarine.LightSub) }
-   };
-
-    public static SubSettings GetValues(SubType _sub)
+    private static Dictionary<SubBaseType, SubBaseSettings> subBaseSettings = new Dictionary<SubBaseType, SubBaseSettings>
     {
-        if (submarines.TryGetValue(_sub, out SubSettings value))
+        {SubBaseType.Medium, new SubBaseSettings(50, .9f, .95f, 1.85f, 8f) },
+        {SubBaseType.Heavy, new SubBaseSettings(90, 1.5f, .9f, 2.15f, 6f) },
+        {SubBaseType.Light, new SubBaseSettings(30, .6f, .99f, 2.15f, 4f) }
+    };
+
+    private static Dictionary<SubEngineType, SubEnineSettings> subEngineSettings = new Dictionary<SubEngineType, SubEnineSettings>
+    {
+        { SubEngineType.Medium, new SubEnineSettings(10, 50)},
+        { SubEngineType.Heavy, new SubEnineSettings(7, 65)},
+        { SubEngineType.Light, new SubEnineSettings(20, 20)}
+    };
+
+    private static Dictionary<SubCannonType, SubCannonSettings> subCannonSettings = new Dictionary<SubCannonType, SubCannonSettings>
+    {
+        {SubCannonType.Minigun, new SubCannonSettings(0.2f) },
+         {SubCannonType.Torpedo, new SubCannonSettings(0.8f) },
+          {SubCannonType.Ram, new SubCannonSettings(0.0f) },
+    };
+
+    public static SubBaseSettings GetBaseSettings(SubBaseType _type)
+    {
+        if (subBaseSettings.TryGetValue(_type, out SubBaseSettings value))
         {
             return value;
         }
-        Debug.LogError("Sub type does not exist in dict");
-        return new SubSettings("ERROR", 99, 99, 99, 99, 0, 15f, 1.85f, 10f, Submarine.basicSub);
+        Debug.LogError("Subbase values not found");
+        return new SubBaseSettings(1, 100, 100, 100, 0);
     }
+
+    public static SubEnineSettings GetEngineSettings(SubEngineType _type)
+    {
+        if (subEngineSettings.TryGetValue(_type, out SubEnineSettings value))
+        {
+            return value;
+        }
+        Debug.LogError("Subengine values not found");
+        return new SubEnineSettings(0, 0);
+    }
+
+    public static SubCannonSettings GetCannonSettings(SubCannonType _type)
+    {
+        if (subCannonSettings.TryGetValue(_type, out SubCannonSettings value))
+        {
+            return value;
+        }
+        Debug.LogError("Subcannon values not found");
+        return new SubCannonSettings(100);
+    }
+
+
 }

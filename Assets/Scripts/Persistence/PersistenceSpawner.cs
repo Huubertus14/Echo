@@ -57,8 +57,6 @@ public class PersistenceSpawner : MonoBehaviour
         //Debug.Log("LOADED SCENE: " + arg0);
 
         //Check if a sub is selected
-        Debug.Log("Load sub here");
-        Debug.Log(GameManager.SP.playerData.subBaseSelected);
         SubCreatorManager.SP.CreateSubOnBoot();
 
         MainMenu.SP.SetMenuText();

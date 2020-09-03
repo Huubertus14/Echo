@@ -3,36 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
 
-public enum SubBaseType
-{
 
-    Medium,
-    Heavy,
-    Light,
-    None
-}
-
-public enum SubEngineType
-{
-
-    Light,
-    Medium,
-    Heavy,
-    None,
-}
-
-public enum SubCannonType
-{
-    Torpedo,
-    Minigun,
-    Ram,
-    None
-}
-
-public enum SubSpecialType
-{
-    None
-}
 
 public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
 {

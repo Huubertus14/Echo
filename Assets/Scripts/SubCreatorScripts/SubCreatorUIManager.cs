@@ -130,6 +130,7 @@ public class SubCreatorUIManager : MonoBehaviour
     private void OnDisable()
     {
         SubCreatorManager.SP.SetMeshPosition(new Vector3(5.6f, 3.1f, 0));
+        MainMenu.SP.SetSubSettingsText();
     }
 
     public void SetselectedHeader(int _index)

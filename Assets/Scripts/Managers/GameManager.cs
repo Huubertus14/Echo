@@ -16,9 +16,6 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     private GameModeAbstract gameMode;
     private PlayerBehaviour ownPlayerBehaviour;
 
-
-    private SubType subType;
-
     protected override void Awake()
     {
         base.Awake();
@@ -95,8 +92,6 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     }
 
     #region Props
-
-    public SubType GetSelectedSub => subType;
 
     public PlayerBehaviour GetPlayerB
     {

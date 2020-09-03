@@ -10,9 +10,12 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     private PlayerHealth ph;
     private Quaternion orginRotationParticleSystem;
     private Quaternion orginRotationPlayerUI;
-    [SerializeField] private SubSettings settings;
-    private SonarPool sp;
 
+    [SerializeField] private SubBaseSettings baseSettings;
+    [SerializeField] private SubEnineSettings engineSettings;
+    [SerializeField] private SubCannonSettings cannonSettings;
+
+    private SonarPool sp;
 
     [SerializeField] private Color playerColor;
     private Renderer[] gameMeshes;
@@ -20,7 +23,6 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     [Header("Editor cached")]
     [SerializeField] private GameObject subObject;
     [SerializeField] private GameObject playerCanvas;
-    [SerializeField] private PlaceHolderSubBehaviour[] placeHolderPrefabs;
 
     [Header("Game values")]
     [SerializeField] private string playerName = "Submarine Commander";
@@ -56,7 +58,10 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         playerName = photonView.Owner.NickName;
 
         //Get values and set them
-        settings = SubValues.GetValues(GameManager.SP.GetSelectedSub);
+        cannonSettings = SubValues.GetCannonSettings((SubCannonType)GameManager.SP.playerData.subCannonSelected);
+        engineSettings = SubValues.GetEngineSettings((SubEngineType)GameManager.SP.playerData.subEngineSelected);
+        baseSettings = SubValues.GetBaseSettings((SubBaseType)GameManager.SP.playerData.subBaseSelected);
+
         orginRotationParticleSystem = pb.gameObject.transform.rotation;
         orginRotationPlayerUI = playerCanvas.transform.localRotation;
 
@@ -101,11 +106,11 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
 
         //Set local values
-        pm.movementSpeed = settings.movementSpeed;
-        pm.waterResistence = settings.resistence;
+        pm.movementSpeed = engineSettings.acceleration;
+        pm.waterResistence = baseSettings.resistence;
         //Set values of cannon shooter
 
-        ph.SetInitValues(settings.health);
+        ph.SetInitValues(baseSettings.health);
         isAlive = false;
 
         subObject.SetActive(false);
@@ -127,7 +132,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         PlayerScoreBoardController.SP.SetKillText(matchKills);
     }
 
- 
+
     [PunRPC]
     private void RPC_CreateSubMesh()
     {
@@ -139,7 +144,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     [PunRPC]
     private void RPC_ResetPlayerValues()
     {
-        currentHealth = settings.health;
+        currentHealth = baseSettings.health;
     }
 
     private void Update()
@@ -175,11 +180,11 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
         if (beginSpeed == 0)
         {
-            beginSpeed = settings.basePingBeginSpeed;
+            beginSpeed = baseSettings.basePingBeginSpeed;
         }
         if (lifeTime == 0)
         {
-            lifeTime = settings.basePingLifeTime;
+            lifeTime = baseSettings.basePingLifeTime;
         }
 
         pb.SetStartSpeed(beginSpeed);
@@ -242,7 +247,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         }
         PlayerScoreBoardController.SP.UpdateScoreBoard();
         StartCoroutine(Respawn());
-        ph.SetInitValues(settings.health);
+        ph.SetInitValues(baseSettings.health);
     }
 
     [PunRPC]
@@ -351,13 +356,15 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
     public bool IsAlive => isAlive;
 
-    public SubSettings Settings => settings;
-
     public int GetMatchKills => matchKills;
     public int GetMatchAssist => matchAssists;
     public int GetMatchDamage => 0;
 
     public int GetMatchDeaths => matchDeaths;
+
+    public SubBaseSettings BaseSettings => baseSettings;
+    public SubCannonSettings CannonSettings => cannonSettings;
+    public SubEnineSettings EngineSettings => engineSettings;
 
     public string PlayerName
     {

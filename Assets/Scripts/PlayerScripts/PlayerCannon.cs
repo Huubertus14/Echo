@@ -13,13 +13,12 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
     [SerializeField] private BulletBehaviour bullet;
     [SerializeField] private int maxBulletCount;
 
-    private PlaceHolderSubBehaviour placeholder;
-
     private GameObject bulletsParent;
 
     private Queue<BulletBehaviour> bulletPool;
 
     private PlayerBehaviour pb;
+    private SubBaseBehaviour sbb;
 
     private bool bulletExist = false;
 
@@ -32,6 +31,7 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
         }
 
         pb = GetComponent<PlayerBehaviour>();
+        sbb = GetComponentInChildren<SubBaseBehaviour>();
         bulletPool = new Queue<BulletBehaviour>();
 
         //Create bullet parent
@@ -69,7 +69,7 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
         BulletBehaviour _shot = bulletPool.Dequeue();
         _shot.gameObject.SetActive(true);
 
-        _shot.FireTorpedo(pb, Place.GetShootPointAt(0).transform.position, Quaternion.LookRotation(pb.SubMesh.transform.right, pb.SubMesh.transform.up), lag);
+        _shot.FireTorpedo(pb, SBB.GetCannonPlace.transform.position + SBB.GetCannonPlace.transform.right, Quaternion.LookRotation(pb.SubMesh.transform.right, pb.SubMesh.transform.up), lag);
 
         bulletPool.Enqueue(_shot);
     }
@@ -91,18 +91,18 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
         Destroy(bulletsParent);
     }
 
-    bool placeSet = false;
-    private PlaceHolderSubBehaviour Place
+    bool sbbSet = false;
+
+    private SubBaseBehaviour SBB
     {
         get
         {
-            if (!placeSet)
+            if (!sbbSet)
             {
-                placeholder = GetComponentInChildren<PlaceHolderSubBehaviour>();
-                placeSet = true;
+                sbb = GetComponentInChildren<SubBaseBehaviour>();
+                sbbSet = true;
             }
-            return placeholder;
+            return sbb;
         }
     }
-
 }

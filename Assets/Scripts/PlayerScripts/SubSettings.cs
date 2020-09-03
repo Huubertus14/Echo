@@ -7,42 +7,49 @@ using UnityEngine;
 /// Classes with the values of all submarine settings that can be changed
 /// </summary>
 [Serializable]
-public class SubSettings
+
+public class SubBaseSettings
 {
-    public SubSettings(string subName, int _hp, float _pingInterval, float _move, float _shootInt, float _resistence, float _basePingSpeed, float _basePingLifeTime, float _maxVelocity, Submarine _marine)
-    {
-        health = _hp;
-        pingInterval = _pingInterval;
-        movementSpeed = _move;
-        shootInterval = _shootInt;
-        resistence = _resistence;
-
-        this.basePingBeginSpeed = _basePingSpeed;
-        this.basePingLifeTime = _basePingLifeTime;
-        this.maxVelocity = _maxVelocity;
-        this.subName = subName;
-        subMarine = _marine;
-    }
-
-    public string subName;
-
-    public Submarine subMarine;
 
     public float health;
     public float pingInterval;
-    public float movementSpeed;
-    public float shootInterval;
     public float resistence;
-    public float maxVelocity;
 
     public float basePingBeginSpeed;
     public float basePingLifeTime;
-    
+
+    public SubBaseSettings(float _hp, float _pingInterval, float _waterResistance, float _basePingSpeed, float _basePingLife)
+    {
+        health = _hp;
+        pingInterval = _pingInterval;
+        resistence = _waterResistance;
+        basePingBeginSpeed = _basePingSpeed;
+        basePingLifeTime = _basePingLife;
+    }
 }
 
-public enum Submarine
+
+
+public class SubEnineSettings
 {
-    basicSub,
-    HeavySub,
-    LightSub
+
+    public float acceleration;
+    public float maxVelocity;
+    public SubEnineSettings(float _acc, float _maxSpeed)
+    {
+        acceleration = _acc;
+        maxVelocity = _maxSpeed;
+    }
 }
+
+public class SubCannonSettings
+{
+
+    public float shootInterval;
+    public SubCannonSettings(float _shootInterval)
+    {
+        shootInterval = _shootInterval;
+    }
+}
+
+

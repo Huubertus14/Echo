@@ -29,11 +29,6 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     [SerializeField] private TextMeshProUGUI subPingIntervalText;
     [SerializeField] private TextMeshProUGUI subDamageText;
     [SerializeField] private TextMeshProUGUI subAttackSpeedText;
-    [Space]
-    [SerializeField] private GameObject[] subMeshes;
-    [SerializeField]private GameObject meshSpawnPosition;
-    private PlaceHolderSubBehaviour[] selectedSubMesh = new PlaceHolderSubBehaviour[3];
-    private bool meshesCreated = false;
 
     private void OnEnable()
     {
@@ -42,6 +37,8 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
         ToggleSubSelectPanel(false);
 
         SetMenuText();
+
+        SubCreatorManager.SP.SetSubMesh(true);
     }
 
     public void OnPlayClicked()
@@ -60,7 +57,7 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     {
         //Debug.Log(GameManager.SP.playerData.playerName);
 
-        if (String.IsNullOrEmpty(GameManager.SP.playerData.playerName))
+        if (string.IsNullOrEmpty(GameManager.SP.playerData.playerName))
         {
             ToggleNameInputPanel(true);
         }
@@ -73,7 +70,7 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
         playerNameText.text = "Name: " + GameManager.SP.playerData.playerName;
         xpText.text = "XP: " + GameManager.SP.playerData.playerXP;
         goldText.text = "Gold: " + GameManager.SP.playerData.gold;
-        winText.text = "Wins: " +GameManager.SP.playerData.wins;
+        winText.text = "Wins: " + GameManager.SP.playerData.wins;
 
         float wl = 0;
         if (GameManager.SP.playerData.loses > 0)
@@ -91,20 +88,23 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     public void SetSubSettingsText()
     {
         //LANGTODO:
-        SubSettings set = SubValues.GetValues(GameManager.SP.GetSelectedSub);
+        //Get values and set them
+        SubCannonSettings cannonSettings = SubValues.GetCannonSettings((SubCannonType)GameManager.SP.playerData.subCannonSelected);
+        SubEnineSettings engineSettings = SubValues.GetEngineSettings((SubEngineType)GameManager.SP.playerData.subEngineSelected);
+        SubBaseSettings baseSettings = SubValues.GetBaseSettings((SubBaseType)GameManager.SP.playerData.subBaseSelected);
 
         //int selectedSubIndex = (int)GameManager.SP.GetSelectedSub;
 
-        subNameText.text = set.subName;
+        subNameText.text = "TODO";
         subLevelText.text = "Sub Level: ---";
 
-        subHealthText.text = "Health: " + set.health.ToString();
-        subAccelerationText.text = "Acceleration: " + set.movementSpeed.ToString();
-        subSpeedText.text = "Max Speed: " + set.maxVelocity.ToString();
+        subHealthText.text = "Health: " + baseSettings.health.ToString();
+        subAccelerationText.text = "Acceleration: " + engineSettings.acceleration.ToString();
+        subSpeedText.text = "Max Speed: " + engineSettings.maxVelocity.ToString();
 
-        subAttackSpeedText.text = "Attack Speed: " + set.shootInterval.ToString();
+        subAttackSpeedText.text = "Attack Speed: " + cannonSettings.shootInterval.ToString();
         subDamageText.text = "Attack Damage: ---";
-        subPingIntervalText.text = "Ping Speed: " + set.pingInterval.ToString();
+        subPingIntervalText.text = "Ping Speed: " + baseSettings.pingInterval.ToString();
 
 
 

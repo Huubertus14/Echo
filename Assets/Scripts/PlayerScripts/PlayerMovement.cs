@@ -84,7 +84,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     public void Accelerate()
     {
-        if (rb.velocity.magnitude < pb.Settings.maxVelocity)
+        if (rb.velocity.magnitude < pb.EngineSettings.maxVelocity)
         {
             //Debug.Log(rb.velocity);
             rb.AddForce(subMesh.transform.right * movementSpeed);
