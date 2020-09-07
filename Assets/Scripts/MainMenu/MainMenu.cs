@@ -38,7 +38,7 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
 
         SetMenuText();
 
-        SubCreatorManager.SP.SetSubMesh(true);
+       // SubCreatorManager.SP.SetSubMesh(true);
     }
 
     public void OnPlayClicked()

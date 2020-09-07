@@ -40,7 +40,7 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
                     PlayerControlls.SP.GivePlayerBehaviour(pl);
                 }
 
-                SubCreatorManager.SP.SetSubMesh(false);
+                //SubCreatorManager.SP.SetSubMesh(false);
                 UpdatePlayerList();
             }
             else

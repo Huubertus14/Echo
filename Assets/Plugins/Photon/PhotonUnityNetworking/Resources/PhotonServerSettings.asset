@@ -48,5 +48,6 @@ MonoBehaviour:
   - RPC_EndGameOnAllClients
   - RPC_PlayerDied
   - RPC_StartGameOnAllClients
+  - RPC_CreateSubMesh
   DisableAutoOpenWizard: 1
   ShowSettings: 1

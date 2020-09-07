@@ -276,7 +276,7 @@ Transform:
   m_LocalScale: {x: 1.5029, y: 0.18426022, z: 1}
   m_Children:
   - {fileID: 1515226175081581995}
-  - {fileID: 8589272409651907475}
+  - {fileID: 8591878245398755671}
   - {fileID: 7695378572217370861}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -309,24 +309,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b83ba5c051de5f04d91b20e56930d062, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settings:
-    subName: 
-    subMarine: 0
+  baseSettings:
     health: 0
     pingInterval: 0
-    movementSpeed: 0
-    shootInterval: 0
     resistence: 0
-    maxVelocity: 0
     basePingBeginSpeed: 0
     basePingLifeTime: 0
   playerColor: {r: 0, g: 0, b: 0, a: 0}
   subObject: {fileID: 4830988355086734681}
   playerCanvas: {fileID: 2544624146128464494}
-  placeHolderPrefabs:
-  - {fileID: -1616303450512552577, guid: e6670b0f3b4c89441a84d961830ea0fe, type: 3}
-  - {fileID: 2541610532139080526, guid: e8585786d5d309444895d26411168a1c, type: 3}
-  - {fileID: -2462964453095302864, guid: cf69c44c3c786c74fb57990e4ab248b4, type: 3}
   playerName: 
   playerScore: 0
   matchXP: 0
@@ -716,7 +707,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c9c9c959687d4b4194635a2bb8bd7cc, type: 3}
---- !u!4 &8589272409651907475 stripped
+--- !u!4 &8591878245398755671 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4294699837534968, guid: 4c9c9c959687d4b4194635a2bb8bd7cc,
     type: 3}

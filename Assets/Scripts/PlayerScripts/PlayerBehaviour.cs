@@ -76,7 +76,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
             outlineSize = 0.15f; //size of the outline shader
 
             GameManager.SP.GetPlayerB = this;
-            photonView.RPC(nameof(RPC_CreateSubMesh), RpcTarget.AllBufferedViaServer);
+            photonView.RPC(nameof(RPC_CreateSubMesh), RpcTarget.AllBufferedViaServer, GameManager.SP.playerData.subBaseSelected, GameManager.SP.playerData.subEngineSelected, GameManager.SP.playerData.subCannonSelected, GameManager.SP.playerData.subSpecialSelected);
         }
         else
         {
@@ -134,11 +134,12 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
 
     [PunRPC]
-    private void RPC_CreateSubMesh()
+    private void RPC_CreateSubMesh(int _base, int _engine, int _cannon, int _special)
     {
-        GameObject temp = null;
-        temp = Instantiate(SubCreatorManager.SP.GetCurrentSub, Vector3.zero, Quaternion.identity, subObject.transform);
+        GameObject toSpawn = SubCreatorManager.SP.CreateSub((SubBaseType)_base, (SubEngineType)_engine, (SubCannonType)_cannon, (SubSpecialType)_special);
+        GameObject temp = Instantiate(toSpawn, Vector3.zero, Quaternion.identity, subObject.transform);
         temp.transform.localPosition = Vector3.zero;
+
     }
 
     [PunRPC]

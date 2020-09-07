@@ -118,7 +118,7 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
         currentSubBehaviour.EngineObject = _tempEngine;
 
         //_tempBase.transform.position = new Vector3(-4.55f,0.25f,-0.4f);
-
+        currentSubBehaviour.transform.Rotate(90,0,0);
         return currentSubBehaviour.gameObject;
     }
 
@@ -126,7 +126,7 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
     {
         //Destroy Sub
         Destroy(currentSub.gameObject);
-
+        baseType = _baseType;
         //Create new sub
         currentSub = CreateSub(_baseType, engineType, cannonType, specialType);
         SetMeshPosition(new Vector3(-4.55f, 0.25f, -0.4f));
@@ -136,6 +136,7 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
     {
         GameObject _tempEngine = null;
         Destroy(currentSubBehaviour.EngineObject.gameObject);
+        engineType = _engineType;
         switch (_engineType)
         {
             case SubEngineType.None:
@@ -160,6 +161,7 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
     {
         GameObject _tempCannon = null;
         Destroy(currentSubBehaviour.CannonObject.gameObject);
+        cannonType = _cannonType;
         switch (_cannonType)
         {
             case SubCannonType.None:
@@ -182,7 +184,7 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
 
     public void ChangeComponent(SubSpecialType _specialType)
     {
-
+        specialType = _specialType;
     }
 
     public void SetSubMesh(bool _value)

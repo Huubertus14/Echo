@@ -9,10 +9,16 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
     DynamicJoystick dj;
     private bool hasPlayerBehaviour = false;
     private bool gasToggle = false;
+    private bool gasLocked = false;
+
+    [Header("Ref Values:")]
+    [SerializeField] private GameObject gasButton;
+    [SerializeField] private GameObject gasToggleButton;
 
     private void Start()
     {
         dj = GetComponentInChildren<DynamicJoystick>();
+        gasToggleButton.SetActive(false);
     }
 
     /// <summary>
@@ -27,7 +33,6 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
 
     private void Update()
     {
-
         if (hasPlayerBehaviour)
         {
             pb.GetPlayerMovement.JoyStickControlls(dj);
@@ -49,7 +54,27 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
 
     public void Gas(bool gas)
     {
-        gasToggle = gas;
+        if (gas)
+        {
+            gasButton.transform.localScale = new Vector3(1.5f,1.5f,1);
+            gasLocked = false;
+            gasToggle = gas;
+        }
+        else
+        {
+            if (!gasLocked)
+            {
+                gasToggle = gas;
+            }
+            gasButton.transform.localScale = new Vector3(1, 1, 1);
+        }
+        gasToggleButton.SetActive(gas);
+    }
+
+    public void LockGas()
+    {
+        gasToggle = true;
+        gasLocked = true;
     }
 
     public void PlayerPing()
