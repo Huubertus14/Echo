@@ -7,71 +7,81 @@ using UnityEngine;
 /// <summary>
 /// Each sub has its own bullets, it pool this self
 /// </summary>
-public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
+public class PlayerCannon : MonoBehaviourPun
 {
     [Header("Cannon values")]
-    [SerializeField] private BulletBehaviour bullet;
+    [SerializeField] private TorpedoBehaviour bullet;
     [SerializeField] private int maxBulletCount;
 
-    private GameObject bulletsParent;
-
-    private Queue<BulletBehaviour> bulletPool;
+    private Queue<TorpedoBehaviour> bulletPool;
 
     private PlayerBehaviour pb;
     private SubBaseBehaviour sbb;
 
-    private bool bulletExist = false;
+    public SubWeaponAbstract weaponAbstract;
 
+    private bool foundWeapon = false;
+    private bool foundsbb = false;
+
+    private float shootTimer;
+    private float shootInterval;
+
+    
     private void Start()
     {
-        if (bullet == null)
-        {
-            Debug.LogError("No bullet cached");
-            return;
-        }
-
         pb = GetComponent<PlayerBehaviour>();
-        sbb = GetComponentInChildren<SubBaseBehaviour>();
-        bulletPool = new Queue<BulletBehaviour>();
 
-        //Create bullet parent
-        bulletsParent = new GameObject();
-        bulletsParent.name = "bulletPool (PlayerName)";
-        bulletsParent.transform.SetParent(PoolHolder.SP.GetBulletPool());
-        bulletsParent.transform.position = Vector3.zero;
-
-        //Create the pool of bullets
-        for (int i = 0; i < maxBulletCount; i++)
-        {
-            //photonView.RPC(nameof(RPC_CreateBulletPool), RpcTarget.AllBufferedViaServer);
-            CreateBulletPool();
-        }
-
-        bulletExist = true;
-
+        shootInterval = pb.CannonSettings.shootInterval;
+        StartCoroutine(FindRefs());
     }
 
-    private void CreateBulletPool()
+    private void FixedUpdate()
     {
-        GameObject _bul = Instantiate(bullet.gameObject, transform.position, Quaternion.identity, bulletsParent.transform);
-        _bul.SetActive(false);
-        BulletBehaviour _behav = _bul.GetComponent<BulletBehaviour>();
-        _behav.CreatePool("PlayerName", pb.GetPlayerColor);
-        bulletPool.Enqueue(_behav);
+        if (shootTimer > 0)
+        {
+            shootTimer -= Time.deltaTime;
+        }
+    }
+
+    private IEnumerator FindRefs()
+    {
+        float timeout = Time.time + 30;
+
+        while (!foundsbb)
+        {
+            sbb = GetComponentInChildren<SubBaseBehaviour>();
+            foundsbb = (sbb != null);
+            if (Time.time > timeout)
+            {
+                Debug.LogError("Took to long to find SBB");
+                yield break;
+            }
+            yield return 0;
+        }
+
+        while (!foundWeapon)
+        {
+            weaponAbstract = GetComponentInChildren<SubWeaponAbstract>();
+            foundWeapon = (weaponAbstract != null);
+            if (Time.time > timeout)
+            {
+                Debug.LogError("Took to long to find Weapon abstract");
+                yield break;
+            }
+            yield return 0;
+        }
+        weaponAbstract.GiveValues(pb, sbb);
     }
 
     [PunRPC]
     public void RPC_Shoot(PhotonMessageInfo info)
     {
-        if (!bulletExist) return;
+        weaponAbstract.Fire(info);
+    }
 
-        float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
-        BulletBehaviour _shot = bulletPool.Dequeue();
-        _shot.gameObject.SetActive(true);
-
-        _shot.FireTorpedo(pb, SBB.GetCannonPlace.transform.position + SBB.GetCannonPlace.transform.right, Quaternion.LookRotation(pb.SubMesh.transform.right, pb.SubMesh.transform.up), lag);
-
-        bulletPool.Enqueue(_shot);
+    public void HasShot()
+    {
+        shootTimer = shootInterval;
     }
 
     public void DestroyPool()
@@ -82,27 +92,12 @@ public class PlayerCannon : MonoBehaviourPun, IPlayerAttack
     [PunRPC]
     private void RPC_DestroyPool()
     {
-        BulletBehaviour[] temp = bulletPool.ToArray();
-        for (int i = 0; i < bulletPool.Count; i++)
-        {
-            temp[i].DestroySonarPool();
-            Destroy(temp[i].gameObject);
-        }
-        Destroy(bulletsParent);
+        Destroy(weaponAbstract.GetBulletParents.gameObject);
     }
 
-    bool sbbSet = false;
-
-    private SubBaseBehaviour SBB
+    public bool CanShoot()
     {
-        get
-        {
-            if (!sbbSet)
-            {
-                sbb = GetComponentInChildren<SubBaseBehaviour>();
-                sbbSet = true;
-            }
-            return sbb;
-        }
+        return (shootTimer < 0);
     }
+
 }

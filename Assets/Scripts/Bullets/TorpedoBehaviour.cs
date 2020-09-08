@@ -3,11 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BulletBehaviour : MonoBehaviourPun
+public class TorpedoBehaviour : MonoBehaviourPun
 {
     private Rigidbody rb;
     private PlayerBehaviour owner;
     private SonarPool sonarPool;
+    private float interval;
+
     [Header("Bullet values")]
     [SerializeField] private float force;
     [SerializeField] private float bulletDamage;
@@ -15,13 +17,12 @@ public class BulletBehaviour : MonoBehaviourPun
     [SerializeField] private float pingInterval;
     [SerializeField] private float bulletPingSpeed;
     [SerializeField] private float bulletPingLifetime;
-    private float interval;
+    
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         sonarPool = GetComponent<SonarPool>();
-
         interval = Time.time + pingInterval;
     }
 
@@ -68,6 +69,4 @@ public class BulletBehaviour : MonoBehaviourPun
     {
         sonarPool.DestroyPool();
     }
-      
-
 }

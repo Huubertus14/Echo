@@ -9,24 +9,30 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 {
     [SerializeField] private GameObject subMesh;
     [Space]
-    public float rotationSpeed = 0.2f;
-    public float movementSpeed = 10.0f;
-    public float waterResistence = 0.91f;
+    //Engine settings
+    [SerializeField] private float accelerationSpeed = 10.0f;
+    [SerializeField] private float maxSpeed = 10.0f;
+
+    //Base settings
+    [SerializeField] private float waterResistence = 0.91f;
 
     private Rigidbody rb;
     private PlayerBehaviour pb;
+    private bool hasRigidbody = false;
 
     private Quaternion networkRotation;
     private float angle = 0;
     private bool firstTake = false;
-
-    private bool hasRigidbody = false;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         pb = GetComponent<PlayerBehaviour>();
         hasRigidbody = true;
+
+        accelerationSpeed = pb.EngineSettings.acceleration;
+        waterResistence = pb.BaseSettings.resistence;
+        maxSpeed = pb.EngineSettings.maxVelocity;
     }
 
     private void OnEnable()
@@ -38,7 +44,6 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     {
         if (hasRigidbody)
         {
-            ComputerControlls();
             SubMeshRotation();
         }
     }
@@ -46,32 +51,6 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
     public void WaterResistance()
     {
         rb.velocity = rb.velocity * waterResistence;
-    }
-
-    private void ComputerControlls()
-    {
-        //transform.Rotate(new Vector3(0, Input.GetAxis("Horizontal") * rotationSpeed, 0));
-        if (Input.GetKey(KeyCode.A))
-        {
-            rb.AddRelativeTorque(transform.up * -rotationSpeed, ForceMode.Force);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            rb.AddRelativeTorque(transform.up * rotationSpeed, ForceMode.Force);
-        }
-        if (Input.GetKey(KeyCode.W))
-        {
-            rb.AddForce(transform.right * movementSpeed);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            rb.AddForce(transform.right * -movementSpeed);
-        }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            pb.Ping();
-        }
-
     }
 
     private void SubMeshRotation()
@@ -87,7 +66,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         if (rb.velocity.magnitude < pb.EngineSettings.maxVelocity)
         {
             //Debug.Log(rb.velocity);
-            rb.AddForce(subMesh.transform.right * movementSpeed);
+            rb.AddForce(subMesh.transform.right * accelerationSpeed);
         }
         else
         {

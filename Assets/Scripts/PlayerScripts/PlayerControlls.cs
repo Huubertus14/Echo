@@ -10,6 +10,7 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
     private bool hasPlayerBehaviour = false;
     private bool gasToggle = false;
     private bool gasLocked = false;
+    private bool shooting = false;
 
     [Header("Ref Values:")]
     [SerializeField] private GameObject gasButton;
@@ -43,6 +44,11 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
             else
             {
                 pb.GetPlayerMovement.WaterResistance();
+            }
+
+            if (shooting)
+            {
+                pb.Shoot();
             }
         }
     }
@@ -85,11 +91,11 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
         }
     }
 
-    public void PlayerShoot()
+    public void PlayerShoot(bool _shoot)
     {
         if (hasPlayerBehaviour)
         {
-            pb.Shoot();
+            shooting = _shoot;
         }
     }
 

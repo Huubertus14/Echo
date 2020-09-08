@@ -276,7 +276,7 @@ Transform:
   m_LocalScale: {x: 1.5029, y: 0.18426022, z: 1}
   m_Children:
   - {fileID: 1515226175081581995}
-  - {fileID: 8591878245398755671}
+  - {fileID: 8589272409651907475}
   - {fileID: 7695378572217370861}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -395,6 +395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bullet: {fileID: 2962692962714701083, guid: 101661bbc4f2e4d41ba6ba230f84bf29, type: 3}
   maxBulletCount: 30
+  weaponAbstract: {fileID: 0}
 --- !u!114 &7096805309229015346
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,8 +409,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   subMesh: {fileID: 4830988355086734681}
-  rotationSpeed: 5
-  movementSpeed: 5
+  accelerationSpeed: 10
+  maxSpeed: 0
   waterResistence: 0.91
 --- !u!114 &6433017472077122263
 MonoBehaviour:
@@ -707,7 +708,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4c9c9c959687d4b4194635a2bb8bd7cc, type: 3}
---- !u!4 &8591878245398755671 stripped
+--- !u!4 &8589272409651907475 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4294699837534968, guid: 4c9c9c959687d4b4194635a2bb8bd7cc,
     type: 3}

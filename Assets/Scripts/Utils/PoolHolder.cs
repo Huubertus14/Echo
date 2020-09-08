@@ -8,6 +8,8 @@ public class PoolHolder : SingetonMonobehaviour<PoolHolder>
     private GameObject pingPool;
     private GameObject bulletPool;
 
+    
+
     private void Start()
     {
         //Create two pools
@@ -18,6 +20,7 @@ public class PoolHolder : SingetonMonobehaviour<PoolHolder>
         bulletPool = new GameObject();
         bulletPool.name = "Bullet Pool";
         bulletPool.transform.SetParent(transform);
+
     }
 
     public Transform GetPingPool()

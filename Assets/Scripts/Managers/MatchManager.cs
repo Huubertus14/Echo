@@ -51,7 +51,6 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
         else
         {
             Debug.LogWarning("Not connected to servers - " + gameObject);
-
         }
     }
 

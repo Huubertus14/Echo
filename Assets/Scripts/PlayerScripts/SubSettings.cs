@@ -32,7 +32,6 @@ public class SubBaseSettings
 
 public class SubEnineSettings
 {
-
     public float acceleration;
     public float maxVelocity;
     public SubEnineSettings(float _acc, float _maxSpeed)
@@ -44,7 +43,6 @@ public class SubEnineSettings
 
 public class SubCannonSettings
 {
-
     public float shootInterval;
     public SubCannonSettings(float _shootInterval)
     {

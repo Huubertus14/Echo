@@ -83,7 +83,6 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
             playerColor = Color.red;
             pm.enabled = false;
             outlineSize = 0;
-
         }
 
         //Set outline Values && color
@@ -103,13 +102,6 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
         SetMeshColor(Color.black, gameMeshes); //Set self to black
 
-
-
-        //Set local values
-        pm.movementSpeed = engineSettings.acceleration;
-        pm.waterResistence = baseSettings.resistence;
-        //Set values of cannon shooter
-
         ph.SetInitValues(baseSettings.health);
         isAlive = false;
 
@@ -117,7 +109,6 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         StartCoroutine(Respawn());
         isInitialized = true;
     }
-
 
     private void ResetMatchValues()
     {
@@ -131,7 +122,6 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         PlayerScoreBoardController.SP.SetDeathText(matchDeaths);
         PlayerScoreBoardController.SP.SetKillText(matchKills);
     }
-
 
     [PunRPC]
     private void RPC_CreateSubMesh(int _base, int _engine, int _cannon, int _special)
@@ -165,7 +155,11 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
     public void Shoot()
     {
-        photonView.RPC(nameof(pc.RPC_Shoot), RpcTarget.AllBufferedViaServer);
+        if (pc.CanShoot())
+        {
+            photonView.RPC(nameof(pc.RPC_Shoot), RpcTarget.AllBufferedViaServer);
+            pc.HasShot();
+        }
     }
 
     private void FixObjectRotation()
@@ -314,7 +308,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
             }
         }
     }
-
+    
     public void DestroyLinkedItems()
     {
         //All bullets and sonars
