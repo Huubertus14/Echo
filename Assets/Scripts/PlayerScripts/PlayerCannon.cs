@@ -26,7 +26,7 @@ public class PlayerCannon : MonoBehaviourPun
     private float shootTimer;
     private float shootInterval;
 
-    
+
     private void Start()
     {
         pb = GetComponent<PlayerBehaviour>();
@@ -72,6 +72,7 @@ public class PlayerCannon : MonoBehaviourPun
             yield return 0;
         }
         weaponAbstract.GiveValues(pb, sbb);
+        weaponAbstract.CreatePool();
     }
 
     [PunRPC]
@@ -87,7 +88,10 @@ public class PlayerCannon : MonoBehaviourPun
 
     public void DestroyPool()
     {
-        photonView.RPC(nameof(RPC_DestroyPool), RpcTarget.All);
+        if (weaponAbstract.GetBulletParents != null)
+        {
+            photonView.RPC(nameof(RPC_DestroyPool), RpcTarget.All);
+        }
     }
 
     [PunRPC]

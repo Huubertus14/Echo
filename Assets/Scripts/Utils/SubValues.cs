@@ -37,9 +37,9 @@ public static class SubValues
 {
     private static Dictionary<SubBaseType, SubBaseSettings> subBaseSettings = new Dictionary<SubBaseType, SubBaseSettings>
     {
-        {SubBaseType.Medium, new SubBaseSettings(50, .9f, .95f, 1.85f, 8f) },
-        {SubBaseType.Heavy, new SubBaseSettings(90, 1.5f, .9f, 2.15f, 6f) },
-        {SubBaseType.Light, new SubBaseSettings(30, .6f, .99f, 2.15f, 4f) }
+        {SubBaseType.Medium, new SubBaseSettings(50, .9f, .95f, 22, 1.8f) },
+        {SubBaseType.Heavy, new SubBaseSettings(90, 1.5f, .9f, 22, 2.5f) },
+        {SubBaseType.Light, new SubBaseSettings(30, .6f, .99f, 22, 1.2f) }
     };
 
     private static Dictionary<SubEngineType, SubEnineSettings> subEngineSettings = new Dictionary<SubEngineType, SubEnineSettings>
@@ -51,7 +51,7 @@ public static class SubValues
 
     private static Dictionary<SubCannonType, SubCannonSettings> subCannonSettings = new Dictionary<SubCannonType, SubCannonSettings>
     {
-        {SubCannonType.Minigun, new SubCannonSettings(0.2f) },
+        {SubCannonType.Minigun, new SubCannonSettings(0.05f) },
          {SubCannonType.Torpedo, new SubCannonSettings(0.8f) },
           {SubCannonType.Ram, new SubCannonSettings(0.0f) },
     };

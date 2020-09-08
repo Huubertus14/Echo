@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TorpedoCannonBehaviour : SubWeaponAbstract
+public class MinigunBehaviour : SubWeaponAbstract
 {
-    [SerializeField] protected Queue<TorpedoBehaviour> bulletPool;
+    [SerializeField] protected Queue<MinigunBulletBehaviour> bulletPool;
 
     public override void Start()
     {
@@ -15,9 +15,9 @@ public class TorpedoCannonBehaviour : SubWeaponAbstract
     public override void Fire(PhotonMessageInfo info)
     {
         float lag = (float)(PhotonNetwork.Time - info.SentServerTime);
-        TorpedoBehaviour _shot = bulletPool.Dequeue();
+        MinigunBulletBehaviour _shot = bulletPool.Dequeue();
         _shot.gameObject.SetActive(true);
-        _shot.GetComponent<TorpedoBehaviour>().FireTorpedo(pb, sbb.GetCannonPlace.transform.position + sbb.GetCannonPlace.transform.right, Quaternion.LookRotation(pb.SubMesh.transform.right, pb.SubMesh.transform.up), lag);
+        _shot.FireBullet(pb, sbb.GetCannonPlace.transform.position + sbb.GetCannonPlace.transform.right, Quaternion.LookRotation(pb.SubMesh.transform.right, pb.SubMesh.transform.up), lag);
         bulletPool.Enqueue(_shot);
     }
 
@@ -25,14 +25,13 @@ public class TorpedoCannonBehaviour : SubWeaponAbstract
     {
         GameObject _bul = Instantiate(projectilePrefab.gameObject, transform.position, Quaternion.identity, bulletsParent.transform);
         _bul.SetActive(false);
-         TorpedoBehaviour _behav = _bul.GetComponent<TorpedoBehaviour>();
-        _behav.CreatePool("playername", GameManager.SP.GetPlayerB.GetPlayerColor);
+        MinigunBulletBehaviour _behav = _bul.GetComponent<MinigunBulletBehaviour>();
         bulletPool.Enqueue(_behav);
     }
 
     public override void CreatePool()
     {
-        bulletPool = new Queue<TorpedoBehaviour>();
+        bulletPool = new Queue<MinigunBulletBehaviour>();
 
         //Create bullet parent
         bulletsParent = new GameObject();

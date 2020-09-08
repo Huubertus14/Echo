@@ -6,6 +6,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 {
     private PlayerMovement pm;
     private ParticleBehaviour pb;
+
     private PlayerCannon pc;
     private PlayerHealth ph;
     private Quaternion orginRotationParticleSystem;

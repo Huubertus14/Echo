@@ -162,10 +162,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
 
     public override void OnLeftRoom()
     {
-        Debug.LogWarning("ToDo: remove own pooled items");
-
-
-        //Destroy
 
     }
     #endregion
