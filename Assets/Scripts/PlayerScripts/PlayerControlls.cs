@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.PlayerLoop;
 
 public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
@@ -14,12 +15,13 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
 
     [Header("Ref Values:")]
     [SerializeField] private GameObject gasButton;
-    [SerializeField] private GameObject gasToggleButton;
+    [SerializeField] private Image gasToggleButton;
 
     private void Start()
     {
         dj = GetComponentInChildren<DynamicJoystick>();
-        gasToggleButton.SetActive(false);
+        gasToggleButton.color = Color.white;
+        gasToggleButton.gameObject.SetActive(false);
     }
 
     /// <summary>
@@ -65,6 +67,7 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
             gasButton.transform.localScale = new Vector3(1.5f,1.5f,1);
             gasLocked = false;
             gasToggle = gas;
+            
         }
         else
         {
@@ -74,11 +77,13 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
             }
             gasButton.transform.localScale = new Vector3(1, 1, 1);
         }
-        gasToggleButton.SetActive(gas);
+        gasToggleButton.color = Color.white;
+        gasToggleButton.gameObject.SetActive(gas);
     }
 
     public void LockGas()
     {
+        gasToggleButton.color = Color.yellow;
         gasToggle = true;
         gasLocked = true;
     }

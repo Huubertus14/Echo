@@ -29,15 +29,18 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         rb = GetComponent<Rigidbody>();
         pb = GetComponent<PlayerBehaviour>();
         hasRigidbody = true;
-
-        accelerationSpeed = pb.EngineSettings.acceleration;
-        waterResistence = pb.BaseSettings.resistence;
-        maxSpeed = pb.EngineSettings.maxVelocity;
     }
 
     private void OnEnable()
     {
         firstTake = true;
+    }
+
+    private void Start()
+    {
+        accelerationSpeed = pb.EngineSettings.acceleration;
+        waterResistence = pb.BaseSettings.resistence;
+        maxSpeed = pb.EngineSettings.maxVelocity;
     }
 
     private void Update()

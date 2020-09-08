@@ -33,11 +33,12 @@ public class PlayerCannon : MonoBehaviourPun
 
         shootInterval = pb.CannonSettings.shootInterval;
         StartCoroutine(FindRefs());
+        shootTimer = -1;
     }
 
     private void FixedUpdate()
     {
-        if (shootTimer > 0)
+        if (shootTimer >= 0)
         {
             shootTimer -= Time.deltaTime;
         }
