@@ -114,7 +114,7 @@ public class GameManager : SingetonMonobehaviour<GameManager>
         //all values of the player are ready
 
         SharedCanvasBehaviour.SP.SetLoadingScreen(false);
-
+        PlayerControlls.SP.SetControllImages(true);
         //Animate buttons in
     }
 

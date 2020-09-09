@@ -433,6 +433,7 @@ GameObject:
   - component: {fileID: 218405893}
   - component: {fileID: 218405892}
   - component: {fileID: 218405891}
+  - component: {fileID: 218405894}
   m_Layer: 5
   m_Name: GasButton
   m_TagString: Untagged
@@ -540,6 +541,69 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 218405889}
   m_CullTransparentMesh: 0
+--- !u!114 &218405894
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 218405889}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6355242d214929645b66f1cbd951253f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fadeOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.0068932767
+      outSlope: 0.0068932767
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.26666668
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.363968
+      outSlope: -3.363968
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.03333336
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  randomDelayMedian: 0.3
+  fadeImg: {fileID: 0}
+  fadeText: {fileID: 0}
 --- !u!1 &320342240
 GameObject:
   m_ObjectHideFlags: 0
@@ -1274,6 +1338,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gasButton: {fileID: 218405889}
   gasToggleButton: {fileID: 767444333}
+  fadeImages: []
 --- !u!1 &767444330
 GameObject:
   m_ObjectHideFlags: 0
@@ -1862,6 +1927,7 @@ GameObject:
   - component: {fileID: 1321144626}
   - component: {fileID: 1321144625}
   - component: {fileID: 1321144624}
+  - component: {fileID: 1321144627}
   m_Layer: 5
   m_Name: LeaveButton
   m_TagString: Untagged
@@ -1980,6 +2046,69 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1321144622}
   m_CullTransparentMesh: 0
+--- !u!114 &1321144627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321144622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6355242d214929645b66f1cbd951253f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fadeOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.0068932767
+      outSlope: 0.0068932767
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.26666668
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.363968
+      outSlope: -3.363968
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.03333336
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  randomDelayMedian: 0.3
+  fadeImg: {fileID: 0}
+  fadeText: {fileID: 0}
 --- !u!1 &1342688326
 GameObject:
   m_ObjectHideFlags: 0
@@ -2462,6 +2591,7 @@ GameObject:
   - component: {fileID: 1442854937}
   - component: {fileID: 1442854936}
   - component: {fileID: 1442854935}
+  - component: {fileID: 1442854938}
   m_Layer: 5
   m_Name: ShootButton
   m_TagString: Untagged
@@ -2569,6 +2699,69 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1442854933}
   m_CullTransparentMesh: 0
+--- !u!114 &1442854938
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1442854933}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6355242d214929645b66f1cbd951253f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fadeOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.0068932767
+      outSlope: 0.0068932767
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.26666668
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.363968
+      outSlope: -3.363968
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.03333336
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  randomDelayMedian: 0.3
+  fadeImg: {fileID: 0}
+  fadeText: {fileID: 0}
 --- !u!1 &1464375335
 GameObject:
   m_ObjectHideFlags: 0
@@ -2814,6 +3007,7 @@ GameObject:
   - component: {fileID: 1532662235}
   - component: {fileID: 1532662234}
   - component: {fileID: 1532662233}
+  - component: {fileID: 1532662236}
   m_Layer: 5
   m_Name: PingButton
   m_TagString: Untagged
@@ -2932,6 +3126,69 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532662231}
   m_CullTransparentMesh: 0
+--- !u!114 &1532662236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532662231}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6355242d214929645b66f1cbd951253f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fadeOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0.0068932767
+      outSlope: 0.0068932767
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.26666668
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -3.363968
+      outSlope: -3.363968
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.03333336
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  randomDelayMedian: 0.3
+  fadeImg: {fileID: 0}
+  fadeText: {fileID: 0}
 --- !u!1 &1622149196
 GameObject:
   m_ObjectHideFlags: 0

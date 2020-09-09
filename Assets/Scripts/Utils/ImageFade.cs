@@ -1,74 +1,106 @@
-﻿using Photon.Pun;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+using System.Runtime.InteropServices;
 
 public class ImageFade : MonoBehaviour
 {
-    [SerializeField] private Image[] fadeImage;
-    [SerializeField] private AnimationCurve curve;
+    [Header("Curves:")]
+    [SerializeField] private AnimationCurve fadeInCurve;
+    [SerializeField] private AnimationCurve fadeOutCurve;
 
-    private float tweenValue;
-    private float timeTweenKey;
+    [Header("FadeValues:")]
+    [SerializeField] private float randomDelayMedian;
+    private float minDelay;
+    private float maxDelay;
+
+    [Header("Refs:")]
+    [SerializeField] private Image fadeImg;
+    [SerializeField] private TextMeshProUGUI fadeText;
+
+
+    private bool hasImage, hasText;
     private float fadeDuration;
 
     private void Awake()
     {
-        fadeImage = GetComponentsInChildren<Image>();
+        if (fadeImg == null)
+        {
+            fadeImg = GetComponentInChildren<Image>();
+        }
+        if (fadeText == null)
+        {
+            fadeText = GetComponentInChildren<TextMeshProUGUI>();
+        }
+
+        hasImage = (fadeImg != null);
+        hasText = (fadeText != null);
     }
 
     private void Start()
     {
-        timeTweenKey = 2;
-        tweenValue = 0;
+        minDelay = randomDelayMedian * 0.5f;
+        maxDelay = randomDelayMedian * 1.5f;
     }
 
-    private void Update()
+    public void FadeIn(float _duration, bool randomDelay = true)
     {
-        if (timeTweenKey < 1)
+        StopAllCoroutines();
+        fadeDuration = _duration;
+        StartCoroutine(Fade(fadeInCurve, randomDelay, true));
+    }
+    public void FadeOut(float _duration, bool randomDelay = true)
+    {
+        StopAllCoroutines();
+        fadeDuration = _duration;
+        StartCoroutine(Fade(fadeOutCurve, randomDelay, false));
+    }
+
+    private IEnumerator Fade(AnimationCurve _curve, bool _delay, bool _fadeIn)
+    {
+        if (_delay)
+        {
+            yield return new WaitForSeconds(Random.Range(minDelay, maxDelay));
+        }
+        float timeTweenKey = 0;
+        float tweenValue = 0;
+        if (!_fadeIn)
+        {
+            tweenValue = 1;
+        }
+
+        SetAlpha(tweenValue);
+
+        while (timeTweenKey < 1)
         {
             timeTweenKey += Time.deltaTime / fadeDuration;
-            tweenValue = curve.Evaluate(timeTweenKey);
+            tweenValue = fadeInCurve.Evaluate(timeTweenKey);
+            SetAlpha(tweenValue);
+            yield return 0;
+        }
+
+        if (_fadeIn)
+        {
+            SetAlpha(1);
         }
         else
         {
-            tweenValue = 0;
-        }
-        SetAlpha(tweenValue);
-    }
-
-    private void SetAlpha(float a)
-    {
-        a = Mathf.Clamp(a, 0, 1);
-        foreach (var item in fadeImage)
-        {
-            item.color = new Color(item.color.r, item.color.g, item.color.b, a);
-        }
-    }
-
-    public void StartFade(float duration)
-    {
-        timeTweenKey = 0;
-        fadeDuration = duration;
-    }
-
-    public void StopFade()
-    {
-        timeTweenKey = 2;
-        tweenValue = 0;
-        SetAlpha(tweenValue);
-    }
-
-
-
-    public Image[] FadeImage
-    {
-        get { return fadeImage; }
-        set
-        {
-            fadeImage = value;
             SetAlpha(0);
+        }
+    }
+
+    public void SetAlpha(float _a)
+    {
+        _a = Mathf.Clamp(_a, 0, 1);
+        if (hasImage)
+        {
+            fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b , _a);
+        }
+        if (hasText)
+        {
+            fadeText.color = new Color(fadeText.color.r, fadeText.color.g, fadeText.color.b, _a);
         }
     }
 }

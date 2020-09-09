@@ -16,12 +16,24 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
     [Header("Ref Values:")]
     [SerializeField] private GameObject gasButton;
     [SerializeField] private Image gasToggleButton;
+    [SerializeField] private ImageFade[] fadeImages;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        dj = GetComponentInChildren<DynamicJoystick>();
+        fadeImages = GetComponentsInChildren<ImageFade>();
+    }
 
     private void Start()
     {
-        dj = GetComponentInChildren<DynamicJoystick>();
         gasToggleButton.color = Color.white;
         gasToggleButton.gameObject.SetActive(false);
+
+        foreach (var item in fadeImages)
+        {
+            item.SetAlpha(0);
+        }
     }
 
     /// <summary>
@@ -64,10 +76,10 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
     {
         if (gas)
         {
-            gasButton.transform.localScale = new Vector3(1.5f,1.5f,1);
+            gasButton.transform.localScale = new Vector3(1.5f, 1.5f, 1);
             gasLocked = false;
             gasToggle = gas;
-            
+
         }
         else
         {
@@ -107,5 +119,22 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
     public void PlayerPressedPause()
     {
         GameManager.SP.LeaveGame();
+    }
+
+    public void SetControllImages(bool _value)
+    {
+
+        foreach (var item in fadeImages)
+        {
+            if (_value)
+            {
+                item.FadeIn(Random.Range(0.1f, 0.3f), true);
+            }
+            else
+            {
+                item.FadeIn(Random.Range(0.1f, 0.3f), true);
+            }
+        }
+
     }
 }

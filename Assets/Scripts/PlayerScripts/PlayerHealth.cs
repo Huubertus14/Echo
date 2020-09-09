@@ -18,7 +18,7 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private float health;
     [Space]
-    [SerializeField] [Tooltip("The image of the hp bar slider")] private FadeInImage healthBarFade;
+    [SerializeField] [Tooltip("The image of the hp bar slider")] private HealthbarImageFade healthBarFade;
 
     private void Awake()
     {
