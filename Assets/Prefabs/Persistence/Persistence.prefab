@@ -72,6 +72,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1300387392733089846}
   - component: {fileID: 4806214249233412691}
+  - component: {fileID: 7710023292604408837}
   m_Layer: 5
   m_Name: LoadingScreen
   m_TagString: Untagged
@@ -114,6 +115,69 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadImage: {fileID: 0}
   loadText: {fileID: 0}
+--- !u!114 &7710023292604408837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 387202894338574554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6355242d214929645b66f1cbd951253f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fadeInCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 2
+      outSlope: 2
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  fadeOutCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.22142854
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: -2.9892483
+      outSlope: -2.9892483
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.0928573
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  randomDelayMedian: 0.5
+  fadeImg: {fileID: 0}
+  fadeText: {fileID: 0}
 --- !u!1 &1230200304919319549
 GameObject:
   m_ObjectHideFlags: 0
@@ -471,7 +535,6 @@ GameObject:
   - component: {fileID: 3305109470180510589}
   - component: {fileID: -3173180884675803263}
   - component: {fileID: -3422946729117868282}
-  - component: {fileID: 6084279620994273571}
   - component: {fileID: 6215867585128867615}
   m_Layer: 0
   m_Name: Persistence
@@ -560,18 +623,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 100bc0140561ea5449cd67b85713c41c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &6084279620994273571
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6135114416263317202}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c4b553967edc944e9aa173038e42abf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6215867585128867615

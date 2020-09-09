@@ -95,11 +95,23 @@ public class ImageFade : MonoBehaviour
         _a = Mathf.Clamp(_a, 0, 1);
         if (hasImage)
         {
-            fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b , _a);
+            fadeImg.color = new Color(fadeImg.color.r, fadeImg.color.g, fadeImg.color.b, _a);
         }
         if (hasText)
         {
             fadeText.color = new Color(fadeText.color.r, fadeText.color.g, fadeText.color.b, _a);
         }
+    }
+
+    public bool HasText
+    {
+        get { return hasText; }
+        set { hasText = value; }
+    }
+
+    public bool HasImage
+    {
+        get { return hasImage; }
+        set { hasImage = value; }
     }
 }

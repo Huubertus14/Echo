@@ -7,7 +7,7 @@ public abstract class GameModeAbstract : MonoBehaviourPun, IPunObservable
 {
     [SerializeField] private float timeLimit;
     [SerializeField] private bool gameStarted;
-    private int killLimit = 3;
+    private int killLimit = 1;
 
     protected virtual void Start()
     {

@@ -12,6 +12,7 @@ public class SharedCanvasBehaviour : SingetonMonobehaviour<SharedCanvasBehaviour
     public void SetLoadingScreen(bool _state)
     {
         loadingScreenObject.gameObject.SetActive(_state);
+
     }
 
     public void SetLoadingMessage(string message)

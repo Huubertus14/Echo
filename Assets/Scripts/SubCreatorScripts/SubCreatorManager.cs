@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
 {
-    [Header("ManagedRefs")]
+    [Header("Managed Refs:")]
     [SerializeField] private GameObject currentSub;
     private SubBaseBehaviour currentSubBehaviour;
 
@@ -16,7 +16,7 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
     private SubCannonType cannonType = SubCannonType.None;
     private SubSpecialType specialType = SubSpecialType.None;
 
-    [Header("Base prefabs")]
+    [Header("Base prefabs:")]
     [SerializeField] private GameObject heavyBase;
     [SerializeField] private GameObject lightBase;
     [SerializeField] private GameObject mediumBase;

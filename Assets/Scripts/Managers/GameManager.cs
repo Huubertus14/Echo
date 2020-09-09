@@ -111,6 +111,8 @@ public class GameManager : SingetonMonobehaviour<GameManager>
             yield return 0;
         }
 
+        SubCreatorManager.SP.GetCurrentSub.SetActive(false);
+        yield return 0;
         //all values of the player are ready
 
         SharedCanvasBehaviour.SP.SetLoadingScreen(false);

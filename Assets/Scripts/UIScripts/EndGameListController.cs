@@ -3,21 +3,35 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using TMPro;
+using System;
+
 public class EndGameListController : MonoBehaviour
 {
     [SerializeField] private LeaderboardsEntry entryPrefab;
     [SerializeField] private TextMeshProUGUI winText;
 
+    private void OnEnable()
+    {
+        GetComponent<RectTransform>().sizeDelta = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+    }
+
     public void CreateEndGameUI()
     {
+        PlayerControlls.SP.SetControllImages(false); //disable controll buttons
+
         PlayerBehaviour[] tempPlayers = MatchManager.SP.GetAllPlayers;
-        tempPlayers.OrderBy(a => a.GetMatchKills);
+
+        Array.Sort(tempPlayers, delegate (PlayerBehaviour x, PlayerBehaviour y)
+        {
+            return y.GetMatchKills.CompareTo(x.GetMatchKills);
+        });
 
         for (int i = 0; i < tempPlayers.Length; i++)
         {
+            Debug.Log("endGame: " + tempPlayers[i].PlayerName + " kills: " + tempPlayers[i].GetMatchKills);
             CreateEntry(tempPlayers[i]);
         }
-         //LANGTODO:
+        //LANGTODO:
         if (tempPlayers[0].photonView.IsMine)
         {
             //Player won
