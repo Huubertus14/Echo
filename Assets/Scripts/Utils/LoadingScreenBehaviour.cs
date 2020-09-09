@@ -9,11 +9,10 @@ public class LoadingScreenBehaviour : MonoBehaviour
     [SerializeField]private Image loadImage;
     [SerializeField]private TextMeshProUGUI loadText;
 
-    private string message;
+    private string message = "";
 
     private void Awake()
     {
-        message = "";
         loadImage = GetComponentInChildren<Image>();
         loadText = GetComponentInChildren<TextMeshProUGUI>();
         loadImage.rectTransform.sizeDelta = new Vector2(Screen.currentResolution.width,Screen.currentResolution.height);
@@ -27,7 +26,8 @@ public class LoadingScreenBehaviour : MonoBehaviour
 
     private void OnDisable()
     {
-        StopAllCoroutines();   
+        StopAllCoroutines();
+        loadText.text = string.Empty;
     }
 
     private IEnumerator LoadingIconAnimation()
