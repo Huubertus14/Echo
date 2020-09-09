@@ -18,7 +18,11 @@ public class GameLeaderboardBehaviour : MonoBehaviour
     {
         //Get all players
         PlayerBehaviour[] tempPlayers = MatchManager.SP.GetAllPlayers;
-        tempPlayers.OrderBy(a => a.GetMatchKills);
+
+        Array.Sort(tempPlayers, delegate (PlayerBehaviour x, PlayerBehaviour y)
+        {
+            return y.GetMatchKills.CompareTo(x.GetMatchKills);
+        });
 
         for (int i = 0; i < tempPlayers.Length; i++)
         {
@@ -45,7 +49,7 @@ public class GameLeaderboardBehaviour : MonoBehaviour
 
     public void CreateEntry(PlayerBehaviour pb)
     {
-        LeaderboardsEntry entry = Instantiate(entryPrefab.gameObject, transform.position, Quaternion.Euler(0,0,0), transform).GetComponent<LeaderboardsEntry>();
+        LeaderboardsEntry entry = Instantiate(entryPrefab.gameObject, transform.position, Quaternion.Euler(0, 0, 0), transform).GetComponent<LeaderboardsEntry>();
         entry.gameObject.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
         entry.SetInGameText(pb);
         savedEntries.Add(entry);
