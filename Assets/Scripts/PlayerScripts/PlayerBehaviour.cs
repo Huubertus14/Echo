@@ -352,6 +352,8 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
     public bool IsAlive => isAlive;
 
+    public bool IsInitiated => isInitialized;
+
     public int GetMatchKills => matchKills;
     public int GetMatchAssist => matchAssists;
     public int GetMatchDamage => 0;
@@ -361,6 +363,8 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     public SubBaseSettings BaseSettings => baseSettings;
     public SubCannonSettings CannonSettings => cannonSettings;
     public SubEnineSettings EngineSettings => engineSettings;
+
+    
 
     public string PlayerName
     {

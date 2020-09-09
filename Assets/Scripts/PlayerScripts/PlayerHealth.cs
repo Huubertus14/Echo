@@ -18,7 +18,7 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
 
     [SerializeField] private float health;
     [Space]
-    [SerializeField] [Tooltip("The image of the hp bar slider")] private ImageFade healthBarFade;
+    [SerializeField] [Tooltip("The image of the hp bar slider")] private FadeInImage healthBarFade;
 
     private void Awake()
     {
@@ -69,7 +69,6 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
 
         if (health <= 0)
         {
-
             healthBarFade.StopFade();
             Debug.Log(_damageDealer.PlayerName + " Killed " + pb.PlayerName);
             if (pb.photonView.IsMine)

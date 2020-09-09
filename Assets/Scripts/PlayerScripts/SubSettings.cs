@@ -44,9 +44,13 @@ public class SubEnineSettings
 public class SubCannonSettings
 {
     public float shootInterval;
-    public SubCannonSettings(float _shootInterval)
+    public float baseDamage;
+    public float bounceForce;
+    public SubCannonSettings(float _shootInterval, float _baseDamage, float _bounceForce)
     {
         shootInterval = _shootInterval;
+        baseDamage = _baseDamage;
+        bounceForce = _bounceForce;
     }
 }
 

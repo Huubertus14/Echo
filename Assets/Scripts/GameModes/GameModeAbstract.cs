@@ -54,7 +54,8 @@ public abstract class GameModeAbstract : MonoBehaviourPun, IPunObservable
     [PunRPC]
     protected void RPC_StartGameOnAllClients()
     {
-        SharedCanvasBehaviour.SP.SetLoadingScreen(false);
+        //SharedCanvasBehaviour.SP.SetLoadingScreen(false);
+        StartCoroutine(GameManager.SP.PollingPlayerReady());
     }
 
     public void EndGame()

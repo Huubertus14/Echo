@@ -103,19 +103,9 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
         subSpeedText.text = "Max Speed: " + engineSettings.maxVelocity.ToString();
 
         subAttackSpeedText.text = "Attack Speed: " + cannonSettings.shootInterval.ToString();
-        subDamageText.text = "Attack Damage: ---";
+        subDamageText.text = "Attack Damage: " + cannonSettings.baseDamage.ToString();
         subPingIntervalText.text = "Ping Speed: " + baseSettings.pingInterval.ToString();
 
-
-
-        /*for (int i = 0; i < selectedSubMesh.Length; i++)
-        {
-            selectedSubMesh[i].gameObject.SetActive(true);
-
-            selectedSubMesh[i].ChangeMeshColor(GameUtils.GetColorFromArray(GameManager.SP.playerData.GetColor()));
-
-            selectedSubMesh[i].gameObject.SetActive(selectedSubIndex == i);
-        }*/
     }
 
     public void ToggleSettingsPanel(bool toggle)

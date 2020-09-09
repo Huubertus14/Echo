@@ -56,6 +56,13 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         rb.velocity = rb.velocity * waterResistence;
     }
 
+    public void BounceAway(Vector3 _orginPosition, float _force)
+    {
+        Vector3 _bounceDir = _orginPosition - subMesh.transform.position;
+        _bounceDir.Normalize();
+        rb.AddForce(_bounceDir*_force, ForceMode.Impulse);
+    }
+
     private void SubMeshRotation()
     {
         if (!pb.photonView.IsMine)

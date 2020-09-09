@@ -13,6 +13,7 @@ public class TorpedoBehaviour : MonoBehaviourPun
     [Header("Bullet values")]
     [SerializeField] private float force;
     [SerializeField] private float bulletDamage;
+    [SerializeField] private float bounceForce;
     [Space]
     [SerializeField] private float pingInterval;
     [SerializeField] private float bulletPingSpeed;
@@ -36,6 +37,10 @@ public class TorpedoBehaviour : MonoBehaviourPun
     {
         rb.Sleep();
         owner = _owner;
+
+        bulletDamage = _owner.CannonSettings.baseDamage;
+        bounceForce = _owner.CannonSettings.bounceForce;
+
         transform.position = _spawnPos;
         transform.rotation = _rotation;
         transform.Rotate(new Vector3(90, 0, 0));
@@ -52,6 +57,7 @@ public class TorpedoBehaviour : MonoBehaviourPun
             if (ph.GetPlayer.IsAlive)
             {
                 ph.PlayerHit(owner, bulletDamage);
+                owner.GetPlayerMovement.BounceAway(transform.position, bounceForce);
             }
         }
     }

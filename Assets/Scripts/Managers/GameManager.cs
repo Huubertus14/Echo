@@ -16,6 +16,8 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     private GameModeAbstract gameMode;
     private PlayerBehaviour ownPlayerBehaviour;
 
+    private bool gameLobbyReady = false;
+
     protected override void Awake()
     {
         base.Awake();
@@ -91,7 +93,44 @@ public class GameManager : SingetonMonobehaviour<GameManager>
         SaveData.Save(playerData);
     }
 
+    public IEnumerator PollingPlayerReady()
+    {
+        float timeOud = Time.time + 45;
+
+        //if mesh is created
+        while (ownPlayerBehaviour == null)
+        {
+            yield return 0;
+        }
+        while (ownPlayerBehaviour.SubMesh == null)
+        {
+            yield return 0;
+        }
+        while(!ownPlayerBehaviour.IsAlive || !ownPlayerBehaviour.IsInitiated)
+        {
+            yield return 0;
+        }
+
+        //all values of the player are ready
+
+        SharedCanvasBehaviour.SP.SetLoadingScreen(false);
+
+        //Animate buttons in
+    }
+
     #region Props
+
+    public bool GameLobbyReady
+    {
+        get
+        {
+            return gameLobbyReady;
+        }
+        set
+        {
+            gameLobbyReady = value;
+        }
+    }
 
     public PlayerBehaviour GetPlayerB
     {

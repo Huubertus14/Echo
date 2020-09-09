@@ -10,6 +10,7 @@ public class MinigunBulletBehaviour : MonoBehaviour
     [Header("Bullet values")]
     [SerializeField] private float force;
     [SerializeField] private float bulletDamage;
+    [SerializeField] private float bounceForce;
 
     private void Awake()
     {
@@ -20,6 +21,10 @@ public class MinigunBulletBehaviour : MonoBehaviour
     {
         rb.Sleep();
         owner = _owner;
+
+        bulletDamage = owner.CannonSettings.baseDamage;
+        bounceForce = owner.CannonSettings.bounceForce;
+
         transform.position = _spawnPos;
         transform.rotation = _rotation;
         transform.Rotate(new Vector3(90, 0, 0));
@@ -36,6 +41,7 @@ public class MinigunBulletBehaviour : MonoBehaviour
             if (ph.GetPlayer.IsAlive)
             {
                 ph.PlayerHit(owner, bulletDamage);
+                owner.GetPlayerMovement.BounceAway(transform.position, bounceForce);
             }
         }
     }
