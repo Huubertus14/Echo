@@ -1,5 +1,6 @@
 ﻿using Photon.Pun;
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
@@ -19,7 +20,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     private SonarPool sp;
 
     [SerializeField] private Color playerColor;
-    private Renderer[] gameMeshes;
+    [SerializeField] private Renderer[] gameMeshes;
 
     [Header("Editor cached")]
     [SerializeField] private GameObject subObject;
@@ -47,9 +48,9 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     {
         if (photonView.IsMine)
         {
-            photonView.RPC(nameof(RPC_SetSubSettings), RpcTarget.AllBufferedViaServer, 
-                GameManager.SP.playerData.subBaseSelected, 
-                GameManager.SP.playerData.subEngineSelected, 
+            photonView.RPC(nameof(RPC_SetSubSettings), RpcTarget.AllBufferedViaServer,
+                GameManager.SP.playerData.subBaseSelected,
+                GameManager.SP.playerData.subEngineSelected,
                 GameManager.SP.playerData.subCannonSelected);
         }
 
@@ -59,7 +60,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         pc = GetComponent<PlayerCannon>();
         ph = GetComponent<PlayerHealth>();
 
-        gameMeshes = subObject.gameObject.GetComponentsInChildren<Renderer>();
+
     }
 
     private IEnumerator Start()
@@ -95,6 +96,12 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         }
 
         yield return 0;
+        
+        while (gameMeshes == null || gameMeshes.Length == 0)
+        {
+            gameMeshes = subObject.gameObject.GetComponentsInChildren<Renderer>();
+            yield return 0;
+        }
         //Set outline Values && color
         foreach (var item in gameMeshes)
         {
@@ -150,8 +157,8 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     {
         GameObject toSpawn = SubCreatorManager.SP.CreateSub((SubBaseType)_base, (SubEngineType)_engine, (SubCannonType)_cannon, (SubSpecialType)_special);
         GameObject temp = Instantiate(toSpawn, Vector3.zero, Quaternion.identity, subObject.transform);
+        Destroy(toSpawn);
         temp.transform.localPosition = Vector3.zero;
-
     }
 
     [PunRPC]
@@ -378,15 +385,10 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     public int GetMatchKills => matchKills;
     public int GetMatchAssist => matchAssists;
     public int GetMatchDamage => 0;
-
     public int GetMatchDeaths => matchDeaths;
-
     public SubBaseSettings BaseSettings => baseSettings;
     public SubCannonSettings CannonSettings => cannonSettings;
     public SubEnineSettings EngineSettings => engineSettings;
-
-
-
     public string PlayerName
     {
         get

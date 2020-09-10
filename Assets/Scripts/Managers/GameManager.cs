@@ -113,7 +113,7 @@ public class GameManager : SingetonMonobehaviour<GameManager>
         }
 
         //Disable the placeholder sub
-        //SubCreatorManager.SP.GetCurrentSub.SetActive(false);
+        SubCreatorManager.SP.GetCurrentSub.SetActive(false);
         yield return 0;
         //all values of the player are ready
 

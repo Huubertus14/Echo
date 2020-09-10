@@ -39,7 +39,6 @@ public class MatchManager : SingetonMonobehaviour<MatchManager>
                     //Assing player to controlls
                     PlayerControlls.SP.GivePlayerBehaviour(pl);
                 }
-
                 //SubCreatorManager.SP.SetSubMesh(false);
                 UpdatePlayerList();
             }

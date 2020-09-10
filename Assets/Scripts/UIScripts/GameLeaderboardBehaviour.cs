@@ -6,12 +6,12 @@ using UnityEngine;
 
 public class GameLeaderboardBehaviour : MonoBehaviour
 {
-    [SerializeField] private LeaderboardsEntry entryPrefab;
-    private List<LeaderboardsEntry> savedEntries;
+    [SerializeField] private MatchScoreBehaviour entryPrefab;
+    private List<MatchScoreBehaviour> savedEntries;
 
     private void Awake()
     {
-        savedEntries = new List<LeaderboardsEntry>();
+        savedEntries = new List<MatchScoreBehaviour>();
     }
 
     public void CreateAndUpdateLeaderboard()
@@ -29,7 +29,7 @@ public class GameLeaderboardBehaviour : MonoBehaviour
             if (i < savedEntries.Count)
             {
                 //Update that entry
-                savedEntries[i].SetInGameText(tempPlayers[i]);
+                savedEntries[i].SetText(tempPlayers[i].PlayerName, tempPlayers[i].GetMatchKills.ToString());
             }
             else
             {
@@ -49,9 +49,9 @@ public class GameLeaderboardBehaviour : MonoBehaviour
 
     public void CreateEntry(PlayerBehaviour pb)
     {
-        LeaderboardsEntry entry = Instantiate(entryPrefab.gameObject, transform.position, Quaternion.Euler(0, 0, 0), transform).GetComponent<LeaderboardsEntry>();
+        MatchScoreBehaviour entry = Instantiate(entryPrefab.gameObject, transform.position, Quaternion.Euler(0, 0, 0), transform).GetComponent<MatchScoreBehaviour>();
         entry.gameObject.GetComponent<RectTransform>().localRotation = Quaternion.Euler(0, 0, 0);
-        entry.SetInGameText(pb);
+        entry.SetText(pb.PlayerName, pb.GetMatchKills.ToString());
         savedEntries.Add(entry);
     }
 }

@@ -19,7 +19,6 @@ public class ImageFade : MonoBehaviour
     [SerializeField] private Image fadeImg;
     [SerializeField] private TextMeshProUGUI fadeText;
 
-
     private bool hasImage, hasText;
     private float fadeDuration;
 

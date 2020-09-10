@@ -132,7 +132,7 @@ public class PlayerControlls : SingetonMonobehaviour<PlayerControlls>
             }
             else
             {
-                item.FadeIn(Random.Range(0.1f, 0.3f), true);
+                item.FadeOut(Random.Range(0.1f, 0.3f), true);
             }
         }
 

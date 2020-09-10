@@ -47,6 +47,8 @@ public class SubCreatorManager : SingetonMonobehaviour<SubCreatorManager>
         SetMeshPosition(new Vector3(5.6f, 3.1f, 0));
 
         DontDestroyOnLoad(currentSub);
+
+        Debug.Log("Creating sub on boot");
     }
 
     public GameObject CreateSub(SubBaseType _base, SubEngineType _engine, SubCannonType _cannon, SubSpecialType _special)

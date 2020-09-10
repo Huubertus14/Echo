@@ -52,7 +52,7 @@ public static class SubValues
     private static Dictionary<SubCannonType, SubCannonSettings> subCannonSettings = new Dictionary<SubCannonType, SubCannonSettings>
     {
         {SubCannonType.Minigun, new SubCannonSettings(0.05f, 3.2f, 0.05f) },
-         {SubCannonType.Torpedo, new SubCannonSettings(1.3f, 15f, 1.5f) },
+         {SubCannonType.Torpedo, new SubCannonSettings(2.4f, 15f, 1.5f) },
           {SubCannonType.Ram, new SubCannonSettings(0.0f, 28f, 5f) },
     };
 

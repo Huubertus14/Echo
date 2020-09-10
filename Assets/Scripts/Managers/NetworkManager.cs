@@ -136,6 +136,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
         {
             StopAllCoroutines();
         }
+
     }
 
     public override void OnConnectedToMaster()

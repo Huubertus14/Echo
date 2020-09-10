@@ -6,6 +6,9 @@ using UnityEngine.UI;
 
 public class PlayerScoreBoardController : SingetonMonobehaviour<PlayerScoreBoardController>
 {
+    [Header("Go refs:")]
+    [SerializeField] private GameObject ownGameScoreObject;
+
     [Header("Player Values")]
     [SerializeField] private TextMeshProUGUI killText;
     [SerializeField] private TextMeshProUGUI assistText;
@@ -16,9 +19,29 @@ public class PlayerScoreBoardController : SingetonMonobehaviour<PlayerScoreBoard
     [SerializeField] private GameLeaderboardBehaviour leaderboard;
     [SerializeField] private EndGameListController endListController;
 
-    private void Start()
+    private ImageFade[] ownScoreFades;
+
+    private void Awake()
+    {
+        ownScoreFades = ownGameScoreObject.GetComponentsInChildren<ImageFade>();
+    }
+
+    private IEnumerator Start()
     {
         endListController.gameObject.SetActive(false);
+
+        for (int i = 0; i < ownScoreFades.Length; i++)
+        {
+            ownScoreFades[i].SetAlpha(0);
+        }
+
+        yield return new WaitForSeconds(1.2f);
+
+        //Fadein all TMP
+        for (int i = 0; i < ownScoreFades.Length; i++)
+        {
+            ownScoreFades[i].FadeIn(Random.Range(0.8f, 1.5f));
+        }
     }
 
     public void SetKillText(int kills)
@@ -55,7 +78,10 @@ public class PlayerScoreBoardController : SingetonMonobehaviour<PlayerScoreBoard
 
     private IEnumerator EndScoreCoroutine()//Do this for a fancy animation later
     {
-        yield return 0;
+        //Destroy all buttons
+        PlayerControlls.SP.SetControllImages(false);
+
+        yield return new WaitForSeconds(1.5f);
         endListController.gameObject.SetActive(true);
         endListController.CreateEndGameUI();
     }

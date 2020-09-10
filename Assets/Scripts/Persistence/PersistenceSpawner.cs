@@ -64,6 +64,7 @@ public class PersistenceSpawner : MonoBehaviour
 
         SharedCanvasBehaviour.SP.SetLoadingScreen(false);
         SceneManager.sceneLoaded -= LoadedMainMenuSceneFirstTime;
+        Debug.Log("Load main menu first");
     }
 
     private void SignInGooglePlay()
