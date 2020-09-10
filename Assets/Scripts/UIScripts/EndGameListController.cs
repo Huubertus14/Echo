@@ -66,6 +66,7 @@ public class EndGameListController : MonoBehaviour
         Debug.Log("End game animation comes here");
         for (int i = 0; i < leaderEntrys.Count; i++)
         {
+            leaderEntrys[i].SetAlpha(0);
             leaderEntrys[i].ShowScore();
         }
 

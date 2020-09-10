@@ -43,6 +43,14 @@ public class LeaderboardsEntry : MonoBehaviour
         }
     }
 
+    public void SetAlpha(float _a)
+    {
+        foreach (var item in fades)
+        {
+            item.SetAlpha(_a);
+        }
+    }
+
     public void SetCustomNames(string _pName, string _pScore, string _kills, string _assists, string _deaths, string _damage, string _misc)
     {
         nameText.text = _pName;
