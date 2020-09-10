@@ -45,6 +45,14 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
     private void Awake()
     {
+        if (photonView.IsMine)
+        {
+            photonView.RPC(nameof(RPC_SetSubSettings), RpcTarget.AllBufferedViaServer, 
+                GameManager.SP.playerData.subBaseSelected, 
+                GameManager.SP.playerData.subEngineSelected, 
+                GameManager.SP.playerData.subCannonSelected);
+        }
+
         sp = GetComponent<SonarPool>();
         pm = GetComponent<PlayerMovement>();
         pb = GetComponentInChildren<ParticleBehaviour>();
@@ -54,21 +62,17 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         gameMeshes = subObject.gameObject.GetComponentsInChildren<Renderer>();
     }
 
-    private void Start()
+    private IEnumerator Start()
     {
         playerName = photonView.Owner.NickName;
-
-        //Get values and set them
-        cannonSettings = SubValues.GetCannonSettings((SubCannonType)GameManager.SP.playerData.subCannonSelected);
-        engineSettings = SubValues.GetEngineSettings((SubEngineType)GameManager.SP.playerData.subEngineSelected);
-        baseSettings = SubValues.GetBaseSettings((SubBaseType)GameManager.SP.playerData.subBaseSelected);
 
         orginRotationParticleSystem = pb.gameObject.transform.rotation;
         orginRotationPlayerUI = playerCanvas.transform.localRotation;
 
-
         outlineSizeID = Shader.PropertyToID("_Outline");
         outlineColorID = Shader.PropertyToID("_OutlineColor");
+
+        yield return 0;
 
         if (photonView.IsMine)
         {
@@ -77,7 +81,11 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
             outlineSize = 0.15f; //size of the outline shader
 
             GameManager.SP.GetPlayerB = this;
-            photonView.RPC(nameof(RPC_CreateSubMesh), RpcTarget.AllBufferedViaServer, GameManager.SP.playerData.subBaseSelected, GameManager.SP.playerData.subEngineSelected, GameManager.SP.playerData.subCannonSelected, GameManager.SP.playerData.subSpecialSelected);
+            photonView.RPC(nameof(RPC_CreateSubMesh), RpcTarget.AllBufferedViaServer,
+                GameManager.SP.playerData.subBaseSelected,
+                GameManager.SP.playerData.subEngineSelected,
+                GameManager.SP.playerData.subCannonSelected,
+                GameManager.SP.playerData.subSpecialSelected);
         }
         else
         {
@@ -86,6 +94,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
             outlineSize = 0;
         }
 
+        yield return 0;
         //Set outline Values && color
         foreach (var item in gameMeshes)
         {
@@ -103,10 +112,13 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
         SetMeshColor(Color.black, gameMeshes); //Set self to black
 
-        ph.SetInitValues(baseSettings.health);
         isAlive = false;
 
+        pm.GiveValues(baseSettings, engineSettings);
+        ph.SetInitValues(baseSettings.health);
+
         subObject.SetActive(false);
+        yield return 0;
         StartCoroutine(Respawn());
         isInitialized = true;
     }
@@ -122,6 +134,15 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         PlayerScoreBoardController.SP.SetDamageText(0);
         PlayerScoreBoardController.SP.SetDeathText(matchDeaths);
         PlayerScoreBoardController.SP.SetKillText(matchKills);
+    }
+
+    [PunRPC]
+    private void RPC_SetSubSettings(int _baseSelected, int _engineSelected, int _cannonSelected)
+    {
+        //Get values and set them
+        cannonSettings = SubValues.GetCannonSettings((SubCannonType)_cannonSelected);
+        engineSettings = SubValues.GetEngineSettings((SubEngineType)_engineSelected);
+        baseSettings = SubValues.GetBaseSettings((SubBaseType)_baseSelected);
     }
 
     [PunRPC]
@@ -199,7 +220,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         SetMeshColor(col, gameMeshes);
         yield return 0;
 
-        float fadeTime = Time.time + 7.5f;
+        float fadeTime = Time.time + 7.5f;//TODO change this to variable value
 
         while (Time.time < fadeTime)
         {
@@ -309,7 +330,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
             }
         }
     }
-    
+
     public void DestroyLinkedItems()
     {
         //All bullets and sonars
@@ -364,7 +385,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     public SubCannonSettings CannonSettings => cannonSettings;
     public SubEnineSettings EngineSettings => engineSettings;
 
-    
+
 
     public string PlayerName
     {

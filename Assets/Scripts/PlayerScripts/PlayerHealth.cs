@@ -60,7 +60,6 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
         lastPlayerTakenDamageFrom = _damageDealer;
 
         health -= _damage;
-        goalSliderValue = health;
         UpdatePlayerHealthBar(health);
 
         healthBarFade.StartFade(0.9f);

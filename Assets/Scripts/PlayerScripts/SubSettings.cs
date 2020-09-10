@@ -29,7 +29,7 @@ public class SubBaseSettings
 }
 
 
-
+[Serializable]
 public class SubEnineSettings
 {
     public float acceleration;
@@ -40,7 +40,7 @@ public class SubEnineSettings
         maxVelocity = _maxSpeed;
     }
 }
-
+[Serializable]
 public class SubCannonSettings
 {
     public float shootInterval;

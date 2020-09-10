@@ -36,11 +36,11 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
         firstTake = true;
     }
 
-    private void Start()
+    public void GiveValues(SubBaseSettings _base, SubEnineSettings _engine)
     {
-        accelerationSpeed = pb.EngineSettings.acceleration;
-        waterResistence = pb.BaseSettings.resistence;
-        maxSpeed = pb.EngineSettings.maxVelocity;
+        accelerationSpeed = _engine.acceleration;
+        maxSpeed = _engine.maxVelocity;
+        waterResistence = _base.resistence;
     }
 
     private void Update()

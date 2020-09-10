@@ -31,7 +31,6 @@ public class PlayerCannon : MonoBehaviourPun
     {
         pb = GetComponent<PlayerBehaviour>();
 
-        shootInterval = pb.CannonSettings.shootInterval;
         StartCoroutine(FindRefs());
         shootTimer = -1;
     }
@@ -47,6 +46,17 @@ public class PlayerCannon : MonoBehaviourPun
     private IEnumerator FindRefs()
     {
         float timeout = Time.time + 30;
+
+        while (pb.CannonSettings == null)
+        {
+            shootInterval = pb.CannonSettings.shootInterval;
+            if (Time.time > timeout)
+            {
+                Debug.LogError("To long to find player settings");
+                yield break;
+            }
+            yield return 0;
+        }
 
         while (!foundsbb)
         {

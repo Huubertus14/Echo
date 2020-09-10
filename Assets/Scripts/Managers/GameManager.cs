@@ -63,6 +63,7 @@ public class GameManager : SingetonMonobehaviour<GameManager>
     {
         Debug.Log("Scene loaded: " + arg0.ToString());
         SharedCanvasBehaviour.SP.SetLoadingScreen(false);
+        SubCreatorManager.SP.SetSubMesh(true);
         //Reconnect using photon
 
         SceneManager.sceneLoaded -= MainMenuLoaded;
@@ -111,7 +112,8 @@ public class GameManager : SingetonMonobehaviour<GameManager>
             yield return 0;
         }
 
-        SubCreatorManager.SP.GetCurrentSub.SetActive(false);
+        //Disable the placeholder sub
+        //SubCreatorManager.SP.GetCurrentSub.SetActive(false);
         yield return 0;
         //all values of the player are ready
 

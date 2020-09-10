@@ -315,6 +315,13 @@ MonoBehaviour:
     resistence: 0
     basePingBeginSpeed: 0
     basePingLifeTime: 0
+  engineSettings:
+    acceleration: 0
+    maxVelocity: 0
+  cannonSettings:
+    shootInterval: 0
+    baseDamage: 0
+    bounceForce: 0
   playerColor: {r: 0, g: 0, b: 0, a: 0}
   subObject: {fileID: 4830988355086734681}
   playerCanvas: {fileID: 2544624146128464494}
