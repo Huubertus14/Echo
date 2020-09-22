@@ -73,6 +73,7 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
             if (pb.photonView.IsMine)
             {
                 photonView.RPC(nameof(RPC_PlayerDied), RpcTarget.AllBuffered);
+                photonView.RPC(nameof(RPC_CreateKillFeed), RpcTarget.All, _damageDealer.PlayerName, pb.PlayerName);
                 pb.PlayerDie();
             }
 
@@ -92,6 +93,12 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
         }
 
         lastPlayerTakenDamageFrom.KilledPlayer(pb);
+    }
+
+    [PunRPC]
+    private void RPC_CreateKillFeed(string _killer, string _victim)
+    {
+        KillFeedController.SP.CreateKillFeed(_killer,_victim, KillType.Torpedo);
     }
 
     private void FixedUpdate()

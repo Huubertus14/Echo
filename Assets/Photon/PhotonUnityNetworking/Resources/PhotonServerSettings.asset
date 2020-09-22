@@ -47,5 +47,6 @@ MonoBehaviour:
   - RPC_StartGameOnAllClients
   - RPC_SetSliderValues
   - RPC_SetSubSettings
+  - RPC_CreateKillFeed
   DisableAutoOpenWizard: 1
   ShowSettings: 1

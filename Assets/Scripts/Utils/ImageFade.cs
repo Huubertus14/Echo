@@ -17,7 +17,7 @@ public class ImageFade : MonoBehaviour
 
     [Header("Refs:")]
     [SerializeField] private Image fadeImg;
-    [SerializeField] private TextMeshProUGUI fadeText;
+    [SerializeField] private TextMeshProUGUI[] fadeText;
 
     private bool hasImage, hasText;
     private float fadeDuration;
@@ -30,11 +30,11 @@ public class ImageFade : MonoBehaviour
         }
         if (fadeText == null)
         {
-            fadeText = GetComponentInChildren<TextMeshProUGUI>();
+            fadeText = GetComponentsInChildren<TextMeshProUGUI>();
         }
 
         hasImage = (fadeImg != null);
-        hasText = (fadeText != null);
+        hasText = (fadeText != null) && fadeText.Length > 0;
     }
 
     private void Start()
@@ -98,7 +98,10 @@ public class ImageFade : MonoBehaviour
         }
         if (hasText)
         {
-            fadeText.color = new Color(fadeText.color.r, fadeText.color.g, fadeText.color.b, _a);
+            for (int i = 0; i < fadeText.Length; i++)
+            {
+                fadeText[i].color = new Color(fadeText[i].color.r, fadeText[i].color.g, fadeText[i].color.b, _a);
+            }
         }
     }
 

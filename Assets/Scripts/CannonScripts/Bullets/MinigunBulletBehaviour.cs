@@ -41,7 +41,7 @@ public class MinigunBulletBehaviour : MonoBehaviour
             if (ph.GetPlayer.IsAlive)
             {
                 ph.PlayerHit(owner, bulletDamage);
-                owner.GetPlayerMovement.BounceAway(transform.position, bounceForce);
+                ph.GetPlayer.GetPlayerMovement.BounceAway(transform.position, bounceForce);
             }
         }
     }

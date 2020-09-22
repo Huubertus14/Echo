@@ -355,6 +355,14 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     {
         ContactPoint cp = collision.contacts[0];
         sp.CreateSonar(cp.point, 0.9f, 20);
+
+        SolidObjectBehaviour solObj = collision.gameObject.GetComponent<SolidObjectBehaviour>();
+        if (solObj != null)
+        {
+            //Hit a solid object
+            ph.PlayerHit(this, 3f);
+            pm.BounceAway(collision.contacts[0].point, 2f);
+        }
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

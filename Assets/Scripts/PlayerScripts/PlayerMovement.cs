@@ -58,7 +58,7 @@ public class PlayerMovement : MonoBehaviour, IPunObservable
 
     public void BounceAway(Vector3 _orginPosition, float _force)
     {
-        Vector3 _bounceDir = _orginPosition - subMesh.transform.position;
+        Vector3 _bounceDir =  subMesh.transform.position - _orginPosition;
         _bounceDir.Normalize();
         rb.AddForce(_bounceDir*_force, ForceMode.Impulse);
     }
