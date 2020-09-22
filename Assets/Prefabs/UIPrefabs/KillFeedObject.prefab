@@ -396,7 +396,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9099369080959946593}
   - component: {fileID: 9099369080959946592}
-  - component: {fileID: 9099369080959946599}
   m_Layer: 5
   m_Name: KillFeedObject
   m_TagString: Untagged
@@ -441,19 +440,6 @@ MonoBehaviour:
   killTypeImage: {fileID: 9099369080000306771}
   killerText: {fileID: 9099369080652290594}
   victimText: {fileID: 9099369080265490018}
-  fade: {fileID: 9099369080959946599}
---- !u!114 &9099369080959946599
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9099369080959946594}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6355242d214929645b66f1cbd951253f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
   fadeInCurve:
     serializedVersion: 2
     m_Curve:
@@ -484,26 +470,21 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 1
-      inSlope: -0.15718563
-      outSlope: -0.15718563
+      inSlope: -0.096507445
+      outSlope: -0.096507445
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.19880952
+      outWeight: 0.07619048
     - serializedVersion: 3
       time: 1
       value: 0
-      inSlope: -1.9831319
-      outSlope: -1.9831319
+      inSlope: -3.5430098
+      outSlope: -3.5430098
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.12142855
+      inWeight: 0.17380953
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  randomDelayMedian: 0
-  fadeImg: {fileID: 9099369080000306771}
-  fadeText:
-  - {fileID: 9099369080652290594}
-  - {fileID: 9099369080265490018}
