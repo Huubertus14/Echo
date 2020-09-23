@@ -58,6 +58,7 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
         }
 
         lastPlayerTakenDamageFrom = _damageDealer;
+        _damageDealer.AddDamage((int)_damage);
 
         health -= _damage;
         UpdatePlayerHealthBar(health);
@@ -69,12 +70,19 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
         if (health <= 0)
         {
             healthBarFade.StopFade();
-            Debug.Log(_damageDealer.PlayerName + " Killed " + pb.PlayerName);
+
             if (pb.photonView.IsMine)
             {
                 photonView.RPC(nameof(RPC_PlayerDied), RpcTarget.AllBuffered);
                 photonView.RPC(nameof(RPC_CreateKillFeed), RpcTarget.All, _damageDealer.PlayerName, pb.PlayerName);
                 pb.PlayerDie();
+            }
+
+            if (GameManager.SP.GetPlayerB == _damageDealer)
+            {
+                KillFeedController.SP.SetKillFeedback("Kill", GameConstants.KILL_XP);
+                _damageDealer.AddXP(GameConstants.KILL_XP);
+                _damageDealer.AddScore(GameConstants.KILL_XP);
             }
 
             playersDoneDamage.Clear();
@@ -88,7 +96,13 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
         {
             if (play != lastPlayerTakenDamageFrom)
             {
-                play.AssistOnPlayer(pb);
+                if (play != null)
+                {
+                    play.AssistOnPlayer(pb);
+                    KillFeedController.SP.SetKillFeedback("Assist", GameConstants.BASE_ASSIST_XP);
+                    play.AddXP(GameConstants.BASE_ASSIST_XP);
+                    play.AddScore(GameConstants.BASE_ASSIST_XP);
+                }
             }
         }
 
@@ -98,7 +112,7 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
     [PunRPC]
     private void RPC_CreateKillFeed(string _killer, string _victim)
     {
-        KillFeedController.SP.CreateKillFeed(_killer,_victim, KillType.Torpedo);
+        KillFeedController.SP.CreateKillFeed(_killer, _victim, KillType.Torpedo);
     }
 
     private void FixedUpdate()

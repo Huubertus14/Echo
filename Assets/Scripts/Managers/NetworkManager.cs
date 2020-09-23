@@ -35,21 +35,40 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
     bool searching = false;
     public IEnumerator JoinGame()
     {
-        float TIME_OUT = Time.time + 150;
+        PhotonNetwork.JoinRandomRoom(null, 0);
+        yield return 0;
+        /*
+                searching = false;
+                float TIME_OUT = Time.time + 150;
 
-        while (Time.time < TIME_OUT && !searching)
-        {
-            Debug.Log("Searching...");
-            if (!PhotonNetwork.InLobby)
-            {
-                //Try to join a a game
-                PhotonNetwork.JoinRandomRoom();
-            }
-            yield return new WaitForSeconds(0.15f);
-        }
+                //Check amount of possible rooms
 
-        CreateAndJoinRandomRoom();
-        yield return null;
+                if (PhotonNetwork.CountOfRooms > 0)
+                {
+                    while (Time.time < TIME_OUT && !searching && !PhotonNetwork.InRoom && PhotonNetwork.Server != ServerConnection.GameServer)
+                    {
+                        Debug.Log("Searching...");
+                        SharedCanvasBehaviour.SP.SetLoadingMessage("Searching a game " + Time.time + "/" + TIME_OUT);
+                        if (!PhotonNetwork.InLobby)
+                        {
+                            //Try to join a a game
+                            PhotonNetwork.JoinRandomRoom(null,0);
+                        }
+                        yield return new WaitForSeconds(0.15f);
+                        if (PhotonNetwork.InRoom || PhotonNetwork.InLobby)
+                        {
+                            yield break;
+                        }
+                    }
+                }
+                if (PhotonNetwork.InRoom)
+                {
+                    yield break;
+                }
+
+                CreateAndJoinRandomRoom();
+
+                yield return 0;*/
     }
 
     public void CreateRoom()
@@ -66,10 +85,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
         PhotonNetwork.CreateRoom(_randomRoomName, roomOptions);
     }
 
-    public void JoinSpecificRoom()
-    {
-        PhotonNetwork.JoinRoom("Room1234");
-    }
 
     private void CreateAndJoinRandomRoom()
     {
@@ -106,12 +121,28 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
 
         Debug.Log("[PUN] Joined room");
 
-        SceneManager.sceneLoaded += OnLoadedScene;
-
-
+        // SceneManager.sceneLoaded += OnLoadedScene;
         searching = true;
         StopAllCoroutines();
         StopCoroutine(JoinGame());
+
+        StartCoroutine(OnJoinedRoomCoroutine());
+    }
+
+    private IEnumerator OnJoinedRoomCoroutine()
+    {
+        yield return new WaitForSeconds(0.2f);
+
+        if (PhotonNetwork.IsMasterClient)
+        {
+            PhotonNetwork.AutomaticallySyncScene = true;
+        }
+
+        MatchManager.SP.CreateAndAssignNewPlayer(GameManager.SP.basePlayer);
+        SharedCanvasBehaviour.SP.SetLoadingScreen(true);
+        SharedCanvasBehaviour.SP.SetLoadingMessage("Joining a room");
+
+        SceneManager.sceneLoaded -= OnLoadedScene;
     }
 
     private void OnLoadedScene(Scene _scene, LoadSceneMode arg1)
@@ -120,7 +151,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
         {
             PhotonNetwork.AutomaticallySyncScene = true;
         }
-
 
         MatchManager.SP.CreateAndAssignNewPlayer(GameManager.SP.basePlayer);
         SharedCanvasBehaviour.SP.SetLoadingScreen(true);
@@ -131,12 +161,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IMatchmakingCallbacks
 
     public override void OnJoinedLobby()
     {
-        MatchManager.SP.CreateNewPlayer(GameManager.SP.basePlayer);
+        Debug.Log("[PUN] RoomJoined");
         if (PhotonNetwork.InLobby)
         {
             StopAllCoroutines();
         }
-
     }
 
     public override void OnConnectedToMaster()

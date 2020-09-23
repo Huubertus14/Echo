@@ -18,4 +18,13 @@ public class GameUtils : MonoBehaviour
         }
         return false;
     }
+
+    public static int CalculateEarnedGold(int _score, int _xp)
+    {
+        int earnedGold = 0;
+        earnedGold += GameConstants.BASE_MATCH_GOLD;
+        earnedGold += _score;
+        earnedGold *= _xp;
+        return earnedGold/100;
+    }
 }

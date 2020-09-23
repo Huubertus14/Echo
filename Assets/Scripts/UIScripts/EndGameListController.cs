@@ -50,16 +50,18 @@ public class EndGameListController : MonoBehaviour
             CreateEntry(tempPlayers[i]);
         }
         //LANGTODO:
-        if (tempPlayers[0].PlayerName == GameManager.SP.GetPlayerB.PlayerName)
+        if (tempPlayers[0] == GameManager.SP.GetPlayerB)
         {
             //Player won
             winText.text = "You Won!";
+            GameManager.SP.playerData.wins++;
         }
         else
         {
             winText.text = "You Lose!";
+            GameManager.SP.playerData.loses++;
         }
-
+        GameManager.SP.SaveGame();
         //gridGroup.enabled = false;
 
         //Animation here

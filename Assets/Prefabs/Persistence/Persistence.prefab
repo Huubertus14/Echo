@@ -114,8 +114,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 50be5ba1ac439214e8e4479bc1d976e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  loadImage: {fileID: 0}
-  loadText: {fileID: 0}
+  loadImage: {fileID: 3948852947849265310}
+  loadText: {fileID: 6878030490910408763}
   partB: {fileID: 8913020787206439942}
 --- !u!114 &7710023292604408837
 MonoBehaviour:
@@ -178,8 +178,9 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   randomDelayMedian: 0.5
-  fadeImg: {fileID: 0}
-  fadeText: {fileID: 0}
+  fadeImg: {fileID: 3948852947849265310}
+  fadeText:
+  - {fileID: 6878030490910408763}
 --- !u!1 &1230200304919319549
 GameObject:
   m_ObjectHideFlags: 0
@@ -485,7 +486,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 2160, y: 1080}
+  m_SizeDelta: {x: 2376, y: 1188}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &5591654661755132378
 CanvasRenderer:

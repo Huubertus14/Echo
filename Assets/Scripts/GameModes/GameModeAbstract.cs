@@ -68,6 +68,9 @@ public abstract class GameModeAbstract : MonoBehaviourPun, IPunObservable
     {
          PlayerScoreBoardController.SP.CreateEndScore();
         //Disable Player Controlls
+
+        //Get all player values and add them to 
+        GameManager.SP.GetPlayerB.PlayerGameEnd();
     }
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)

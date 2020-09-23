@@ -43,8 +43,7 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
 
     public void OnPlayClicked()
     {
-        // GameManager.SP.PlayGame();
-        NetworkManager.SP.JoinSpecificRoom();
+        GameManager.SP.PlayGame();
     }
 
 

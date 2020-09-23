@@ -20,7 +20,7 @@ public class LoadingScreenBehaviour : MonoBehaviour
         loadText = GetComponentInChildren<TextMeshProUGUI>();
         fade = GetComponent<ImageFade>();
         fade.HasText = false;
-        loadImage.rectTransform.sizeDelta = new Vector2(Screen.currentResolution.width, Screen.currentResolution.height);
+        loadImage.rectTransform.sizeDelta = new Vector2(Screen.currentResolution.width * 1.1f, Screen.currentResolution.height * 1.1f);
         loadText.text = "loadingText";
     }
 

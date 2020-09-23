@@ -71,6 +71,7 @@ public class GameManager : SingetonMonobehaviour<GameManager>
 
     public void PlayGame()
     {
+        SharedCanvasBehaviour.SP.SetLoadingScreen(true);
         StartCoroutine(NetworkManager.SP.JoinGame());
     }
 

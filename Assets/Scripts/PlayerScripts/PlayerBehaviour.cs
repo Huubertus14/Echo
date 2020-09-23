@@ -17,7 +17,9 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     [SerializeField] private SubEnineSettings engineSettings;
     [SerializeField] private SubCannonSettings cannonSettings;
 
-    private SonarPool sp;
+    private SonarPool sp; 
+    private bool isAlive;
+    private bool isInitialized = false;
 
     [SerializeField] private Color playerColor;
     [SerializeField] private Renderer[] gameMeshes;
@@ -28,16 +30,16 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
 
     [Header("Game values")]
     [SerializeField] private string playerName = "Submarine Commander";
-    [SerializeField] private float playerScore;
-    [SerializeField] private float matchXP;
-    private bool isAlive;
-    private bool isInitialized = false;
+    [SerializeField] private int playerScore;
+    [SerializeField] private int matchXP;
+    
 
     [Header("Score values")]
     [SerializeField] private int matchKills;
     [SerializeField] private int matchDeaths;
-    [SerializeField] private int damageDealth;
+    [SerializeField] private int matchDamageDealth;
     [SerializeField] private int matchAssists;
+
 
     private float currentHealth;
     private int outlineSizeID = 0;
@@ -59,8 +61,6 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         pb = GetComponentInChildren<ParticleBehaviour>();
         pc = GetComponent<PlayerCannon>();
         ph = GetComponent<PlayerHealth>();
-
-
     }
 
     private IEnumerator Start()
@@ -96,7 +96,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         }
 
         yield return 0;
-        
+
         while (gameMeshes == null || gameMeshes.Length == 0)
         {
             gameMeshes = subObject.gameObject.GetComponentsInChildren<Renderer>();
@@ -186,7 +186,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     {
         if (pc.CanShoot())
         {
-            photonView.RPC(nameof(pc.RPC_Shoot), RpcTarget.AllBufferedViaServer);
+            photonView.RPC(nameof(pc.RPC_Shoot), RpcTarget.All);
             pc.HasShot();
         }
     }
@@ -249,6 +249,20 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     public void HitBySonar(Color col, Vector3 firstParticlePosition)
     {
 
+    }
+
+    public void PlayerGameEnd()
+    {
+        //Add all player values to the save file
+        GameManager.SP.playerData.damageDone += matchDamageDealth;
+        GameManager.SP.playerData.playerXP += matchXP;
+        GameManager.SP.playerData.totalDeaths += matchDeaths;
+        GameManager.SP.playerData.totalKills += matchKills;
+
+        //Calculate gold
+        GameManager.SP.playerData.gold += GameUtils.CalculateEarnedGold(playerScore, matchXP);
+
+        GameManager.SP.SaveGame();
     }
 
     public void PlayerDie()
@@ -380,6 +394,8 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         }
     }
 
+    #region Props
+
     public PlayerMovement GetPlayerMovement => pm;
 
     public Color GetPlayerColor => playerColor;
@@ -394,6 +410,21 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     public int GetMatchAssist => matchAssists;
     public int GetMatchDamage => 0;
     public int GetMatchDeaths => matchDeaths;
+
+    public void AddDamage(int _value)
+    {
+        matchDamageDealth += _value;
+    }
+ 
+    public void AddScore(int _value)
+    {
+        playerScore += _value;
+    }
+    public void AddXP(int _value)
+    {
+        matchXP += _value;
+    }
+
     public SubBaseSettings BaseSettings => baseSettings;
     public SubCannonSettings CannonSettings => cannonSettings;
     public SubEnineSettings EngineSettings => engineSettings;
@@ -409,4 +440,5 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
             //TODO UPDATE playername in photon
         }
     }
+    #endregion
 }

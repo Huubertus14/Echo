@@ -972,9 +972,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   killFeedPrefab: {fileID: 9099369080959946594, guid: 7a28dcc03dd15814291dc3bd530da516,
     type: 3}
-  killText: {fileID: 6264957831541741279, guid: eae2f41fe1012fb42bf4cfddc2491289,
+  killTextPrefab: {fileID: 6264957831541741279, guid: eae2f41fe1012fb42bf4cfddc2491289,
     type: 3}
   killFeedParent: {fileID: 446317452}
+  feedbackParent: {fileID: 777921716}
 --- !u!1 &446317452
 GameObject:
   m_ObjectHideFlags: 0
@@ -1703,6 +1704,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 777921717}
+  - component: {fileID: 777921718}
   m_Layer: 5
   m_Name: KillFeedback
   m_TagString: Untagged
@@ -1718,7 +1720,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 777921716}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 415294453}
@@ -1726,9 +1728,33 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 459, y: 328}
+  m_AnchoredPosition: {x: 459, y: 298}
   m_SizeDelta: {x: 271.97006, y: 329.69254}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &777921718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 777921716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a8695521f0d02e499659fee002a26c2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_StartCorner: 0
+  m_StartAxis: 0
+  m_CellSize: {x: 250, y: 50}
+  m_Spacing: {x: 0, y: 0}
+  m_Constraint: 0
+  m_ConstraintCount: 2
 --- !u!1 &914002379
 GameObject:
   m_ObjectHideFlags: 0
@@ -2934,7 +2960,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Delegates:
-  - eventID: 0
+  - eventID: 2
     callback:
       m_PersistentCalls:
         m_Calls:
@@ -2949,7 +2975,7 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 1
           m_CallState: 2
-  - eventID: 1
+  - eventID: 3
     callback:
       m_PersistentCalls:
         m_Calls:
