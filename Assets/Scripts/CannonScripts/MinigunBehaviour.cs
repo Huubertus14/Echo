@@ -35,7 +35,7 @@ public class MinigunBehaviour : SubWeaponAbstract
 
         //Create bullet parent
         bulletsParent = new GameObject();
-        bulletsParent.name = "bulletPool (PlayerName)";
+        bulletsParent.name = "bulletPool (" + pb.PlayerName +")";
         bulletsParent.transform.SetParent(PoolHolder.SP.GetBulletPool());
         bulletsParent.transform.position = Vector3.zero;
 

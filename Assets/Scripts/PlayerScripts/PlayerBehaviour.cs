@@ -114,7 +114,7 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
         //Give particle system the color
         pb.SetColor(playerColor);
 
-        sp.CreatePool("Player Name01");
+        sp.CreatePool(PlayerName);
         sp.SetPoolColor(playerColor);
 
         SetMeshColor(Color.black, gameMeshes); //Set self to black

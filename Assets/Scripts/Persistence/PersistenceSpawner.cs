@@ -63,8 +63,9 @@ public class PersistenceSpawner : MonoBehaviour
         //Check if a sub is selected
         SubCreatorManager.SP.CreateSubOnBoot();
 
-        MainMenu.SP.SetMenuText();
+        MainMenu.SP.SetMenuText(true);
         MainMenu.SP.SetSubSettingsText();
+
 
         SharedCanvasBehaviour.SP.SetLoadingScreen(false);
         SceneManager.sceneLoaded -= LoadedMainMenuSceneFirstTime;

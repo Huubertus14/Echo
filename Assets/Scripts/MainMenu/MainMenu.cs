@@ -44,7 +44,7 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
         ToggleNameInputPanel(false);
         ToggleSubSelectPanel(false);
 
-        SetMenuText();
+        SetMenuText(false);
 
        // SubCreatorManager.SP.SetSubMesh(true);
     }
@@ -60,7 +60,7 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
         NetworkManager.SP.CreateRoom();
     }
 
-    public void SetMenuText()
+    public void SetMenuText(bool _onBoot)
     {
         //Debug.Log(GameManager.SP.playerData.playerName);
 
@@ -91,7 +91,14 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
 
         winLoseText.text = "Win/Lose: " + wl;
 
-        xpSlider.InitSlider();
+        if (_onBoot)
+        {
+            xpSlider.InitSlider();
+        }
+        else
+        {
+            Debug.Log("Add earned xp");
+        }
 
     }
 

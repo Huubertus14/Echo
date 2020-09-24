@@ -1,5 +1,4 @@
-﻿using Photon.Pun.Demo.PunBasics;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -28,7 +27,7 @@ public class NameChangePanelBehaviour : MonoBehaviour
     {
         string pName = nameInput.text;
         GameManager.SP.playerData.playerName = pName;
-        MainMenu.SP.SetMenuText();
+        MainMenu.SP.SetMenuText(false);
         PhotonNetwork.NickName = pName;
 
         GameManager.SP.SaveGame();

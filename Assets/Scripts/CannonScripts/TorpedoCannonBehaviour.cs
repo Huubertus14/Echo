@@ -25,8 +25,8 @@ public class TorpedoCannonBehaviour : SubWeaponAbstract
     {
         GameObject _bul = Instantiate(projectilePrefab.gameObject, transform.position, Quaternion.identity, bulletsParent.transform);
         _bul.SetActive(false);
-         TorpedoBehaviour _behav = _bul.GetComponent<TorpedoBehaviour>();
-        _behav.CreatePool("playername", GameManager.SP.GetPlayerB.GetPlayerColor);
+        TorpedoBehaviour _behav = _bul.GetComponent<TorpedoBehaviour>();
+        _behav.CreatePool(pb.PlayerName, GameManager.SP.GetPlayerB.GetPlayerColor);
         bulletPool.Enqueue(_behav);
     }
 
@@ -36,7 +36,7 @@ public class TorpedoCannonBehaviour : SubWeaponAbstract
 
         //Create bullet parent
         bulletsParent = new GameObject();
-        bulletsParent.name = "bulletPool (PlayerName)";
+        bulletsParent.name = "bulletPool (" + pb.PlayerName + ")";
         bulletsParent.transform.SetParent(PoolHolder.SP.GetBulletPool());
         bulletsParent.transform.position = Vector3.zero;
 
