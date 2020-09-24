@@ -49,6 +49,7 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
         if (health <= 0)
         {
             //Player allready dead
+            Debug.LogWarning("Player allready death, should not be reached");
             return;
         }
 
@@ -76,13 +77,6 @@ public class PlayerHealth : MonoBehaviourPun, IPunObservable
                 photonView.RPC(nameof(RPC_PlayerDied), RpcTarget.AllBuffered);
                 photonView.RPC(nameof(RPC_CreateKillFeed), RpcTarget.All, _damageDealer.PlayerName, pb.PlayerName);
                 pb.PlayerDie();
-            }
-
-            if (GameManager.SP.GetPlayerB == _damageDealer)
-            {
-                KillFeedController.SP.SetKillFeedback("Kill", GameConstants.KILL_XP);
-                _damageDealer.AddXP(GameConstants.KILL_XP);
-                _damageDealer.AddScore(GameConstants.KILL_XP);
             }
 
             playersDoneDamage.Clear();

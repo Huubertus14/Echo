@@ -24,8 +24,8 @@ public class PlayerCannon : MonoBehaviourPun
     private bool foundsbb = false;
 
     private float shootTimer;
-    private float shootInterval;
-
+    private double shootInterval;
+    private double fireTime = 0;
 
     private void Start()
     {
@@ -33,14 +33,6 @@ public class PlayerCannon : MonoBehaviourPun
 
         StartCoroutine(FindRefs());
         shootTimer = -1;
-    }
-
-    private void FixedUpdate()
-    {
-        if (shootTimer >= 0)
-        {
-            shootTimer -= Time.deltaTime;
-        }
     }
 
     private IEnumerator FindRefs()
@@ -93,7 +85,7 @@ public class PlayerCannon : MonoBehaviourPun
 
     public void HasShot()
     {
-        shootTimer = shootInterval;
+        fireTime = PhotonNetwork.Time + shootInterval;
     }
 
     public void DestroyPool()
@@ -112,7 +104,7 @@ public class PlayerCannon : MonoBehaviourPun
 
     public bool CanShoot()
     {
-        return (shootTimer < 0);
+        return (PhotonNetwork.Time > fireTime);
     }
 
 }

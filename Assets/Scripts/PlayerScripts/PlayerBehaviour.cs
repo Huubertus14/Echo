@@ -336,11 +336,15 @@ public class PlayerBehaviour : MonoBehaviourPun, ISonarable, IPunObservable
     {
         if (photonView != victim.photonView && photonView.IsMine)
         {
-
             if (matchKills == GameManager.SP.GetGameMode().GetKillLimit - 1)
             {
                 //Player is on last kill
             }
+
+            //LANGTODO
+            KillFeedController.SP.SetKillFeedback("Kill", GameConstants.KILL_XP);
+            AddXP(GameConstants.KILL_XP);
+            AddScore(GameConstants.KILL_XP);
 
             matchKills += 1;
             PlayerScoreBoardController.SP.SetKillText(matchKills);

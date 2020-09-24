@@ -11,4 +11,7 @@ public class GameConstants
     //Match Values
     public static int BASE_MATCH_GOLD = 50;
 
+    //Level values
+    public static int BASE_XP = 5000;
+
 }

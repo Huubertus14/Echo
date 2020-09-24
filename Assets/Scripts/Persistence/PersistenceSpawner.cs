@@ -20,7 +20,11 @@ public class PersistenceSpawner : MonoBehaviour
         persistence = Instantiate(persistencePrefab, transform.position, Quaternion.identity);
         persistence.name = "Persistence";
 
-
+        /*for (int i = 0; i < 15; i++)
+        {
+            int amount = 1200 * i;
+            Debug.Log(amount + " xp is level: " + GameUtils.CalculateLevel(amount) + " xp needed for next: " + GameUtils.CalculateNextLevelXP(amount)) ;
+        }*/
     }
 
     private IEnumerator Start()

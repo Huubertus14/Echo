@@ -30,6 +30,14 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
     [SerializeField] private TextMeshProUGUI subDamageText;
     [SerializeField] private TextMeshProUGUI subAttackSpeedText;
 
+    private MainMenuXPSlider xpSlider;
+
+    protected override void Awake()
+    {
+        base.Awake();
+        xpSlider = GetComponentInChildren<MainMenuXPSlider>();
+    }
+
     private void OnEnable()
     {
         ToggleSettingsPanel(false);
@@ -67,7 +75,7 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
 
         //LANGTODO:
         playerNameText.text = "Name: " + GameManager.SP.playerData.playerName;
-        xpText.text = "XP: " + GameManager.SP.playerData.playerXP;
+        xpText.text = "Level: " + GameUtils.CalculateLevel(GameManager.SP.playerData.playerXP);
         goldText.text = "Gold: " + GameManager.SP.playerData.gold;
         winText.text = "Wins: " + GameManager.SP.playerData.wins;
 
@@ -82,6 +90,9 @@ public class MainMenu : SingetonMonobehaviour<MainMenu>
         }
 
         winLoseText.text = "Win/Lose: " + wl;
+
+        xpSlider.InitSlider();
+
     }
 
     public void SetSubSettingsText()
